@@ -1,4 +1,4 @@
-package src;
+package src.tokenizer;
 
 public class token {
     private String text;
@@ -7,6 +7,10 @@ public class token {
     public token (String text, int lineNumber) {
         this.text = text;
         this.lineNumber = lineNumber;
+    }
+
+    public token(char text, int lineNumber) {
+        this("" + text, lineNumber);
     }
     
     public String getText () {
