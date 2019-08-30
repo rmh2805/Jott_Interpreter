@@ -11,4 +11,6 @@ public abstract class token {
         return lineNumber;
     }
 
+    public abstract String toString();
+
 }

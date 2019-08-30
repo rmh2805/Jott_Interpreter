@@ -1,6 +1,7 @@
 package src.tokenizer;
 
 import src.errorPrinter;
+import src.parseTree.tokens.token;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,13 +21,13 @@ public class tokenizer {
 
             System.out.println("\n\n\tToken List");
             int currentLine = 0;
-            for (src.tokenizer.token token : tokenList) {
-                if (token.getLineNumber() != currentLine) {
-                    currentLine = token.getLineNumber();
+            for (token tok : tokenList) {
+                if (tok.getLineNumber() != currentLine) {
+                    currentLine = tok.getLineNumber();
                     System.out.print("\nLine " + currentLine + ":\t");
                 }
 
-                System.out.print(token + "\t");
+                System.out.print(tok + "\t");
             }
         }
 
@@ -52,10 +53,10 @@ public class tokenizer {
                 }
                 else if (ch == '+' || ch == '*' || ch == '=' || ch == '-' || ch == '^' || ch == '/'
                         || ch == ';' || ch == '(' || ch == ')') {   //All single operators
-                    tokenList.add(new token(ch, lineCount));
+                    //tokenList.add(new token(ch, lineCount));
                 }
                 else if (ch == '"') {   //String literal
-                    tokenList.add(new token("\"", lineCount));  //Start of a String
+                    //tokenList.add(new token("\"", lineCount));  //Start of a String
 
                     //Read the rest of the string
                     i++;
@@ -74,8 +75,8 @@ public class tokenizer {
 
                         ch = line.charAt(i);
                     }
-                    tokenList.add(new token(tok, lineCount));
-                    tokenList.add(new token("\"", lineCount));
+                    //tokenList.add(new token(tok, lineCount));
+                    //tokenList.add(new token("\"", lineCount));
 
                     continue;
                 }
@@ -110,7 +111,7 @@ public class tokenizer {
                         if (!Character.isWhitespace(ch) && ch != ';')
                             errorPrinter.printSyntaxError(lineCount, filepath, "Token not a number");
                     i--;
-                    tokenList.add(new token(tok, lineCount));
+                    //tokenList.add(new token(tok, lineCount));
                 }
                 else if (ch == '.') {
                     tok += ch;
@@ -131,7 +132,7 @@ public class tokenizer {
                         if (!Character.isWhitespace(ch) && ch != ';')
                             errorPrinter.printSyntaxError(lineCount, filepath, "Token not a number");
                     i--;
-                    tokenList.add(new token(tok, lineCount));
+                    //tokenList.add();
                 }
 
             }

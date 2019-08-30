@@ -1,10 +1,8 @@
 package src.parseTree.tokens;
 
-import src.parseTree.tokens.token;
+public class print_label extends token {
 
-public class print_lable extends token{
-    
-    public print_lable (int lineNum) {
+    public print_label(int lineNum) {
         super(lineNum);
     }
     
