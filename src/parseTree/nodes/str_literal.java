@@ -1,4 +1,4 @@
-package src.parseTree.structure;
+package src.parseTree.nodes;
 
 import src.parseTree.tokens.quote;
 import src.parseTree.tokens.str_token;
