@@ -145,9 +145,7 @@ public class tokenizer {
 
                 }
                 else if (tok.charAt(0) == '+' || tok.charAt(0) == '-' || tok.charAt(0) == '.' || Character.isDigit(tok.charAt(0))) {
-                    //TODO: Parse out these numbers
-                    int j = 0;
-                    boolean isDouble = false, isNegative = false;
+                    boolean isDouble = false;
                     int intV = -1;
                     double dblV = -1;
                     try {
