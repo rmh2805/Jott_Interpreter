@@ -1,6 +1,7 @@
 Integer foo = 1 - 20;
 Double both = +2.0
 ;
+
 String str = "I hate you so much jesus h christ";
 Double app = 1. + .5;
 Double end = -.01;
