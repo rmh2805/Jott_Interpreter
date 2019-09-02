@@ -76,6 +76,7 @@ public class tokenizer {
                     i++;
                 }
 
+                //Handle the gathered token
                 if ("=".equals(tok.toString())) {
                     tokenList.add(new asmt_op(lineCount));
                 }
