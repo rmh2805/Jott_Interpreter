@@ -10,31 +10,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class tokenizer {
-
-    public static void main(String[] args) throws Exception {
-        if (args.length < 1) {
-            System.out.println("Error: Specify a file to tokenize");
-            System.exit(1);
-        }
-        else {
-            List<token> tokenList = tokenize(args[0]);
-
-            System.out.println("\n\n\tToken List");
-            int currentLine = 0;
-            for (token tok : tokenList) {
-                if (tok.getLineNumber() != currentLine) {
-                    currentLine = tok.getLineNumber();
-                    String numLead = String.format("%2d", currentLine);
-                    System.out.print("\nLine " + numLead + ":\t");
-                }
-
-                System.out.print(tok + "\t");
-            }
-        }
-
-
-    }
-
     public static List<token> tokenize(String filepath) throws FileNotFoundException {
         Scanner sc = new Scanner(new File(filepath));
         int lineCount = 1;  //An incrementing line counter
