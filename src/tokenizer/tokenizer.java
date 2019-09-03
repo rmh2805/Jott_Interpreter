@@ -10,6 +10,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class tokenizer {
+
+    /**
+     * Tokenizes the provided Jott source file
+     *
+     * @param filepath The filepath of the Jott source file to parse
+     * @return The ordered list of tokens generated from the Jott source
+     * @throws FileNotFoundException Thrown iff the Jott source file cannot be found
+     */
     public static List<token> tokenize(String filepath) throws FileNotFoundException {
         Scanner sc = new Scanner(new File(filepath));
         int lineCount = 1;  //An incrementing line counter

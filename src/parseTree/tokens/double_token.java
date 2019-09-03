@@ -8,6 +8,11 @@ public class double_token extends token {
         this.val = val;
     }
 
+    /**
+     * Returns the value of the double token
+     *
+     * @return The value of the double token
+     */
     public double getVal() {
         return this.val;
     }
