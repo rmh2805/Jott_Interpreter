@@ -1,6 +1,12 @@
 package src.parseTree.nodes;
 
+import src.parseTree.tokens.end_stmt;
+
 public abstract class expr<T> extends stmt<T> {
+    public expr(end_stmt endStmt) {
+        super(endStmt);
+    }
+
     /**
      * Evaluates this expression
      *

@@ -1,6 +1,7 @@
 package src.parseTree.nodes;
 
 import src.parseTree.tokens.end_paren;
+import src.parseTree.tokens.end_stmt;
 import src.parseTree.tokens.print_label;
 import src.parseTree.tokens.start_paren;
 
@@ -18,7 +19,8 @@ public class print_stmt extends stmt<Integer> {
      * @param toPrint    The expression whose value I should print
      * @param endParen   The ")" token
      */
-    public print_stmt(print_label printLabel, start_paren startParen, expr toPrint, end_paren endParen) {
+    public print_stmt(print_label printLabel, start_paren startParen, expr toPrint, end_paren endParen, end_stmt endStmt) {
+        super(endStmt);
         if (printLabel == null || startParen == null || toPrint == null || endParen == null) {
             System.out.println("Error, missing a required token in print statement");
             System.exit(1);
@@ -28,6 +30,10 @@ public class print_stmt extends stmt<Integer> {
         this.startParen = startParen;
         this.toPrint = toPrint;
         this.endParen = endParen;
+    }
+
+    public print_stmt(end_stmt endStmt) {
+        super(endStmt);
     }
 
     /**
@@ -42,6 +48,6 @@ public class print_stmt extends stmt<Integer> {
     }
 
     public String toString() {
-        return printLabel.toString() + startParen.toString() + toPrint.toString() + endParen.toString();
+        return printLabel.toString() + startParen.toString() + toPrint.toString() + endParen.toString() + endStmt.toString();
     }
 }

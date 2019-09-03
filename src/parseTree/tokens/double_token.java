@@ -1,6 +1,8 @@
 package src.parseTree.tokens;
 
-public class double_token extends token {
+import src.parseTree.nodes.double_val;
+
+public class double_token extends token implements double_val {
     double val;
 
     public double_token(int lineNum, double val) {
@@ -13,7 +15,7 @@ public class double_token extends token {
      *
      * @return The value of the double token
      */
-    public double getVal() {
+    public double getVal(String filePath) {
         return this.val;
     }
 
