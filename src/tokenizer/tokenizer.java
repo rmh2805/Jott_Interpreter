@@ -63,13 +63,13 @@ public class tokenizer {
                 if ("=".equals(tok.toString())) {
                     tokenList.add(new asmt_op(lineCount));
                 }
-                else if ("charAt".equals(tok.toString())) {
+                else if ("charAt".equals(tok.toString())) { // may be var assgnmt
                     tokenList.add(new charAt_label(lineCount));
                 }
                 else if (",".equals(tok.toString())) {
                     tokenList.add(new comma(lineCount));
                 }
-                else if ("concat".equals(tok.toString())) {
+                else if ("concat".equals(tok.toString())) { // may be var assgnmt
                     tokenList.add(new concat_label(lineCount));
                 }
                 else if ("Double".equals(tok.toString())) {
@@ -84,7 +84,7 @@ public class tokenizer {
                 else if ("Integer".equals(tok.toString())) {
                     tokenList.add(new int_label(lineCount));
                 }
-                else if ("print".equals(tok.toString())) {
+                else if ("print".equals(tok.toString())) { // may be var assgnmt
                     tokenList.add(new print_label(lineCount));
                 }
                 else if ("(".equals(tok.toString())) {
@@ -123,10 +123,6 @@ public class tokenizer {
 
                     tokenList.add(new str_token(lineCount, tok.toString()));
                     tokenList.add(new quote(lineCount));
-
-                    tok = new StringBuilder();
-                    tok.append('"');
-
                 }
                 else if (tok.charAt(0) == '+' || tok.charAt(0) == '-' || tok.charAt(0) == '.' || Character.isDigit(tok.charAt(0))) {
                     boolean isDouble = false;
@@ -138,8 +134,10 @@ public class tokenizer {
                         try {
                             dblV = Double.parseDouble(tok.toString());
                             isDouble = true;
+                            if (tok.charAt(tok.length() - 1) == '.') // 1. is invalid in Jott, but valid in Java
+                                errorPrinter.printSyntaxError(lineCount, filepath, "invalid representation of a double");
                         } catch (NumberFormatException m) {
-                            errorPrinter.printSyntaxError(lineCount, filepath, "invalid representation of a number");
+                            errorPrinter.printSyntaxError(lineCount, filepath, "invalid representation of a integer");
                         }
                     }
 
@@ -154,7 +152,7 @@ public class tokenizer {
                 else if (Character.isLowerCase(tok.charAt(0))) {
                     for (int j = 1; j < tok.length(); j++) {
                         char ch = tok.charAt(j);
-                        if (!Character.isAlphabetic(ch) && !Character.isDigit(ch))
+                        if (!Character.isAlphabetic(ch)) // ident must be alphabetic
                             errorPrinter.printSyntaxError(lineCount, filepath, "invalid character in variable/function identifier");
                     }
                     tokenList.add(new id(lineCount, tok.toString()));
