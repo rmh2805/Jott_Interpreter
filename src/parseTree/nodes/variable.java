@@ -2,6 +2,7 @@ package src.parseTree.nodes;
 
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Runtime;
+import src.global_state_singleton;
 import src.parseTree.tokens.id;
 
 public class variable<type> implements terminal<type> {
