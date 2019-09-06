@@ -1,9 +1,11 @@
 package src.parseTree.nodes;
 
+import src.parseTree.nodes.value_types.str_val;
+import src.parseTree.nodes.value_types.value;
 import src.parseTree.tokens.quote;
 import src.parseTree.tokens.str_token;
 
-public class str_literal implements str_val {
+public class str_literal implements str_val, value<String> {
     private quote preQuote;
     private str_token data;
     private quote endQuote;
@@ -23,7 +25,7 @@ public class str_literal implements str_val {
         return preQuote;
     }
 
-    public String getVal(String filePath) {
+    public String getValue() {
         return data.toString();
     }
 

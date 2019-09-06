@@ -3,9 +3,10 @@ package src.parseTree.nodes;
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Runtime;
 import src.global_state_singleton;
+import src.parseTree.nodes.value_types.value;
 import src.parseTree.tokens.id;
 
-public class variable<type> implements terminal<type> {
+public class variable<type> implements value<type> {
     private final global_state_singleton global = global_state_singleton.getGlobalState();
 
     private final id token;

@@ -1,8 +1,9 @@
 package src.parseTree.tokens;
 
-import src.parseTree.nodes.int_val;
+import src.parseTree.nodes.value_types.int_val;
+import src.parseTree.nodes.value_types.value;
 
-public class int_token extends token implements int_val {
+public class int_token extends token implements int_val<Integer>, value<Integer> {
     private int val;
 
     public int_token(int lineNum, int val) {
@@ -15,7 +16,7 @@ public class int_token extends token implements int_val {
      *
      * @return The value of the integer token
      */
-    public int getVal(String filePath) {
+    public Integer getValue() {
         return val;
     }
 

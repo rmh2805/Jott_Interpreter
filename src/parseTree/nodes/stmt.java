@@ -20,7 +20,7 @@ public abstract class stmt<RT> {
      *
      * @return Some return value (exit status or expression value)
      */
-    public abstract RT execute(String filePath);
+    public abstract RT execute();
 
     public end_stmt getEndStmt() {
         return endStmt;

@@ -2,23 +2,23 @@ package src.parseTree.nodes;
 
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Runtime;
-import src.parseTree.nodes.value_types.int_val;
+import src.parseTree.nodes.value_types.double_val;
 import src.parseTree.nodes.value_types.value;
 import src.parseTree.tokens.end_stmt;
+import src.parseTree.tokens.id;
 import src.parseTree.tokens.int_token;
 import src.parseTree.tokens.op;
-import src.parseTree.tokens.id;
 
-public class int_expr extends expr<Integer> implements int_val, value<Integer> {
-    private int_val lVal;
+public class double_expr extends expr<Double> implements double_val, value<Double> {
+    private double_val lVal;
     private op operator;
-    private int_val rVal;
+    private double_val rVal;
 
-    public int_expr(int_val lVal, op operator, int_val rVal, end_stmt endStmt) {
+    public double_expr(double_val lVal, op operator, double_val rVal, end_stmt endStmt) {
         super(endStmt);
 
         if (lVal == null || (operator != null && rVal == null) || (operator == null && rVal != null)) {
-            System.out.println("Error, int expression creation must provide either only lVal or lVal, operator, and rVal");
+            System.out.println("Error, double expression creation must provide either only lVal or lVal, operator, and rVal");
             System.exit(1);
         }
 
@@ -28,13 +28,13 @@ public class int_expr extends expr<Integer> implements int_val, value<Integer> {
     }
 
     @Override
-    public Integer execute() {
-        int left = parseToken(lVal);
+    public Double execute() {
+        double left = parseToken(lVal);
 
         if (operator == null)
             return left;
 
-        int right = parseToken(rVal);
+        double right = parseToken(rVal);
 
         switch (operator.toString()) {
             case "+":
@@ -46,22 +46,22 @@ public class int_expr extends expr<Integer> implements int_val, value<Integer> {
             case "/":
                 return left / right;
             case "^":
-                return (int) java.lang.Math.pow(left, right);
+                return Math.pow(left, right);
             default:
                 errorPrinter.throwError(operator.getLineNumber(), new Runtime("Unrecognized operator: " + operator.toString()));
                 return null;
         }
     }
 
-    private int parseToken(int_val token) {
-        if ((token instanceof int_expr)) {
-            return ((int_expr) token).getValue();
+    private double parseToken(double_val token) {
+        if ((token instanceof double_expr)) {
+            return ((double_expr) token).getValue();
         }
         else if (token instanceof int_token) {
             return ((int_token) token).getValue();
         }
         else {
-            variable<Integer> var = new variable<>((id) token, Integer.class);
+            variable<Double> var = new variable<>((id) token, Double.class);
             return var.getValue();
         }
 
@@ -72,7 +72,7 @@ public class int_expr extends expr<Integer> implements int_val, value<Integer> {
         return lVal.toString() + operator.toString() + rVal.toString() + endStmt.toString();
     }
 
-    public Integer getValue() {
+    public Double getValue() {
         return execute();
     }
 }

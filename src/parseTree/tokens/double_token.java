@@ -1,6 +1,6 @@
 package src.parseTree.tokens;
 
-import src.parseTree.nodes.double_val;
+import src.parseTree.nodes.value_types.double_val;
 
 public class double_token extends token implements double_val {
     double val;
