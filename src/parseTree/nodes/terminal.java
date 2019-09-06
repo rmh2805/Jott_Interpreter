@@ -1,4 +1,5 @@
 package src.parseTree.nodes;
 
-public interface terminal {
+public interface terminal<type> {
+    type getValue();
 }
