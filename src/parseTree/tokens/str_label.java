@@ -1,6 +1,8 @@
 package src.parseTree.tokens;
 
-public class str_label extends token {
+import src.parseTree.categories.type;
+
+public class str_label extends token implements type {
     public str_label(int lineNumber) {
         super(lineNumber);
     }

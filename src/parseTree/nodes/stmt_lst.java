@@ -1,6 +1,4 @@
-package src.parseTree.structure;
-
-import src.parseTree.nodes.stmt;
+package src.parseTree.nodes;
 
 public class stmt_lst {
     private stmt statement;
@@ -48,9 +46,9 @@ public class stmt_lst {
     }
 
     /**
-     * Prints the string representation of this
+     * Prints the string representation of this statement
      *
-     * @return
+     * @return the string representation of this statement
      */
     public String toString() {
         return statement.toString();

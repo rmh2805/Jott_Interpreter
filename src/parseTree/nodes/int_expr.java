@@ -1,5 +1,6 @@
 package src.parseTree.nodes;
 
+import src.parseTree.categories.int_val;
 import src.parseTree.tokens.end_stmt;
 import src.parseTree.tokens.int_token;
 import src.parseTree.tokens.op;
@@ -10,8 +11,6 @@ public class int_expr extends expr<Integer> implements int_val {
     private int_val rVal;
 
     public int_expr(int_val lVal, op operator, int_val rVal, end_stmt endStmt) {
-        super(endStmt);
-
         if (lVal == null || (operator != null && rVal == null) || (operator == null && rVal != null)) {
             System.out.println("Error, int expression creation must provide either only lVal or lVal, operator, and rVal");
             System.exit(1);
@@ -72,7 +71,7 @@ public class int_expr extends expr<Integer> implements int_val {
 
     @Override
     public String toString() {
-        return lVal.toString() + operator.toString() + rVal.toString() + endStmt.toString();
+        return lVal.toString() + operator.toString() + rVal.toString();
     }
 
     private int getVal(String filePath) {

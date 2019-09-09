@@ -1,9 +1,10 @@
 package src.parseTree.nodes;
 
+import src.parseTree.categories.str_val;
 import src.parseTree.tokens.quote;
 import src.parseTree.tokens.str_token;
 
-public class str_literal implements str_val {
+public class str_literal extends str_expr implements str_val {
     private quote preQuote;
     private str_token data;
     private quote endQuote;
@@ -33,6 +34,11 @@ public class str_literal implements str_val {
 
     public quote getEndQuote() {
         return endQuote;
+    }
+
+    @Override
+    public String execute(String filePath) {
+        return data.toString();
     }
 
     public String toString() {

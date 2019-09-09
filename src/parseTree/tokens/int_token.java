@@ -1,6 +1,6 @@
 package src.parseTree.tokens;
 
-import src.parseTree.nodes.int_val;
+import src.parseTree.categories.int_val;
 
 public class int_token extends token implements int_val {
     private int val;
