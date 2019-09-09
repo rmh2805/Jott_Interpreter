@@ -3,16 +3,63 @@ package src;
 import src.parseTree.tokens.id;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
-@SuppressWarnings("unchecked")
 public class nameTable {
-    private static final int type_table_idx = 0;
-    private static final int int_table_idx = 1;
-    private static final int double_table_idx = 2;
-    private static final int str_table_idx = 3;
 
+    private HashMap<String, typeIdx> typeMap;
+    private HashMap<String, Integer> intMap;
+    private HashMap<String, Double> doubleMap;
+    private HashMap<String, String> strMap;
+
+    public nameTable() {
+        typeMap = new HashMap<>();
+        intMap = new HashMap<>();
+        doubleMap = new HashMap<>();
+        strMap = new HashMap<>();
+    }
+
+    public boolean isAssigned(id name) {
+        return typeMap.get(name.toString()) != null;
+    }
+
+    public typeIdx getType(id name) {
+        return typeMap.get(name.toString());
+    }
+
+    public void setInt(id name, Integer val) {
+        //TODO: Check for reassignment in part 1
+
+        typeMap.put(name.toString(), typeIdx.k_Integer);
+        intMap.put(name.toString(), val);
+    }
+
+    public void setDouble(id name, Double val) {
+        //TODO Check for reassignment in part 1
+
+        typeMap.put(name.toString(), typeIdx.k_Double);
+        doubleMap.put(name.toString(), val);
+    }
+
+    public void setString(id name, String val) {
+        //TODO Check for reassignment in part 1
+
+        typeMap.put(name.toString(), typeIdx.k_String);
+        strMap.put(name.toString(), val);
+    }
+
+    public Integer getInt(id name) {
+        return intMap.get(name.toString());
+    }
+
+    public Double getDouble(id name) {
+        return doubleMap.get(name.toString());
+    }
+
+    public String getString(id name) {
+        return strMap.get(name.toString());
+    }
+
+    /*
     static public List<HashMap> makeNameTable() {
         List<HashMap> toReturn = new LinkedList<>();
 
@@ -83,6 +130,8 @@ public class nameTable {
         mapList.get(str_table_idx).put(name.toString(), val);
 
     }
+
+    */
 
 }
 
