@@ -1,7 +1,7 @@
 package test;
 
 import src.parseTree.tokens.token;
-import src.tokenizer.tokenizer;
+import src.tokenizer;
 
 import java.util.List;
 
