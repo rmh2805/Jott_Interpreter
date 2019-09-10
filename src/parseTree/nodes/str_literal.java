@@ -36,8 +36,7 @@ public class str_literal extends str_expr implements str_val {
         return endQuote;
     }
 
-    @Override
-    public String execute(String filePath) {
+    public String execute() {
         return data.toString();
     }
 

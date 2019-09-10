@@ -15,7 +15,7 @@ public class nameTable {
     private Map<String, String> strMap;
 
 
-    private static void init_nameTable(String filepath) {
+    public static void init_nameTable(String filepath) {
         instance = new nameTable();
         filePath = filepath;
     }
@@ -27,11 +27,11 @@ public class nameTable {
         strMap = new HashMap<>();
     }
 
-    private static nameTable getInstance() {
+    public static nameTable getInstance() {
         return instance;
     }
 
-    private static String getFilePath() {
+    public static String getFilePath() {
         return filePath;
     }
 

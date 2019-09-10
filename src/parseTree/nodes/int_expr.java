@@ -2,11 +2,12 @@ package src.parseTree.nodes;
 
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Runtime;
+import src.nameTable;
 import src.parseTree.categories.int_val;
-import src.parseTree.tokens.end_stmt;
+import src.parseTree.tokens.id;
 import src.parseTree.tokens.int_token;
 import src.parseTree.tokens.op;
-import src.parseTree.tokens.id;
+import src.typeIdx;
 
 public class int_expr extends expr<Integer> implements int_val {
     private int_val lVal;
@@ -52,14 +53,17 @@ public class int_expr extends expr<Integer> implements int_val {
 
     private int parseToken(int_val token) {
         if ((token instanceof int_expr)) {
-            return ((int_expr) token).getValue();
+            return ((int_expr) token).execute();
         }
         else if (token instanceof int_token) {
-            return ((int_token) token).execute();
+            return ((int_token) token).getValue();
         }
         else {
-            variable<Integer> var = new variable<>((id) token, Integer.class);
-            return var.getValue();
+            //TODO come back to this
+            id tok = (id) token;
+            if (nameTable.getInstance().getType(tok) != typeIdx.k_Integer)
+                errorPrinter.throwError(((id) token).getLineNumber(), new Runtime("Error, attempt to use a non-int ID in a double expression"));
+            return nameTable.getInstance().getInt(tok);
         }
 
     }

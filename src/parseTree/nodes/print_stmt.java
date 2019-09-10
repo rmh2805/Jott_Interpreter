@@ -36,11 +36,10 @@ public class print_stmt extends stmt<Integer> {
     /**
      * Print return value of provided expression to console
      *
-     * @param filePath The Jott source filepath
      * @return exit status (0 if successful)
      */
-    public Integer execute(String filePath) {
-        System.out.println(toPrint.execute(filePath));
+    public Integer execute() {
+        System.out.println(toPrint.execute());
         return 0;
     }
 
