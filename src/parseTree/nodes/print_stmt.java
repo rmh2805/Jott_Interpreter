@@ -10,6 +10,7 @@ public class print_stmt extends stmt<Integer> {
     private start_paren startParen;
     private expr toPrint;
     private end_paren endParen;
+    private end_stmt endStmt;
 
     /**
      * Create a new print statement
@@ -20,7 +21,6 @@ public class print_stmt extends stmt<Integer> {
      * @param endParen   The ")" token
      */
     public print_stmt(print_label printLabel, start_paren startParen, expr toPrint, end_paren endParen, end_stmt endStmt) {
-        super(endStmt);
         if (printLabel == null || startParen == null || toPrint == null || endParen == null) {
             System.out.println("Error, missing a required token in print statement");
             System.exit(1);
@@ -30,10 +30,7 @@ public class print_stmt extends stmt<Integer> {
         this.startParen = startParen;
         this.toPrint = toPrint;
         this.endParen = endParen;
-    }
-
-    public print_stmt(end_stmt endStmt) {
-        super(endStmt);
+        this.endStmt = endStmt;
     }
 
     /**

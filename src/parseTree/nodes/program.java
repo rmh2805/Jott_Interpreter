@@ -1,4 +1,4 @@
-package src.parseTree.structure;
+package src.parseTree.nodes;
 
 public class program {
     private stmt_lst firstStatement;

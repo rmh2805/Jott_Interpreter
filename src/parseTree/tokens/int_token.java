@@ -1,9 +1,8 @@
 package src.parseTree.tokens;
 
-import src.parseTree.nodes.value_types.int_val;
-import src.parseTree.nodes.value_types.value;
+import src.parseTree.categories.int_val;
 
-public class int_token extends token implements int_val<Integer>, value<Integer> {
+public class int_token extends token implements int_val {
     private int val;
 
     public int_token(int lineNum, int val) {
