@@ -1,7 +1,6 @@
 package src.errorHandling;
 
 import src.errorHandling.types.abstract_error;
-import src.global_state_singleton;
 
 import java.io.File;
 import java.io.IOException;
