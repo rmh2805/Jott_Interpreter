@@ -2,7 +2,7 @@ package src.parseTree.nodes;
 
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Runtime;
-import src.nameTable;
+import src.nameTableSingleton;
 import src.parseTree.categories.int_val;
 import src.parseTree.tokens.id;
 import src.parseTree.tokens.int_token;
@@ -61,9 +61,9 @@ public class int_expr extends expr<Integer> implements int_val {
         else {
             //TODO come back to this
             id tok = (id) token;
-            if (nameTable.getInstance().getType(tok) != typeIdx.k_Integer)
+            if (nameTableSingleton.getInstance().getType(tok) != typeIdx.k_Integer)
                 errorPrinter.throwError(((id) token).getLineNumber(), new Runtime("Error, attempt to use a non-int ID in a double expression"));
-            return nameTable.getInstance().getInt(tok);
+            return nameTableSingleton.getInstance().getInt(tok);
         }
 
     }

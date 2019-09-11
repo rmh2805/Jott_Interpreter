@@ -5,8 +5,8 @@ import src.parseTree.tokens.id;
 import java.util.HashMap;
 import java.util.Map;
 
-public class nameTable {
-    private static nameTable instance;
+public class nameTableSingleton {
+    private static nameTableSingleton instance;
     private static String filePath;
 
     private Map<String, typeIdx> typeMap;
@@ -16,18 +16,18 @@ public class nameTable {
 
 
     public static void init_nameTable(String filepath) {
-        instance = new nameTable();
+        instance = new nameTableSingleton();
         filePath = filepath;
     }
 
-    private nameTable() {
+    private nameTableSingleton() {
         typeMap = new HashMap<>();
         intMap = new HashMap<>();
         doubleMap = new HashMap<>();
         strMap = new HashMap<>();
     }
 
-    public static nameTable getInstance() {
+    public static nameTableSingleton getInstance() {
         return instance;
     }
 

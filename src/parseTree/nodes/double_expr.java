@@ -2,7 +2,7 @@ package src.parseTree.nodes;
 
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Runtime;
-import src.nameTable;
+import src.nameTableSingleton;
 import src.parseTree.categories.double_val;
 import src.parseTree.tokens.double_token;
 import src.parseTree.tokens.id;
@@ -61,9 +61,9 @@ public class double_expr extends expr<Double> implements double_val {
         else {
             //TODO come back to this
             id tok = (id) token;
-            if (nameTable.getInstance().getType(tok) != typeIdx.k_Double)
+            if (nameTableSingleton.getInstance().getType(tok) != typeIdx.k_Double)
                 errorPrinter.throwError(((id) token).getLineNumber(), new Runtime("Error, attempt to use a non-double ID in a double expression"));
-            return nameTable.getInstance().getDouble(tok);
+            return nameTableSingleton.getInstance().getDouble(tok);
         }
 
     }

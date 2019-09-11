@@ -1,7 +1,7 @@
 package src.errorHandling;
 
 import src.errorHandling.types.abstract_error;
-import src.nameTable;
+import src.nameTableSingleton;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +15,7 @@ public class errorPrinter {
      * @param error    An object that represents an error
      */
     public static void throwError(int lineNum, abstract_error error) {
-        String filePath = nameTable.getFilePath();
+        String filePath = nameTableSingleton.getFilePath();
         String line = "Something went wrong. Printing Java Stacktrace above.";
         try {
             Scanner sc = new Scanner(new File(filePath));
