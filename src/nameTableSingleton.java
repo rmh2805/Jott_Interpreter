@@ -1,5 +1,7 @@
 package src;
 
+import src.errorHandling.errorPrinter;
+import src.errorHandling.types.Syntax;
 import src.parseTree.tokens.id;
 
 import java.util.HashMap;
@@ -48,21 +50,24 @@ public class nameTableSingleton {
     }
 
     public void setInt(id name, Integer val) {
-        //TODO: Check for reassignment in part 1
+        if (isAssigned(name))
+            errorPrinter.throwError(name.getLineNumber(), new Syntax("Cannot reassign variables"));
 
         typeMap.put(name.toString(), typeIdx.k_Integer);
         intMap.put(name.toString(), val);
     }
 
     public void setDouble(id name, Double val) {
-        //TODO Check for reassignment in part 1
+        if (isAssigned(name))
+            errorPrinter.throwError(name.getLineNumber(), new Syntax("Cannot reassign variables"));
 
         typeMap.put(name.toString(), typeIdx.k_Double);
         doubleMap.put(name.toString(), val);
     }
 
     public void setString(id name, String val) {
-        //TODO Check for reassignment in part 1
+        if (isAssigned(name))
+            errorPrinter.throwError(name.getLineNumber(), new Syntax("Cannot reassign variables"));
 
         typeMap.put(name.toString(), typeIdx.k_String);
         strMap.put(name.toString(), val);
