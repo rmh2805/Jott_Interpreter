@@ -14,6 +14,10 @@ public class nameTableSingleton {
     private Map<String, Double> doubleMap;
     private Map<String, String> strMap;
 
+    /*
+     *  For part 3, add a new table for function statement lists, as well as a stack of local variable maps
+     */
+
 
     public static void init_nameTable(String filepath) {
         instance = new nameTableSingleton();
