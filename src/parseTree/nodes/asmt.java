@@ -21,7 +21,7 @@ public class asmt extends stmt<Integer> {
     }
 
     @Override
-    public Integer execute(String filePath) {
+    public Integer execute() {
         return null;
     }
 

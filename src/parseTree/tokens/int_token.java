@@ -15,7 +15,7 @@ public class int_token extends token implements int_val {
      *
      * @return The value of the integer token
      */
-    public int getVal(String filePath) {
+    public Integer getValue() {
         return val;
     }
 

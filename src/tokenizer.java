@@ -1,5 +1,7 @@
 package src;
 
+import src.errorHandling.errorPrinter;
+import src.errorHandling.types.Syntax;
 import src.parseTree.tokens.*;
 
 import java.io.File;
@@ -70,19 +72,20 @@ public class tokenizer {
                     tok.append(ch);
                     i++;
                     while (i < lineLength) {
-                        ch = line.charAt(i);
-                        if (ch == '"') {
-                            tok.append(ch);
+                        char ch = line.charAt(i);
+                        if (ch == '"')
                             break;
-                        }
-                        if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && ch != ' ')
-                            errorPrinter.printSyntaxError(lineCount, filepath, "Illegal character '" + ch +
-                                    "' detected in string literal");
+
+                        if (!((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9') || ch == ' '))
+                            errorPrinter.throwError(lineCount, new Syntax("Illegal character '" + ch +
+                                    "' detected in string literal"));
+
                         tok.append(ch);
                         i++;
                     }
                     if (i == lineLength)
-                        errorPrinter.printSyntaxError(lineCount, filepath, "Strings cannot wrap lines");
+                        errorPrinter.throwError(lineCount, new Syntax("Strings cannot wrap lines"));
+
                     tokenList.add(new str_token(lineCount, tok.toString()));
                 } else if (Character.isDigit(ch) || ch == '.') { // Integer or Double
                     boolean isDouble = false;

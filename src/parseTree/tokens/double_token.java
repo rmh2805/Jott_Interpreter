@@ -15,7 +15,7 @@ public class double_token extends token implements double_val {
      *
      * @return The value of the double token
      */
-    public double getVal(String filePath) {
+    public double getVal() {
         return this.val;
     }
 

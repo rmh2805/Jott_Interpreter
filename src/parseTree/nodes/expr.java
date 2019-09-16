@@ -5,10 +5,9 @@ public abstract class expr<T> extends stmt<T> {
     /**
      * Evaluates this expression
      *
-     * @param filePath Source filepath
      * @return the return value of execute
      */
-    public abstract T execute(String filePath);
+    public abstract T execute();
 
     /**
      * evaluates the expression and returns its value as a String
