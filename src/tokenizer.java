@@ -1,5 +1,7 @@
 package src;
 
+import src.errorHandling.errorPrinter;
+import src.errorHandling.types.Syntax;
 import src.parseTree.tokens.*;
 
 import java.io.File;
@@ -109,8 +111,8 @@ public class tokenizer {
                             break;
 
                         if (!((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9') || ch == ' '))
-                            errorPrinter.printSyntaxError(lineCount, filepath, "Illegal character '" + ch +
-                                    "' detected in string literal");
+                            errorPrinter.throwError(lineCount, new Syntax("Illegal character '" + ch +
+                                    "' detected in string literal"));
 
                         tok.append(ch);
 
@@ -118,7 +120,7 @@ public class tokenizer {
                     }
 
                     if (i == lineLength)
-                        errorPrinter.printSyntaxError(lineCount, filepath, "Strings cannot wrap lines");
+                        errorPrinter.throwError(lineCount, new Syntax("Strings cannot wrap lines"));
 
                     tokenList.add(new str_token(lineCount, tok.toString()));
                     tokenList.add(new quote(lineCount));
@@ -134,7 +136,7 @@ public class tokenizer {
                             dblV = Double.parseDouble(tok.toString());
                             isDouble = true;
                         } catch (NumberFormatException m) {
-                            errorPrinter.printSyntaxError(lineCount, filepath, "invalid representation of a number");
+                            errorPrinter.throwError(lineCount, new Syntax("invalid representation of a number"));
                         }
                     }
 
@@ -150,13 +152,13 @@ public class tokenizer {
                     for (int j = 1; j < tok.length(); j++) {
                         char ch = tok.charAt(j);
                         if (!Character.isAlphabetic(ch) && !Character.isDigit(ch))
-                            errorPrinter.printSyntaxError(lineCount, filepath, "invalid character in variable/function identifier");
+                            errorPrinter.throwError(lineCount, new Syntax("invalid character in variable/function identifier"));
                     }
                     tokenList.add(new id(lineCount, tok.toString()));
                 }
                 else {
-                    errorPrinter.printSyntaxError(lineCount, filepath, "Malformed token at index "
-                            + (i - tok.length() + 1));
+                    errorPrinter.throwError(lineCount, new Syntax("Malformed token at index "
+                            + (i - tok.length() + 1)));
                 }
 
             }
