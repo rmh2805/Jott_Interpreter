@@ -65,14 +65,14 @@ public class tokenizer {
                         default:
                             if (Character.isLowerCase(tok.charAt(0)))
                                 tokenList.add(new id(lineCount, tok.toString()));
-                            else errorPrinter.printSyntaxError(lineCount, filepath, "invalid type");
+                            else errorPrinter.throwError(lineCount, new Syntax("invalid type"));
                             break;
                     }
                 } else if (ch == '"') { // str_literal
                     tok.append(ch);
                     i++;
                     while (i < lineLength) {
-                        char ch = line.charAt(i);
+                        ch = line.charAt(i);
                         if (ch == '"')
                             break;
 
@@ -111,7 +111,7 @@ public class tokenizer {
                             dbl = Double.parseDouble(tok.toString());
                             tokenList.add(new double_token(lineCount, dbl));
                         } catch (NumberFormatException e) {
-                            errorPrinter.printSyntaxError(lineCount, filepath, "invalid representation of a number");
+                            errorPrinter.throwError(lineCount, new Syntax("invalid representation of a number"));
                         }
                     } else {
                         z = Integer.parseInt(tok.toString());
@@ -124,7 +124,7 @@ public class tokenizer {
                 else if (ch == ')') tokenList.add(new end_paren(lineCount));
                 else if (ch == ';') tokenList.add(new end_stmt(lineCount));
                 else if (ch == ',') tokenList.add(new comma(lineCount));
-                else errorPrinter.printSyntaxError(lineCount, filepath, "Malformed token at index " + i);
+                else errorPrinter.throwError(lineCount, new Syntax("Malformed token at index " + i));
             }
 
             lineCount++;
