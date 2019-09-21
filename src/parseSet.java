@@ -21,34 +21,31 @@ class parseSet {
      */
     private static void loadSet(String filePath) throws FileNotFoundException {
         Scanner sc = new Scanner(new File(filePath)).useDelimiter(DELIMITER);
-        List<String> columnNames = new ArrayList<>();
-        while (sc.hasNextLine()) {
-            String[] tokens = sc.nextLine().split(DELIMITER);
-            for (String columnName : tokens) {
-                if (columnName.length() > 0) columnNames.add(columnName);
-            }
-            if (columnNames.size() > 0) break;
+        String[] columnNames = {};
+        while (sc.hasNextLine()) { // get column names
+            columnNames = sc.nextLine().split(DELIMITER);
+            if (columnNames.length > 0) break;
         }
         if (filePath.equals(FIRSTPATH)) {
             while (sc.hasNext()) {
                 String rowName = sc.next();
                 Map<String, Boolean> values = new HashMap<>();
-                FIRST.put(rowName, values);
                 for (String columnName : columnNames) {
                     if (sc.hasNext()) values.put(columnName, sc.next().equals("1"));
                     else break;
                 }
+                FIRST.put(rowName, values);
             }
         }
         if (filePath.equals(PREDICTPATH)) {
             while (sc.hasNext()) {
                 String rowName = sc.next();
                 Map<String, List<String>> values = new HashMap<>();
-                PREDICT.put(rowName, values);
                 for (String columnName : columnNames) {
                     if (sc.hasNext()) values.put(columnName, Arrays.asList(sc.next().split(",")));
                     else break;
                 }
+                PREDICT.put(rowName, values);
             }
         }
         sc.close();
@@ -56,11 +53,14 @@ class parseSet {
 
     /**
      * Populate both LL parse set data structures.
-     *
-     * @throws FileNotFoundException
      */
-    static void loadParseSets() throws FileNotFoundException {
-        loadSet(FIRSTPATH);
-        loadSet(PREDICTPATH);
+    static void loadParseSets() {
+        try {
+            loadSet(FIRSTPATH);
+            loadSet(PREDICTPATH);
+        } catch (FileNotFoundException e) {
+            System.out.println("Invalid file path for parse set");
+            System.exit(-1);
+        }
     }
 }
