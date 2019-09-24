@@ -31,6 +31,7 @@ class parseSet {
                 String rowName = sc.next();
                 Map<String, Boolean> values = new HashMap<>();
                 for (String columnName : columnNames) {
+                    if (columnName.length() <= 0) continue;
                     if (sc.hasNext()) values.put(columnName, sc.next().equals("1"));
                     else break;
                 }
@@ -42,7 +43,11 @@ class parseSet {
                 String rowName = sc.next();
                 Map<String, List<String>> values = new HashMap<>();
                 for (String columnName : columnNames) {
-                    if (sc.hasNext()) values.put(columnName, Arrays.asList(sc.next().split(",")));
+                    if (columnName.length() <= 0) continue;
+                    if (sc.hasNext()) {
+                        List<String> tmp = Arrays.asList(sc.next().split(","));
+                        values.put(columnName, new ArrayList<>(tmp));
+                    }
                     else break;
                 }
                 PREDICT.put(rowName, values);

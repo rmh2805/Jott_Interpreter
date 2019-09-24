@@ -4,10 +4,20 @@ import src.parseTree.categories.str_val;
 import src.parseTree.tokens.quote;
 import src.parseTree.tokens.str_token;
 
-public class str_literal extends str_expr implements str_val {
+import java.util.ArrayList;
+import java.util.List;
+
+public class str_literal extends str_expr implements str_val, node {
     private quote preQuote;
     private str_token data;
     private quote endQuote;
+    private List<Object> children = new ArrayList<>();
+
+    public void addChild(Object child) {
+        children.add(child);
+    }
+
+    public str_literal() {}
 
     public str_literal(quote preQuote, str_token data, quote endQuote) {
         if (preQuote == null || data == null || endQuote == null) {

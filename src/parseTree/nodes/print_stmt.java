@@ -5,13 +5,22 @@ import src.parseTree.tokens.end_stmt;
 import src.parseTree.tokens.print_label;
 import src.parseTree.tokens.start_paren;
 
-public class print_stmt extends stmt<Integer> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class print_stmt extends stmt<Integer> implements node {
     private print_label printLabel;
     private start_paren startParen;
     private expr toPrint;
     private end_paren endParen;
     private end_stmt endStmt;
+    private List<Object> children = new ArrayList<>();
 
+    public void addChild(Object child) {
+        children.add(child);
+    }
+
+    public print_stmt() {}
     /**
      * Create a new print statement
      *

@@ -1,7 +1,15 @@
 package src.parseTree.nodes;
 
-public class program {
+import java.util.ArrayList;
+import java.util.List;
+
+public class program implements node {
     private stmt_lst firstStatement;
+    private List<Object> children = new ArrayList<>();
+
+    public void addChild(Object child) {
+        children.add(child);
+    }
 
     /**
      * Root node of the Jott parse tree

@@ -1,9 +1,12 @@
 package test;
 
+import src.parseTree.nodes.program;
 import src.parseTree.tokens.token;
 import src.tokenizer;
 
 import java.util.List;
+
+import static src.parser.parse;
 
 public class testTokenizer {
 
@@ -26,6 +29,9 @@ public class testTokenizer {
 
                 System.out.print(tok + "\t");
             }
+            System.out.println("\n\n");
+
+            program program = parse(tokenList);
         }
 
 

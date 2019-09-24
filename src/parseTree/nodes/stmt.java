@@ -1,6 +1,6 @@
 package src.parseTree.nodes;
 
-public abstract class stmt<RT> {
+public abstract class stmt<RT> implements node {
 
     /**
      * Executes this statement properly
