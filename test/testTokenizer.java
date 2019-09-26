@@ -6,6 +6,7 @@ import src.tokenizer;
 
 import java.util.List;
 
+import static src.nameTableSingleton.init_nameTable;
 import static src.parser.parse;
 
 public class testTokenizer {
@@ -16,6 +17,7 @@ public class testTokenizer {
             System.exit(1);
         }
         else {
+            init_nameTable(args[0]);
             List<token> tokenList = tokenizer.tokenize(args[0]);
 
             System.out.println("\n\n\tToken List");

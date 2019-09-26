@@ -16,6 +16,7 @@ public class parser {
         if (node instanceof String) nodeName = (String) node;
         String tokenName = "EOF";
         if (token != null) tokenName = token.getClass().getSimpleName();
+        if (FIRST.get(nodeName) == null || FIRST.get(nodeName).get(tokenName) == null) return false;
         return FIRST.get(nodeName).get(tokenName);
     }
 
@@ -24,7 +25,6 @@ public class parser {
         if (node instanceof String) nodeName = (String) node;
         String tokenName = "EOF";
         if (token != null) tokenName = token.getClass().getSimpleName();
-        System.out.println(nodeName + " " + tokenName);
         if (PREDICT.get(nodeName) == null || PREDICT.get(nodeName).get(tokenName) == null) return new ArrayList<>();
         return PREDICT.get(nodeName).get(tokenName);
     }
@@ -41,7 +41,7 @@ public class parser {
         int readCursor = 0; // position in tokenList
         Deque<Object> stack = new ArrayDeque<>(); // contains all terminals and non-terminals
         Deque<node> visited = new ArrayDeque<>(); // contains only non-terminals
-        tokenList.add(null);
+        tokenList.add(null); // todo EOF token
         program root = new program();
         stack.push(root);
         while (!stack.isEmpty()) {
@@ -49,8 +49,9 @@ public class parser {
             node node = visited.peek();
             if (leaf == node) { // finished adding all children of node into node
                 visited.pop();
+                leaf = stack.pop();
                 node = visited.peek();
-                if (node != null) node.addChild(stack.pop()); // node == null if program was removed
+                if (node != null) node.addChild(leaf); // node == null if derivations merged into start symbol
                 continue;
             }
             // read token
@@ -60,13 +61,11 @@ public class parser {
             // if leaf cannot start with token, print error
             if (!first(leaf, token)) errorPrinter.throwError((token == null) ? -1: token.getLineNumber(),
                     new Syntax(String.format("Parse error %s %s",
-                            leaf.getClass().getSimpleName(), (token == null) ? "null": token.toString())
+                            leaf.getClass().getSimpleName(), (token == null) ? "null": token.getClass().getSimpleName())
                     ));
-            // get children of leaf
             List<String> children = predict(leaf, token);
-            if (leaf instanceof String) stack.pop(); // handle abstract classes
-            // add children to stack
-            for (int i = children.size() - 1; i >= 0; i--) { // add children to stack in reverse order
+            if (leaf instanceof String) stack.pop(); // handle abstract classes and tokens
+            for (int i = children.size() - 1; i >= 0; i--) { // push on stack in reverse order
                 String child = children.get(i);
                 Object newLeaf;
                 switch (child) {
@@ -100,13 +99,11 @@ public class parser {
                 }
                 stack.push(newLeaf);
             }
-            // if no children, it was a token
-            // remove from stack, add to node in visited
-            if (children.size() <= 0) {
-                if (node != null) node.addChild(token);
+            if (children.size() <= 0) { // if no children, it was a token
+                if (node != null) node.addChild(token); // add to node in visited, token already removed from stack
                 readCursor++;
             }
-            else if (!(leaf instanceof String)) visited.push((node) leaf); // handle abstract node
+            else if (leaf instanceof node) visited.push((node) leaf);
         }
         return root;
     }
