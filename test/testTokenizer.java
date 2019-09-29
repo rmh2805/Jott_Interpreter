@@ -29,7 +29,7 @@ public class testTokenizer {
                     System.out.print("\nLine " + numLead + ":\t");
                 }
 
-                System.out.print(tok + "\t");
+                System.out.print(tok + " | ");
             }
             System.out.println("\n\n");
 

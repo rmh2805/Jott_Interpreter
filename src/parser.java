@@ -58,6 +58,20 @@ public class parser {
             token token = null;
             if (readCursor < tokenList.size()) token = tokenList.get(readCursor);
             else errorPrinter.throwError(-1, new Syntax("F"));
+            switch (token.toString()) {
+                case "+":
+                case "-":
+                    token nextToken = tokenList.get(readCursor + 1);
+                    if (first(leaf, nextToken)) {
+                        if ("-".equals(token.toString())) {
+                            if (nextToken instanceof int_token) ((int_token) nextToken).negate();
+                            else if (nextToken instanceof double_token) ((double_token) nextToken).negate();
+                        }
+                        token = nextToken;
+                        readCursor++;
+                    }
+                    break;
+            }
             // if leaf cannot start with token, print error
             if (!first(leaf, token)) errorPrinter.throwError((token == null) ? -1: token.getLineNumber(),
                     new Syntax(String.format("Parse error %s %s",
