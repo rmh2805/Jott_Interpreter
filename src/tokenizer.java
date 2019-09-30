@@ -129,6 +129,8 @@ public class tokenizer {
                 else errorPrinter.throwError(lineCount, new Syntax("Malformed token at index " + i));
             }
         }
+
+        tokenList.add(new EOF(++lineCount));
         return tokenList;
     }
 }
