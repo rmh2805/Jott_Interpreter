@@ -21,10 +21,11 @@ public class tokenizer {
      */
     public static List<token> tokenize(String filepath) throws FileNotFoundException {
         Scanner sc = new Scanner(new File(filepath));
-        int lineCount = 1;  //An incrementing line counter
+        int lineCount = 0;  //An incrementing line counter
         List<token> tokenList = new LinkedList<>(); //The list of tokens which will be returned
 
         while (sc.hasNextLine()) {  //For each line of the source file
+            lineCount++;
             String line = sc.nextLine();    //Grab the line
             int lineLength = line.length(); //Grab its length once
 
@@ -32,6 +33,7 @@ public class tokenizer {
                 StringBuilder tok = new StringBuilder();
                 char ch = line.charAt(i);
                 if (Character.isWhitespace(ch)) continue; // Skip whitespace before grabbing a new token
+                if (ch == '/' && ++i < lineLength && line.charAt(i) == '/') break; // Ignore comment
                 if (Character.isAlphabetic(ch)) { // Identifier or keyword
                     while (i < lineLength) {
                         ch = line.charAt(i);
@@ -126,11 +128,7 @@ public class tokenizer {
                 else if (ch == ',') tokenList.add(new comma(lineCount));
                 else errorPrinter.throwError(lineCount, new Syntax("Malformed token at index " + i));
             }
-
-            lineCount++;
         }
-
-
         return tokenList;
     }
 }
