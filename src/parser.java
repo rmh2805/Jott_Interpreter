@@ -14,8 +14,7 @@ public class parser {
     private static boolean first(Object node, Object token) {
         String nodeName = node.getClass().getSimpleName();
         if (node instanceof String) nodeName = (String) node;
-        String tokenName = "EOF";
-        if (token != null) tokenName = token.getClass().getSimpleName();
+        String tokenName = token.getClass().getSimpleName();
         if (FIRST.get(nodeName) == null || FIRST.get(nodeName).get(tokenName) == null) return false;
         return FIRST.get(nodeName).get(tokenName);
     }
@@ -23,16 +22,14 @@ public class parser {
     private static List<String> predict(Object node, Object token) {
         String nodeName = node.getClass().getSimpleName();
         if (node instanceof String) nodeName = (String) node;
-        String tokenName = "EOF";
-        if (token != null) tokenName = token.getClass().getSimpleName();
+        String tokenName = token.getClass().getSimpleName();
         if (PREDICT.get(nodeName) == null || PREDICT.get(nodeName).get(tokenName) == null) return new ArrayList<>();
         return PREDICT.get(nodeName).get(tokenName);
     }
 
     /**
      * Parse the tokenList
-     * todo lookahead for signed int/dbl and int/dbl exprs
-     * todo tokenize EOF
+     * todo ids, type checking
      * @param tokenList list of tokens
      * @return  the program
      */
@@ -41,7 +38,6 @@ public class parser {
         int readCursor = 0; // position in tokenList
         Deque<Object> stack = new ArrayDeque<>(); // contains all terminals and non-terminals
         Deque<node> visited = new ArrayDeque<>(); // contains only non-terminals
-        tokenList.add(null); // todo EOF token
         program root = new program();
         stack.push(root);
         while (!stack.isEmpty()) {
