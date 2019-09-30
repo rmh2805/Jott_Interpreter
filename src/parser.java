@@ -70,7 +70,6 @@ public class parser {
                         token = nextToken;
                         readCursor++;
                     }
-                    break;
             }
             // if leaf cannot start with token, print error
             if (!first(leaf, token)) errorPrinter.throwError((token == null) ? -1: token.getLineNumber(),
@@ -78,6 +77,14 @@ public class parser {
                             leaf.getClass().getSimpleName(), (token == null) ? "null": token.getClass().getSimpleName())
                     ));
             List<String> children = predict(leaf, token);
+            if (leaf instanceof double_expr || leaf instanceof int_expr) {
+                token nextToken = tokenList.get(readCursor + 1);
+                if (nextToken instanceof op) {
+                    if (leaf instanceof double_expr) stack.push(new double_expr());
+                    else stack.push(new int_expr());
+                    stack.push("op");
+                }
+            }
             if (leaf instanceof String) stack.pop(); // handle abstract classes and tokens
             for (int i = children.size() - 1; i >= 0; i--) { // push on stack in reverse order
                 String child = children.get(i);
