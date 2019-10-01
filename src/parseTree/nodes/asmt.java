@@ -10,6 +10,14 @@ public class asmt extends stmt<Integer> implements node {
         children.add(child);
     }
 
+    public String getType() {
+        return children.get(0).toString();
+    }
+
+    public String getId() {
+        return children.get(1).toString();
+    }
+
     @Override
     public Integer execute() {
         return null;

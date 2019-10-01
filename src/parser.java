@@ -46,6 +46,7 @@ public class parser {
         Deque<node> parents = new ArrayDeque<>();
         program root = new program();
         stack.push(root);
+        Map<String, typeIdx> symTab = new HashMap<>();
         while (!stack.isEmpty()) {
             Object child = stack.peek();
             node parent = parents.peek();
@@ -54,6 +55,21 @@ public class parser {
                 stack.pop();
                 parent = parents.peek();
                 if (parent != null) parent.addChild(child); // parent == null if derivations merged into start symbol
+                if (child instanceof asmt) {
+                    String type = ((asmt) child).getType();
+                    String name = ((asmt) child).getId();
+                    switch (type) {
+                        case "Double":
+                            symTab.put(name, typeIdx.k_Double);
+                            break;
+                        case "Integer":
+                            symTab.put(name, typeIdx.k_Integer);
+                            break;
+                        case "String":
+                            symTab.put(name, typeIdx.k_String);
+                            break;
+                    }
+                }
                 continue;
             }
 
@@ -86,7 +102,7 @@ public class parser {
 
             List<String> children;
             if (!(parent instanceof asmt) && token instanceof id) {
-                typeIdx type = getInstance().getType((id) token);
+                typeIdx type = symTab.get(token.toString());
                 String tokenName = "id";
                 if (type != null)
                     switch (type) {
