@@ -12,20 +12,25 @@ import static src.parseSet.*;
 
 public class parser {
 
-    private static boolean first(Object node, Object token) {
-        String nodeName = node.getClass().getSimpleName();
-        if (node instanceof String) nodeName = (String) node;
+    private static boolean first(Object parent, token token) {
+        boolean result;
+        String parentName = parent.getClass().getSimpleName();
+        if (parent instanceof String) parentName = (String) parent;
         String tokenName = token.getClass().getSimpleName();
-        if (FIRST.get(nodeName) == null || FIRST.get(nodeName).get(tokenName) == null) return false;
-        return FIRST.get(nodeName).get(tokenName);
+        if (FIRST.get(parentName) == null || FIRST.get(parentName).get(tokenName) == null) result = false;
+        else result = FIRST.get(parentName).get(tokenName);
+        return result;
     }
 
-    private static List<String> predict(Object node, Object token) {
-        String nodeName = node.getClass().getSimpleName();
-        if (node instanceof String) nodeName = (String) node;
+    private static List<String> predict(Object parent, Object token) {
+        List<String> result;
+        String parentName = parent.getClass().getSimpleName();
+        if (parent instanceof String) parentName = (String) parent;
         String tokenName = token.getClass().getSimpleName();
-        if (PREDICT.get(nodeName) == null || PREDICT.get(nodeName).get(tokenName) == null) return new ArrayList<>();
-        return PREDICT.get(nodeName).get(tokenName);
+        if (token instanceof String) tokenName = (String) token;
+        if (PREDICT.get(parentName) == null || PREDICT.get(parentName).get(tokenName) == null) result = new ArrayList<>();
+        else result = PREDICT.get(parentName).get(tokenName);
+        return result;
     }
 
     /**
@@ -36,45 +41,51 @@ public class parser {
      */
     public static program parse(List<token> tokenList) {
         loadParseSets();
-        int readCursor = 0; // position in tokenList
-        Deque<Object> stack = new ArrayDeque<>(); // contains all terminals and non-terminals
-        Deque<node> visited = new ArrayDeque<>(); // contains only non-terminals
+        int t_idx = 0; // position in tokenList
+        Deque<Object> stack = new ArrayDeque<>(); // CFG derivations
+        Deque<node> parents = new ArrayDeque<>();
         program root = new program();
         stack.push(root);
         while (!stack.isEmpty()) {
-            Object leaf = stack.peek();
-            node node = visited.peek();
-            if (leaf == node) { // finished adding all children of node into node
-                visited.pop();
-                leaf = stack.pop();
-                node = visited.peek();
-                if (node != null) node.addChild(leaf); // node == null if derivations merged into start symbol
+            Object child = stack.peek();
+            node parent = parents.peek();
+            if (child == parent) { // processed all children of parent
+                parents.pop();
+                stack.pop();
+                parent = parents.peek();
+                if (parent != null) parent.addChild(child); // parent == null if derivations merged into start symbol
                 continue;
             }
-            // read token
-            token token = null;
-            if (readCursor < tokenList.size()) token = tokenList.get(readCursor);
-            else errorPrinter.throwError(-1, new Syntax("F"));
+
+            token token = tokenList.get(t_idx);
+            // handle signed double and integer
             switch (token.toString()) {
                 case "+":
                 case "-":
-                    token nextToken = tokenList.get(readCursor + 1);
-                    if (first(leaf, nextToken)) {
+                    token nextToken = tokenList.get(t_idx + 1);
+                    if (first(child, nextToken)) {
                         if ("-".equals(token.toString())) {
                             if (nextToken instanceof int_token) ((int_token) nextToken).negate();
                             else if (nextToken instanceof double_token) ((double_token) nextToken).negate();
                         }
                         token = nextToken;
-                        readCursor++;
+                        t_idx++;
                     }
             }
-            // if leaf cannot start with token, print error
-            if (!first(leaf, token)) errorPrinter.throwError((token == null) ? -1: token.getLineNumber(),
-                    new Syntax(String.format("Parse error %s %s",
-                            leaf.getClass().getSimpleName(), (token == null) ? "null": token.getClass().getSimpleName())
-                    ));
+            // if child cannot start with token, print error
+            if (!first(child, token)) {
+                String childName = child.getClass().getSimpleName();
+                String tokenName = token.getClass().getSimpleName();
+                if (child instanceof String)
+                    errorPrinter.throwError(token.getLineNumber(),
+                            new Syntax(String.format("%s expected but found %s", child, tokenName)));
+                else
+                    errorPrinter.throwError(token.getLineNumber(),
+                            new Syntax(String.format("%s may not start with %s", childName, tokenName)));
+            }
+
             List<String> children;
-            if (!(node instanceof asmt) && token instanceof id) {
+            if (!(parent instanceof asmt) && token instanceof id) {
                 typeIdx type = getInstance().getType((id) token);
                 String tokenName = "id";
                 if (type != null)
@@ -90,57 +101,57 @@ public class parser {
                             break;
                     }
                 else errorPrinter.throwError(token.getLineNumber(), new Syntax("Unknown identifier"));
-                children = predict(leaf, tokenName);
+                children = predict(child, tokenName);
             }
-            else children = predict(leaf, token);
-            if (leaf instanceof double_expr || leaf instanceof int_expr) {
-                token nextToken = tokenList.get(readCursor + 1);
+            else children = predict(child, token);
+            if (child instanceof double_expr || child instanceof int_expr) {
+                token nextToken = tokenList.get(t_idx + 1);
                 if (nextToken instanceof op) {
-                    if (leaf instanceof double_expr) stack.push(new double_expr());
+                    if (child instanceof double_expr) stack.push(new double_expr());
                     else stack.push(new int_expr());
                     stack.push("op");
                 }
             }
-            if (leaf instanceof String) stack.pop(); // handle abstract classes and tokens
+            if (child instanceof String) stack.pop(); // remove tokens and abstract nodes
+            if (children.size() <= 0) { // if no children, it is a token
+                if (parent != null) parent.addChild(token); // add to parent
+                t_idx++;
+            }
+            else if (child instanceof node) parents.push((node) child);
             for (int i = children.size() - 1; i >= 0; i--) { // push on stack in reverse order
-                String child = children.get(i);
-                Object newLeaf;
-                switch (child) {
+                String name = children.get(i);
+                Object newChild;
+                switch (name) {
                     case "asmt":
-                        newLeaf = new asmt();
+                        newChild = new asmt();
                         break;
                     case "charAt_expr":
-                        newLeaf = new charAt_expr();
+                        newChild = new charAt_expr();
                         break;
                     case "concat_expr":
-                        newLeaf = new concat_expr();
+                        newChild = new concat_expr();
                         break;
                     case "double_expr":
-                        newLeaf = new double_expr();
+                        newChild = new double_expr();
                         break;
                     case "int_expr":
-                        newLeaf = new int_expr();
+                        newChild = new int_expr();
                         break;
                     case "print_stmt":
-                        newLeaf = new print_stmt();
+                        newChild = new print_stmt();
                         break;
                     case "stmt_lst":
-                        newLeaf = new stmt_lst();
+                        newChild = new stmt_lst();
                         break;
                     case "str_literal":
-                        newLeaf = new str_literal();
+                        newChild = new str_literal();
                         break;
-                    default: // token or abstract node
-                        newLeaf = child;
+                    default: // token or abstract parent
+                        newChild = name;
                         break;
                 }
-                stack.push(newLeaf);
+                stack.push(newChild);
             }
-            if (children.size() <= 0) { // if no children, it was a token
-                if (node != null) node.addChild(token); // add to node in visited, token already removed from stack
-                readCursor++;
-            }
-            else if (leaf instanceof node) visited.push((node) leaf);
         }
         return root;
     }
