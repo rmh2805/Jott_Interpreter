@@ -7,7 +7,6 @@ import src.parseTree.tokens.*;
 
 import java.util.*;
 
-import static src.nameTableSingleton.getInstance;
 import static src.parseSet.*;
 
 public class parser {
@@ -27,7 +26,6 @@ public class parser {
         String parentName = parent.getClass().getSimpleName();
         if (parent instanceof String) parentName = (String) parent;
         String tokenName = token.getClass().getSimpleName();
-        if (token instanceof String) tokenName = (String) token;
         if (PREDICT.get(parentName) == null || PREDICT.get(parentName).get(tokenName) == null) result = new ArrayList<>();
         else result = PREDICT.get(parentName).get(tokenName);
         return result;
@@ -35,7 +33,7 @@ public class parser {
 
     /**
      * Parse the tokenList
-     * todo process asmt
+     *
      * @param tokenList list of tokens
      * @return  the program
      */
@@ -88,10 +86,28 @@ public class parser {
                         t_idx++;
                     }
             }
+            // treat id as its reference
+            token dummy = token;
+            if (!(parent instanceof asmt) && token instanceof id) {
+                typeIdx type = symTab.get(token.toString());
+                if (type != null)
+                    switch (type) {
+                        case k_Double:
+                            dummy = new double_token(token.getLineNumber(), 0.0);
+                            break;
+                        case k_Integer:
+                            dummy = new int_token(token.getLineNumber(), 0);
+                            break;
+                        case k_String:
+                            dummy = new str_token(token.getLineNumber(), "");
+                            break;
+                    }
+                else errorPrinter.throwError(token.getLineNumber(), new Syntax("Unknown identifier"));
+            }
             // if child cannot start with token, print error
-            if (!first(child, token)) {
+            if (!first(child, dummy)) {
                 String childName = child.getClass().getSimpleName();
-                String tokenName = token.getClass().getSimpleName();
+                String tokenName = dummy.getClass().getSimpleName();
                 if (child instanceof String)
                     errorPrinter.throwError(token.getLineNumber(),
                             new Syntax(String.format("%s expected but found %s", child, tokenName)));
@@ -100,26 +116,7 @@ public class parser {
                             new Syntax(String.format("%s may not start with %s", childName, tokenName)));
             }
 
-            List<String> children;
-            if (!(parent instanceof asmt) && token instanceof id) {
-                typeIdx type = symTab.get(token.toString());
-                String tokenName = "id";
-                if (type != null)
-                    switch (type) {
-                        case k_Double:
-                            tokenName = "double_token";
-                            break;
-                        case k_Integer:
-                            tokenName = "int_token";
-                            break;
-                        case k_String:
-                            tokenName = "str_token";
-                            break;
-                    }
-                else errorPrinter.throwError(token.getLineNumber(), new Syntax("Unknown identifier"));
-                children = predict(child, tokenName);
-            }
-            else children = predict(child, token);
+            List<String> children = predict(child, dummy);
             if (child instanceof double_expr || child instanceof int_expr) {
                 token nextToken = tokenList.get(t_idx + 1);
                 if (nextToken instanceof op) {
