@@ -7,6 +7,7 @@ import src.parseTree.tokens.*;
 
 import java.util.*;
 
+import static src.nameTableSingleton.getInstance;
 import static src.parseSet.*;
 
 public class parser {
@@ -29,7 +30,7 @@ public class parser {
 
     /**
      * Parse the tokenList
-     * todo ids, type checking
+     * todo process asmt
      * @param tokenList list of tokens
      * @return  the program
      */
@@ -72,7 +73,26 @@ public class parser {
                     new Syntax(String.format("Parse error %s %s",
                             leaf.getClass().getSimpleName(), (token == null) ? "null": token.getClass().getSimpleName())
                     ));
-            List<String> children = predict(leaf, token);
+            List<String> children;
+            if (!(node instanceof asmt) && token instanceof id) {
+                typeIdx type = getInstance().getType((id) token);
+                String tokenName = "id";
+                if (type != null)
+                    switch (type) {
+                        case k_Double:
+                            tokenName = "double_token";
+                            break;
+                        case k_Integer:
+                            tokenName = "int_token";
+                            break;
+                        case k_String:
+                            tokenName = "str_token";
+                            break;
+                    }
+                else errorPrinter.throwError(token.getLineNumber(), new Syntax("Unknown identifier"));
+                children = predict(leaf, tokenName);
+            }
+            else children = predict(leaf, token);
             if (leaf instanceof double_expr || leaf instanceof int_expr) {
                 token nextToken = tokenList.get(readCursor + 1);
                 if (nextToken instanceof op) {
