@@ -7,8 +7,8 @@ import java.util.*;
 class parseSet {
 
     private static final String DELIMITER = "[^a-zA-Z0-9_,]+";
-    private static final String FIRSTPATH = "src/FIRST.txt";
-    private static final String PREDICTPATH = "src/PREDICT.txt";
+    private static final String FIRSTPATH = "Text/FIRST.txt";
+    private static final String PREDICTPATH = "Text/PREDICT.txt";
     static Map<String, Map<String, Boolean>> FIRST = new HashMap<>();
     static Map<String, Map<String, List<String>>> PREDICT = new HashMap<>();
 

@@ -14,10 +14,17 @@ public class parser {
     private static boolean first(Object parent, token token) {
         boolean result;
         String parentName = parent.getClass().getSimpleName();
-        if (parent instanceof String) parentName = (String) parent;
+
+        if (parent instanceof String)
+            parentName = (String) parent;
+
         String tokenName = token.getClass().getSimpleName();
-        if (FIRST.get(parentName) == null || FIRST.get(parentName).get(tokenName) == null) result = false;
-        else result = FIRST.get(parentName).get(tokenName);
+
+        if (FIRST.get(parentName) == null || FIRST.get(parentName).get(tokenName) == null)
+            result = false;
+        else
+            result = FIRST.get(parentName).get(tokenName);
+
         return result;
     }
 
@@ -26,7 +33,8 @@ public class parser {
         String parentName = parent.getClass().getSimpleName();
         if (parent instanceof String) parentName = (String) parent;
         String tokenName = token.getClass().getSimpleName();
-        if (PREDICT.get(parentName) == null || PREDICT.get(parentName).get(tokenName) == null) result = new ArrayList<>();
+        if (PREDICT.get(parentName) == null || PREDICT.get(parentName).get(tokenName) == null)
+            result = new ArrayList<>();
         else result = PREDICT.get(parentName).get(tokenName);
         return result;
     }
@@ -35,7 +43,7 @@ public class parser {
      * Parse the tokenList
      *
      * @param tokenList list of tokens
-     * @return  the program
+     * @return the program
      */
     public static program parse(List<token> tokenList) {
         loadParseSets();
@@ -137,8 +145,7 @@ public class parser {
             if (children.size() <= 0) { // if no children, it is a token
                 if (parent != null) parent.addChild(token); // add to parent
                 t_idx++;
-            }
-            else if (child instanceof node) parents.push((node) child);
+            } else if (child instanceof node) parents.push((node) child);
             for (int i = children.size() - 1; i >= 0; i--) { // push on stack in reverse order
                 String name = children.get(i);
                 Object newChild;
