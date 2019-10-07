@@ -10,33 +10,37 @@ import java.util.*;
 import static src.parseSet.*;
 
 public class parser {
+    private static boolean first(Object parent, token tok) {
 
-    private static boolean first(Object parent, token token) {
-        boolean result;
-        String parentName = parent.getClass().getSimpleName();
-
+        String parentName;
         if (parent instanceof String)
             parentName = (String) parent;
+        else
+            parentName = parent.getClass().getSimpleName();
 
-        String tokenName = token.getClass().getSimpleName();
+        String tokenName = tok.getClass().getSimpleName();
 
         if (FIRST.get(parentName) == null || FIRST.get(parentName).get(tokenName) == null)
-            result = false;
+            return false;
         else
-            result = FIRST.get(parentName).get(tokenName);
-
-        return result;
+            return FIRST.get(parentName).get(tokenName);
     }
 
     private static List<String> predict(Object parent, Object token) {
         List<String> result;
-        String parentName = parent.getClass().getSimpleName();
-        if (parent instanceof String) parentName = (String) parent;
+
+        String parentName;
+        if (parent instanceof String)
+            parentName = (String) parent;
+        else
+            parentName = parent.getClass().getSimpleName();
+
         String tokenName = token.getClass().getSimpleName();
+
         if (PREDICT.get(parentName) == null || PREDICT.get(parentName).get(tokenName) == null)
-            result = new ArrayList<>();
-        else result = PREDICT.get(parentName).get(tokenName);
-        return result;
+            return new ArrayList<>();
+        else
+            return PREDICT.get(parentName).get(tokenName);
     }
 
     /**
