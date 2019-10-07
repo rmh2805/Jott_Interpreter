@@ -22,6 +22,10 @@ public class double_expr extends expr<Double> implements double_val, node {
         children.add(child);
     }
 
+    public void fixChildren() {
+        //todo Assign the proper children to their fields
+    }
+
     public double_expr() {}
     public double_expr(double_val lVal, op operator, double_val rVal) {
         if (lVal == null || (operator != null && rVal == null) || (operator == null && rVal != null)) {

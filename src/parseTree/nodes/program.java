@@ -11,6 +11,10 @@ public class program implements node {
         children.add(child);
     }
 
+    public void fixChildren() {
+        //todo Assign the proper children to their fields
+    }
+
     /**
      * Root node of the Jott parse tree
      */

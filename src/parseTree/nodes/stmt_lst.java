@@ -12,6 +12,10 @@ public class stmt_lst implements node {
         children.add(child);
     }
 
+    public void fixChildren() {
+        //todo Assign the proper children to their fields
+    }
+
     public stmt_lst() {}
     /**
      * A node of the Jott statement list

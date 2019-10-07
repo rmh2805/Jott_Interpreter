@@ -22,6 +22,10 @@ public class int_expr extends expr<Integer> implements int_val, node {
         children.add(child);
     }
 
+    public void fixChildren() {
+        //todo Assign the proper children to their fields
+    }
+
     public int_expr() {}
     public int_expr(int_val lVal, op operator, int_val rVal) {
         if (lVal == null || (operator != null && rVal == null) || (operator == null && rVal != null)) {

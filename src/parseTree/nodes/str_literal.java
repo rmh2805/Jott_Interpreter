@@ -17,6 +17,10 @@ public class str_literal extends str_expr implements str_val, node {
         children.add(child);
     }
 
+    public void fixChildren() {
+        //todo Assign the proper children to their fields
+    }
+
     public str_literal() {}
 
     public str_literal(quote preQuote, str_token data, quote endQuote) {

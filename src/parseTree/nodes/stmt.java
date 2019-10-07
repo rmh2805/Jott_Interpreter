@@ -9,7 +9,6 @@ public abstract class stmt<RT> implements node {
      */
     public abstract RT execute();
 
-
     /**
      * Print the content of this statement or evaluate a string expression
      *

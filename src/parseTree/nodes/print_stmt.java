@@ -20,6 +20,10 @@ public class print_stmt extends stmt<Integer> implements node {
         children.add(child);
     }
 
+    public void fixChildren() {
+        //todo Assign the proper children to their fields
+    }
+
     public print_stmt() {}
     /**
      * Create a new print statement
