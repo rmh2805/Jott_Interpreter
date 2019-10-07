@@ -86,11 +86,16 @@ public class parser {
                         t_idx++;
                     }
             }
-            // treat id as its reference
+
             token dummy = token;
-            if (!(parent instanceof asmt) && token instanceof id) {
+            if (token instanceof id) {
                 typeIdx type = symTab.get(token.toString());
-                if (type != null)
+                if (parent instanceof asmt && type != null) // asigning value to existing name
+                    errorPrinter.throwError(token.getLineNumber(), new Syntax("Reassignment not allowed"));
+                else if (!(parent instanceof asmt) && type == null) // referencing inexistent name
+                    errorPrinter.throwError(token.getLineNumber(), new Syntax("Unknown identifier"));
+                else {
+                    // treat id as its reference
                     switch (type) {
                         case k_Double:
                             dummy = new double_token(token.getLineNumber(), 0.0);
@@ -102,8 +107,9 @@ public class parser {
                             dummy = new str_token(token.getLineNumber(), "");
                             break;
                     }
-                else errorPrinter.throwError(token.getLineNumber(), new Syntax("Unknown identifier"));
+                }
             }
+
             // if child cannot start with token, print error
             if (!first(child, dummy)) {
                 String childName = child.getClass().getSimpleName();
