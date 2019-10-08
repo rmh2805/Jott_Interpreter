@@ -84,19 +84,21 @@ public class parser {
             }
 
             token token = tokenList.get(t_idx);
-            // handle signed double and integer
-            switch (token.toString()) {
-                case "+":
-                case "-":
-                    token nextToken = tokenList.get(t_idx + 1);
-                    if (first(child, nextToken)) {
-                        if ("-".equals(token.toString())) {
-                            if (nextToken instanceof int_token) ((int_token) nextToken).negate();
-                            else if (nextToken instanceof double_token) ((double_token) nextToken).negate();
+            if (!(child instanceof String)) {
+                // handle signed double and integer
+                switch (token.toString()) {
+                    case "+":
+                    case "-":
+                        token nextToken = tokenList.get(t_idx + 1);
+                        if (first(child, nextToken)) {
+                            if ("-".equals(token.toString())) {
+                                if (nextToken instanceof int_token) ((int_token) nextToken).negate();
+                                else if (nextToken instanceof double_token) ((double_token) nextToken).negate();
+                            }
+                            token = nextToken;
+                            t_idx++;
                         }
-                        token = nextToken;
-                        t_idx++;
-                    }
+                }
             }
 
             token dummy = token;
