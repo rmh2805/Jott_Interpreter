@@ -24,6 +24,10 @@ public class print_stmt extends stmt<Integer> implements node {
         //todo Assign the proper children to their fields
     }
 
+    public List<Object> getChildren() {
+        return children;
+    }
+
     public print_stmt() {}
     /**
      * Create a new print statement

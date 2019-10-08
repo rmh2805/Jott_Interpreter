@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class charAt_expr extends str_expr implements node {
-    private List<Object> children = new ArrayList<>();
+    private charAt_label op;
+    private start_paren startParen;
+    private str_val strExpr;
+    private comma sep;
+    private int_expr intExpr;
+    private end_paren endParen;
 
-    charAt_label op;
-    start_paren startParen;
-    str_val strExpr;
-    comma sep;
-    int_expr intExpr;
-    end_paren endParen;
+    private List<Object> children = new ArrayList<>();
 
     public void addChild(Object child) {
         children.add(child);
@@ -25,6 +25,10 @@ public class charAt_expr extends str_expr implements node {
 
     public void fixChildren() {
         //todo Assign the proper children to their fields
+    }
+
+    public List<Object> getChildren() {
+        return children;
     }
 
     @Override

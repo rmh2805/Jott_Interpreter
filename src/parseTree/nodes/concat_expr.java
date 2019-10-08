@@ -10,21 +10,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class concat_expr extends str_expr implements str_val, node {
+    private concat_label op;
+    private start_paren startParen;
+    private str_val lStr;
+    private comma sep;
+    private str_val rStr;
+    private end_paren endParen;
+
     private List<Object> children = new ArrayList<>();
 
     public void addChild(Object child) {
         children.add(child);
     }
 
-    concat_label op;
-    start_paren startParen;
-    str_val lStr;
-    comma sep;
-    str_val rStr;
-    end_paren endParen;
-
     public void fixChildren() {
         //todo Assign the proper children to their fields
+    }
+
+    public List<Object> getChildren() {
+        return children;
     }
 
     @Override

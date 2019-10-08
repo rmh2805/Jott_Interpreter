@@ -15,6 +15,10 @@ public class program implements node {
         //todo Assign the proper children to their fields
     }
 
+    public List<Object> getChildren() {
+        return children;
+    }
+
     /**
      * Root node of the Jott parse tree
      */

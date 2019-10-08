@@ -16,6 +16,10 @@ public class stmt_lst implements node {
         //todo Assign the proper children to their fields
     }
 
+    public List<Object> getChildren() {
+        return children;
+    }
+
     public stmt_lst() {}
     /**
      * A node of the Jott statement list
