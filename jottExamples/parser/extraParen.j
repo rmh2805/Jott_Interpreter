@@ -12,7 +12,7 @@ Double b = a - a + 1.0 - 2.0;
 Integer x = 1;
 Integer y = x * 2 + 3;
 Integer z = y / 5 - x;
-String hello = "hello"
+String hello = "hello";
 String world = "world";
 String helloworld = concat(hello, concat(" ", world)));
 // string manipulation and print
