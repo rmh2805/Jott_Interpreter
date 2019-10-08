@@ -127,13 +127,10 @@ public class parser {
             // if child cannot start with token, print error
             if (!first(child, dummy)) {
                 String childName = child.getClass().getSimpleName();
+                if (child instanceof String) childName = (String) child;
                 String tokenName = dummy.getClass().getSimpleName();
-                if (child instanceof String)
-                    errorPrinter.throwError(token.getLineNumber(),
-                            new Syntax(String.format("%s expected but found %s", child, tokenName)));
-                else
-                    errorPrinter.throwError(token.getLineNumber(),
-                            new Syntax(String.format("%s may not start with %s", childName, tokenName)));
+                errorPrinter.throwError(token.getLineNumber(),
+                        new Syntax(String.format("%s expected but found %s", childName, tokenName)));
             }
 
             List<String> children = predict(child, dummy);
