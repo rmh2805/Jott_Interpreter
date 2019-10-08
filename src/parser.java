@@ -104,9 +104,9 @@ public class parser {
             token dummy = token;
             if (token instanceof id) {
                 typeIdx type = symTab.get(token.toString());
-                if (parent instanceof asmt && type != null) // assigning value to existing name
-                    errorPrinter.throwError(token.getLineNumber(), new Syntax("Reassignment not allowed"));
-                else if (!(parent instanceof asmt)) {
+                if (child instanceof String && child.equals("id")) { // only time id is specifically required is for asmt
+                    if (type != null) errorPrinter.throwError(token.getLineNumber(), new Syntax("Reassignment not allowed"));
+                } else {
                     if (type == null) // referencing inexistent name
                         errorPrinter.throwError(token.getLineNumber(), new Syntax("Unknown identifier"));
                     else {
