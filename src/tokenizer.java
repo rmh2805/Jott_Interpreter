@@ -75,19 +75,18 @@ public class tokenizer {
                     i++;
                     while (i < lineLength) {
                         ch = line.charAt(i);
-                        if (ch == '"')
+                        if (ch == '"') {
+                            tok.append(ch);
                             break;
-
-                        if (!((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9') || ch == ' '))
+                        }
+                        if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && ch != ' ')
                             errorPrinter.throwError(lineCount, new Syntax("Illegal character '" + ch +
                                     "' detected in string literal"));
-
                         tok.append(ch);
                         i++;
                     }
                     if (i == lineLength)
                         errorPrinter.throwError(lineCount, new Syntax("Strings cannot wrap lines"));
-
                     tokenList.add(new str_token(lineCount, tok.toString()));
                 } else if (Character.isDigit(ch) || ch == '.') { // Integer or Double
                     boolean isDouble = false;

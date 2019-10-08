@@ -9,11 +9,28 @@ import src.parseTree.tokens.int_token;
 import src.parseTree.tokens.op;
 import src.typeIdx;
 
-public class int_expr extends expr<Integer> implements int_val {
+import java.util.ArrayList;
+import java.util.List;
+
+public class int_expr extends expr<Integer> implements int_val, node {
     private int_val lVal;
     private op operator;
     private int_val rVal;
+    private List<Object> children = new ArrayList<>();
 
+    public void addChild(Object child) {
+        children.add(child);
+    }
+
+    public void fixChildren() {
+        //todo Assign the proper children to their fields
+    }
+
+    public List<Object> getChildren() {
+        return children;
+    }
+
+    public int_expr() {}
     public int_expr(int_val lVal, op operator, int_val rVal) {
         if (lVal == null || (operator != null && rVal == null) || (operator == null && rVal != null)) {
             System.out.println("Error, int expression creation must provide either only lVal or lVal, operator, and rVal");

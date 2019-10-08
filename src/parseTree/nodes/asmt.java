@@ -1,23 +1,40 @@
 package src.parseTree.nodes;
 
-import src.parseTree.categories.type;
+import src.parseTree.categories.Type;
 import src.parseTree.tokens.asmt_op;
 import src.parseTree.tokens.end_stmt;
 import src.parseTree.tokens.id;
 
-public class asmt extends stmt<Integer> {
-    private type t;
+import java.util.ArrayList;
+import java.util.List;
+
+public class asmt extends stmt<Integer> implements node {
+    private Type t;
     private id name;
     private asmt_op op;
     private expr exp;
     private end_stmt endStmt;
 
-    public asmt(type t, id name, asmt_op op, expr exp, end_stmt endStmt) {
-        this.t = t;
-        this.name = name;
-        this.op = op;
-        this.exp = exp;
-        this.endStmt = endStmt;
+    private List<Object> children = new ArrayList<>();
+
+    public void addChild(Object child) {
+        children.add(child);
+    }
+
+    public void fixChildren() {
+        //todo Assign the proper children to their fields
+    }
+
+    public List<Object> getChildren() {
+        return children;
+    }
+
+    public String getType() {
+        return children.get(0).toString();
+    }
+
+    public String getId() {
+        return children.get(1).toString();
     }
 
     @Override

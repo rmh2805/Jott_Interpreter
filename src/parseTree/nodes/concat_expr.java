@@ -6,21 +6,29 @@ import src.parseTree.tokens.concat_label;
 import src.parseTree.tokens.end_paren;
 import src.parseTree.tokens.start_paren;
 
-public class concat_expr extends str_expr implements str_val {
-    concat_label op;
-    start_paren startParen;
-    str_val lStr;
-    comma sep;
-    str_val rStr;
-    end_paren endParen;
+import java.util.ArrayList;
+import java.util.List;
 
-    public concat_expr(concat_label op, start_paren startParen, str_val lStr, comma sep, str_val rStr, end_paren endParen) {
-        this.op = op;
-        this.startParen = startParen;
-        this.lStr = lStr;
-        this.sep = sep;
-        this.rStr = rStr;
-        this.endParen = endParen;
+public class concat_expr extends str_expr implements str_val, node {
+    private concat_label op;
+    private start_paren startParen;
+    private str_val lStr;
+    private comma sep;
+    private str_val rStr;
+    private end_paren endParen;
+
+    private List<Object> children = new ArrayList<>();
+
+    public void addChild(Object child) {
+        children.add(child);
+    }
+
+    public void fixChildren() {
+        //todo Assign the proper children to their fields
+    }
+
+    public List<Object> getChildren() {
+        return children;
     }
 
     @Override
