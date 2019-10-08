@@ -90,22 +90,24 @@ public class parser {
             token dummy = token;
             if (token instanceof id) {
                 typeIdx type = symTab.get(token.toString());
-                if (parent instanceof asmt && type != null) // asigning value to existing name
+                if (parent instanceof asmt && type != null) // assigning value to existing name
                     errorPrinter.throwError(token.getLineNumber(), new Syntax("Reassignment not allowed"));
-                else if (!(parent instanceof asmt) && type == null) // referencing inexistent name
-                    errorPrinter.throwError(token.getLineNumber(), new Syntax("Unknown identifier"));
-                else {
-                    // treat id as its reference
-                    switch (type) {
-                        case k_Double:
-                            dummy = new double_token(token.getLineNumber(), 0.0);
-                            break;
-                        case k_Integer:
-                            dummy = new int_token(token.getLineNumber(), 0);
-                            break;
-                        case k_String:
-                            dummy = new str_token(token.getLineNumber(), "");
-                            break;
+                else if (!(parent instanceof asmt)) {
+                    if (type == null) // referencing inexistent name
+                        errorPrinter.throwError(token.getLineNumber(), new Syntax("Unknown identifier"));
+                    else {
+                        // treat id as its reference
+                        switch (type) {
+                            case k_Double:
+                                dummy = new double_token(token.getLineNumber(), 0.0);
+                                break;
+                            case k_Integer:
+                                dummy = new int_token(token.getLineNumber(), 0);
+                                break;
+                            case k_String:
+                                dummy = new str_token(token.getLineNumber(), "");
+                                break;
+                        }
                     }
                 }
             }
