@@ -102,7 +102,7 @@ public class parser {
             }
 
             token token = tokenList.get(t_idx);
-            if (!(child instanceof String)) { // child not "op"
+            if (!(child instanceof String && child.equals("op"))) { // child not "op"
                 // handle signed double and integer
                 switch (token.toString()) {
                     case "+":
