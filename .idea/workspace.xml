@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c3184c09-391b-4ff2-92f3-0e2eab2c3f3c" name="Default" comment="Prints working for doubles/ints , arithmetics, strings (need to adjust line number for quotes), others still need to be tested.">
-      <change beforePath="$PROJECT_DIR$/Text/PREDICT.txt" afterPath="$PROJECT_DIR$/Text/PREDICT.txt" />
-      <change beforePath="$PROJECT_DIR$/src/parseTree/nodes/asmt.java" afterPath="$PROJECT_DIR$/src/parseTree/nodes/asmt.java" />
-      <change beforePath="$PROJECT_DIR$/src/parseTree/nodes/charAt_expr.java" afterPath="$PROJECT_DIR$/src/parseTree/nodes/charAt_expr.java" />
-      <change beforePath="$PROJECT_DIR$/src/parseTree/nodes/concat_expr.java" afterPath="$PROJECT_DIR$/src/parseTree/nodes/concat_expr.java" />
-      <change beforePath="$PROJECT_DIR$/src/parseTree/nodes/double_expr.java" afterPath="$PROJECT_DIR$/src/parseTree/nodes/double_expr.java" />
-      <change beforePath="$PROJECT_DIR$/src/parseTree/nodes/int_expr.java" afterPath="$PROJECT_DIR$/src/parseTree/nodes/int_expr.java" />
-      <change beforePath="$PROJECT_DIR$/src/parseTree/nodes/print_stmt.java" afterPath="$PROJECT_DIR$/src/parseTree/nodes/print_stmt.java" />
-      <change beforePath="$PROJECT_DIR$/src/parseTree/nodes/program.java" afterPath="$PROJECT_DIR$/src/parseTree/nodes/program.java" />
-      <change beforePath="$PROJECT_DIR$/src/parseTree/nodes/stmt_lst.java" afterPath="$PROJECT_DIR$/src/parseTree/nodes/stmt_lst.java" />
-      <change beforePath="$PROJECT_DIR$/src/parseTree/tokens/str_token.java" afterPath="$PROJECT_DIR$/src/parseTree/tokens/str_token.java" />
-      <change beforePath="$PROJECT_DIR$/src/parser.java" afterPath="$PROJECT_DIR$/src/parser.java" />
-      <change beforePath="$PROJECT_DIR$/src/tokenizer.java" afterPath="$PROJECT_DIR$/src/tokenizer.java" />
-      <change beforePath="$PROJECT_DIR$/test/testTokenizer.java" afterPath="$PROJECT_DIR$/test/testTokenizer.java" />
-    </list>
+    <list default="true" id="c3184c09-391b-4ff2-92f3-0e2eab2c3f3c" name="Default" comment="Prints working for doubles/ints , arithmetics, strings (need to adjust line number for quotes), others still need to be tested." />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -114,7 +100,7 @@
       <file leaf-file-name="int_expr.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/parseTree/nodes/int_expr.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
+            <state relative-caret-position="705">
               <caret line="107" column="35" lean-forward="true" selection-start-line="107" selection-start-column="35" selection-end-line="107" selection-end-column="35" />
               <folding />
             </state>
@@ -228,7 +214,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="473" />
-    <option name="y" value="23" />
+    <option name="y" value="103" />
     <option name="width" value="807" />
     <option name="height" value="746" />
   </component>
@@ -435,7 +421,7 @@
       <updated>1570425815795</updated>
       <workItem from="1570425817247" duration="713000" />
       <workItem from="1570426556753" duration="5241000" />
-      <workItem from="1570552925641" duration="35766000" />
+      <workItem from="1570552925641" duration="35827000" />
     </task>
     <task id="LOCAL-00001" summary="Prints working for doubles/ints , arithmetics, strings (need to adjust line number for quotes), others still need to be tested.">
       <created>1570661893870</created>
@@ -448,10 +434,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41720000" />
+    <option name="totallyTimeSpent" value="41781000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="473" y="23" width="807" height="746" extended-state="0" />
+    <frame x="473" y="103" width="807" height="746" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -974,7 +960,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/parseTree/nodes/int_expr.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
+        <state relative-caret-position="705">
           <caret line="107" column="35" lean-forward="true" selection-start-line="107" selection-start-column="35" selection-end-line="107" selection-end-column="35" />
           <folding />
         </state>
