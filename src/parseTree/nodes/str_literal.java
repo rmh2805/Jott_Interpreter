@@ -3,6 +3,7 @@ package src.parseTree.nodes;
 import src.parseTree.categories.str_val;
 import src.parseTree.tokens.quote;
 import src.parseTree.tokens.str_token;
+import src.parseTree.tokens.token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +16,13 @@ public class str_literal extends str_expr implements str_val, node {
 
     public void addChild(Object child) {
         children.add(child);
+        if (children.size() >= 1) {
+            fixChildren();
+        }
     }
 
     public void fixChildren() {
-        //todo Assign the proper children to their fields
+        this.str_literal_set(new quote(1), (str_token) children.get(0), new quote(1));
     }
 
     public List<Object> getChildren() {
@@ -27,7 +31,7 @@ public class str_literal extends str_expr implements str_val, node {
 
     public str_literal() {}
 
-    public str_literal(quote preQuote, str_token data, quote endQuote) {
+    public void str_literal_set(quote preQuote, str_token data, quote endQuote) {
         if (preQuote == null || data == null || endQuote == null) {
             System.out.println("Error, missing a token to create a string literal");
             System.exit(1);
