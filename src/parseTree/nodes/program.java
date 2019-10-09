@@ -37,4 +37,15 @@ public class program {
         }
     }
 
+    public String toString() {
+        String acc = "";
+        stmt_lst statement = firstStatement;
+
+        while(statement != null) {
+            acc = acc.concat(statement.toString()).concat("\n");
+        }
+
+        return acc;
+    }
+
 }
