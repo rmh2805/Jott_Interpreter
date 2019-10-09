@@ -67,7 +67,6 @@ public class int_expr extends expr<Integer> implements int_val {
             return ((int_token) token).getValue();
         }
         else {
-            //TODO come back to this
             id tok = (id) token;
             if (nameTableSingleton.getInstance().getType(tok) != typeIdx.k_Integer)
                 errorPrinter.throwError(((id) token).getLineNumber(), new Runtime("Error, attempt to use a non-int ID in a double expression"));

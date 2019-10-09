@@ -59,7 +59,6 @@ public class double_expr extends expr<Double> implements double_val {
             return ((double_token) token).getVal();
         }
         else {
-            //TODO come back to this
             id tok = (id) token;
             if (nameTableSingleton.getInstance().getType(tok) != typeIdx.k_Double)
                 errorPrinter.throwError(((id) token).getLineNumber(), new Runtime("Error, attempt to use a non-double ID in a double expression"));

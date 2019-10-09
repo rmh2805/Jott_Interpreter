@@ -28,4 +28,13 @@ public class program {
         return this.firstStatement;
     }
 
+    public void execute () {
+        stmt_lst statement = firstStatement;
+
+        while(statement != null) {
+            statement.getStatement().execute();
+            statement = statement.getNext();
+        }
+    }
+
 }
