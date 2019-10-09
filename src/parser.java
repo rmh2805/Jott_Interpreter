@@ -10,6 +10,16 @@ import java.util.*;
 import static src.parseSet.*;
 
 public class parser {
+
+    /**
+     * Determines if node or leaf may begin with given token.
+     *
+     * @param parent    the node (node) or leaf (String)
+     * @param tok       the token read
+     * @return  true if 1) node may begin with token
+     *          or 2) leaf (token required) is token received
+     *          false otherwise
+     */
     private static boolean first(Object parent, token tok) {
 
         String parentName;
@@ -26,7 +36,15 @@ public class parser {
             return FIRST.get(parentName).get(tokenName);
     }
 
-    private static List<String> predict(Object parent, Object token) {
+    /**
+     * Determines derivations of parent given token.
+     *
+     * @param parent    the node (node), abstract node (String), or leaf (String)
+     * @param token     the token read
+     * @return  list of derivations of parent as Strings (may be empty)
+     *          or empty list (default)
+     */
+    private static List<String> predict(Object parent, token token) {
         List<String> result;
 
         String parentName;
@@ -38,7 +56,7 @@ public class parser {
         String tokenName = token.getClass().getSimpleName();
 
         if (PREDICT.get(parentName) == null || PREDICT.get(parentName).get(tokenName) == null)
-            return new ArrayList<>();
+            return new ArrayList<>(); // assume to be valid, parent-token verified by first
         else
             return PREDICT.get(parentName).get(tokenName);
     }
@@ -65,7 +83,7 @@ public class parser {
                 stack.pop();
                 parent = parents.peek();
                 if (parent != null) parent.addChild(child); // parent == null if derivations merged into start symbol
-                if (child instanceof asmt) {
+                if (child instanceof asmt) { // add to symbol table
                     String type = ((asmt) child).getType();
                     String name = ((asmt) child).getId();
                     switch (type) {
@@ -84,7 +102,7 @@ public class parser {
             }
 
             token token = tokenList.get(t_idx);
-            if (!(child instanceof String)) {
+            if (!(child instanceof String)) { // child not "op"
                 // handle signed double and integer
                 switch (token.toString()) {
                     case "+":
@@ -136,6 +154,10 @@ public class parser {
             }
 
             List<String> children = predict(child, dummy);
+
+            // default: d_expr/i_expr -> d_token/i_token
+            // lookahead(1) to check for op
+            // if op, d_expr/i_expr -> d_token/i_token,op,d_expr,i_expr
             if (child instanceof double_expr || child instanceof int_expr) {
                 token nextToken = tokenList.get(t_idx + 1);
                 if (nextToken instanceof op) {
@@ -144,12 +166,15 @@ public class parser {
                     stack.push("op");
                 }
             }
+
             if (child instanceof String) stack.pop(); // remove tokens and abstract nodes
             if (children.size() <= 0) { // if no children, it is a token
                 if (parent != null) parent.addChild(token); // add to parent
                 t_idx++;
             } else if (child instanceof node) parents.push((node) child);
-            for (int i = children.size() - 1; i >= 0; i--) { // push on stack in reverse order
+
+            // add children to stack in reverse order
+            for (int i = children.size() - 1; i >= 0; i--) {
                 String name = children.get(i);
                 Object newChild;
                 switch (name) {
