@@ -7,6 +7,7 @@ import src.parseTree.categories.int_val;
 import src.parseTree.tokens.id;
 import src.parseTree.tokens.int_token;
 import src.parseTree.tokens.op;
+import src.parseTree.tokens.token;
 import src.typeIdx;
 
 public class int_expr extends expr<Integer> implements int_val {
@@ -49,6 +50,13 @@ public class int_expr extends expr<Integer> implements int_val {
                 errorPrinter.throwError(operator.getLineNumber(), new Runtime("Unrecognized operator: " + operator.toString()));
                 return null;
         }
+    }
+
+    public int getLineNumber() {
+        if(lVal instanceof int_expr)
+            return ((int_expr) lVal).getLineNumber();
+        else
+            return ((token) lVal).getLineNumber();
     }
 
     private int parseToken(int_val token) {
