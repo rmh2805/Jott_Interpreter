@@ -25,11 +25,11 @@ public class concat_expr extends str_expr implements str_val {
 
     @Override
     public String execute() {
-        return null;
+        return str_val.execute(lStr).concat(str_val.execute(rStr));
     }
 
     @Override
     public String toString() {
-        return null;
+        return op.toString() + startParen.toString() + lStr.toString() + sep.toString() + rStr.toString() + endParen.toString();
     }
 }

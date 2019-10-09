@@ -2,10 +2,11 @@ package src.parseTree.nodes;
 
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Runtime;
-import src.nameTableSingleton;
 import src.parseTree.categories.str_val;
-import src.parseTree.tokens.*;
-import src.typeIdx;
+import src.parseTree.tokens.charAt_label;
+import src.parseTree.tokens.comma;
+import src.parseTree.tokens.end_paren;
+import src.parseTree.tokens.start_paren;
 
 public class charAt_expr extends str_expr {
     private charAt_label op;
@@ -26,25 +27,8 @@ public class charAt_expr extends str_expr {
 
     @Override
     public String execute() {
-        String arg1 = null;
+        String arg1 = str_val.execute(strExpr);
         Integer arg2 = intExpr.execute();
-
-        //Get the value of the string argument
-        if (strExpr instanceof id) {
-            id strExpr = (id) this.strExpr;
-            nameTableSingleton nameTable = nameTableSingleton.getInstance();
-
-            if (!nameTable.isAssigned(strExpr))
-                errorPrinter.throwError(strExpr.getLineNumber(), new Runtime("Reference to an unassigned id"));
-            else if (nameTable.getType(strExpr) != typeIdx.k_String)
-                errorPrinter.throwError(strExpr.getLineNumber(), new Runtime("id '" + strExpr.toString() + "' is not a String as required"));
-
-            arg1 = nameTable.getString(strExpr);
-        }
-        else {
-            str_expr strExpr = (str_expr) this.strExpr;
-            arg1 = strExpr.execute();
-        }
 
         if (arg2 >= arg1.length())
             errorPrinter.throwError(intExpr.getLineNumber(), new Runtime("Trying to access an index (" + arg2 + ") outside of the provided string"));
