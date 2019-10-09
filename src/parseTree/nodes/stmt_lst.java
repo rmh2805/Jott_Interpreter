@@ -2,6 +2,7 @@ package src.parseTree.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
+import src.parseTree.tokens.EOF;
 
 public class stmt_lst implements node {
     private stmt statement;
@@ -10,10 +11,13 @@ public class stmt_lst implements node {
 
     public void addChild(Object child) {
         children.add(child);
+        fixChildren();
     }
 
     public void fixChildren() {
-        //todo Assign the proper children to their fields
+        if (!(children.get(0) instanceof EOF)) {
+            this.stmt_lst_set((stmt) children.get(0));
+        }
     }
 
     public List<Object> getChildren() {
@@ -26,7 +30,7 @@ public class stmt_lst implements node {
      *
      * @param statement The statement to execute
      */
-    public stmt_lst(stmt statement) {
+    public void stmt_lst_set(stmt statement) {
         if (statement == null) {
             System.out.println("Error, attempted to create a new statement list node without a statement and/or endStatement");
             System.exit(1);

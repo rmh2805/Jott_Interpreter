@@ -9,10 +9,11 @@ public class program implements node {
 
     public void addChild(Object child) {
         children.add(child);
+        fixChildren();
     }
 
     public void fixChildren() {
-        //todo Assign the proper children to their fields
+        this.setStatement((stmt_lst) children.get(0));
     }
 
     public List<Object> getChildren() {
@@ -42,6 +43,27 @@ public class program implements node {
      */
     public stmt_lst getStatement () {
         return this.firstStatement;
+    }
+
+    public void execute () {
+        stmt_lst statement = firstStatement;
+
+        while(statement != null) {
+            statement.getStatement().execute();
+            statement = statement.getNext();
+        }
+    }
+
+    public String toString() {
+        String acc = "";
+        stmt_lst statement = firstStatement;
+
+        while(statement != null) {
+            acc = acc.concat(statement.toString()).concat("\n");
+            statement = statement.getNext();
+        }
+
+        return acc;
     }
 
 }

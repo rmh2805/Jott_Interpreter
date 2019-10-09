@@ -20,10 +20,17 @@ public class double_expr extends expr<Double> implements double_val, node {
 
     public void addChild(Object child) {
         children.add(child);
+        if (children.size() >= 1) {
+            fixChildren();
+        }
     }
 
     public void fixChildren() {
-        //todo Assign the proper children to their fields
+        if (children.size() == 1) {
+            this.double_expr_set((double_val) children.get(0), null, null);
+        } else if (children.size() > 2) {
+            this.double_expr_set((double_val) children.get(0), (op) children.get(1), (double_val) children.get(2));
+        }
     }
 
     public List<Object> getChildren() {
@@ -31,7 +38,8 @@ public class double_expr extends expr<Double> implements double_val, node {
     }
 
     public double_expr() {}
-    public double_expr(double_val lVal, op operator, double_val rVal) {
+
+    public void double_expr_set(double_val lVal, op operator, double_val rVal) {
         if (lVal == null || (operator != null && rVal == null) || (operator == null && rVal != null)) {
             System.out.println("Error, double expression creation must provide either only lVal or lVal, operator, and rVal");
             System.exit(1);
@@ -75,7 +83,6 @@ public class double_expr extends expr<Double> implements double_val, node {
             return ((double_token) token).getVal();
         }
         else {
-            //TODO come back to this
             id tok = (id) token;
             if (nameTableSingleton.getInstance().getType(tok) != typeIdx.k_Double)
                 errorPrinter.throwError(((id) token).getLineNumber(), new Runtime("Error, attempt to use a non-double ID in a double expression"));

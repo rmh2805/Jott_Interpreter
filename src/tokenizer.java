@@ -87,7 +87,7 @@ public class tokenizer {
                     }
                     if (i == lineLength)
                         errorPrinter.throwError(lineCount, new Syntax("Strings cannot wrap lines"));
-                    tokenList.add(new str_token(lineCount, tok.toString()));
+                    tokenList.add(new str_token(lineCount, tok.toString().replace("\"", "")));
                 } else if (Character.isDigit(ch) || ch == '.') { // Integer or Double
                     boolean isDouble = false;
                     int z = -1;

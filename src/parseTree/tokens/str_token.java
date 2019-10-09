@@ -1,6 +1,8 @@
 package src.parseTree.tokens;
 
-public class str_token extends token {
+import src.parseTree.categories.str_val;
+
+public class str_token extends token implements str_val {
     private String data;
 
     public str_token(int lineNumber, String data) {

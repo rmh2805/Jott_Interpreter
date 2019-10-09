@@ -18,10 +18,14 @@ public class print_stmt extends stmt<Integer> implements node {
 
     public void addChild(Object child) {
         children.add(child);
+        if (children.size() >= 5) {
+            fixChildren();
+        }
     }
 
     public void fixChildren() {
-        //todo Assign the proper children to their fields
+        this.print_stmt_set((print_label) children.get(0), (start_paren) children.get(1),
+                (expr) children.get(2), (end_paren) children.get(3), (end_stmt) children.get(4));
     }
 
     public List<Object> getChildren() {
@@ -37,7 +41,7 @@ public class print_stmt extends stmt<Integer> implements node {
      * @param toPrint    The expression whose value I should print
      * @param endParen   The ")" token
      */
-    public print_stmt(print_label printLabel, start_paren startParen, expr toPrint, end_paren endParen, end_stmt endStmt) {
+    public void print_stmt_set(print_label printLabel, start_paren startParen, expr toPrint, end_paren endParen, end_stmt endStmt) {
         if (printLabel == null || startParen == null || toPrint == null || endParen == null) {
             System.out.println("Error, missing a required token in print statement");
             System.exit(1);

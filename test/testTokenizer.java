@@ -43,6 +43,7 @@ public class testTokenizer {
                     newChildren = ((int_expr) child).getChildren();
                     break;
                 case "print_stmt":
+                    ((print_stmt) child).execute();
                     newChildren = ((print_stmt) child).getChildren();
                     break;
                 case "program":

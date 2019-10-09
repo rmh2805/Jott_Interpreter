@@ -7,6 +7,7 @@ import src.parseTree.categories.int_val;
 import src.parseTree.tokens.id;
 import src.parseTree.tokens.int_token;
 import src.parseTree.tokens.op;
+import src.parseTree.tokens.token;
 import src.typeIdx;
 
 import java.util.ArrayList;
@@ -20,10 +21,17 @@ public class int_expr extends expr<Integer> implements int_val, node {
 
     public void addChild(Object child) {
         children.add(child);
+        if (children.size() >= 1) {
+            fixChildren();
+        }
     }
 
     public void fixChildren() {
-        //todo Assign the proper children to their fields
+        if (children.size() == 1) {
+            this.int_expr_set((int_val) children.get(0), null, null);
+        } else if (children.size() > 2) {
+            this.int_expr_set((int_val) children.get(0), (op) children.get(1), (int_val) children.get(2));
+        }
     }
 
     public List<Object> getChildren() {
@@ -31,7 +39,8 @@ public class int_expr extends expr<Integer> implements int_val, node {
     }
 
     public int_expr() {}
-    public int_expr(int_val lVal, op operator, int_val rVal) {
+
+    public void int_expr_set(int_val lVal, op operator, int_val rVal) {
         if (lVal == null || (operator != null && rVal == null) || (operator == null && rVal != null)) {
             System.out.println("Error, int expression creation must provide either only lVal or lVal, operator, and rVal");
             System.exit(1);
@@ -68,6 +77,13 @@ public class int_expr extends expr<Integer> implements int_val, node {
         }
     }
 
+    public int getLineNumber() {
+        if(lVal instanceof int_expr)
+            return ((int_expr) lVal).getLineNumber();
+        else
+            return ((token) lVal).getLineNumber();
+    }
+
     private int parseToken(int_val token) {
         if ((token instanceof int_expr)) {
             return ((int_expr) token).execute();
@@ -76,7 +92,6 @@ public class int_expr extends expr<Integer> implements int_val, node {
             return ((int_token) token).getValue();
         }
         else {
-            //TODO come back to this
             id tok = (id) token;
             if (nameTableSingleton.getInstance().getType(tok) != typeIdx.k_Integer)
                 errorPrinter.throwError(((id) token).getLineNumber(), new Runtime("Error, attempt to use a non-int ID in a double expression"));
@@ -87,6 +102,10 @@ public class int_expr extends expr<Integer> implements int_val, node {
 
     @Override
     public String toString() {
-        return lVal.toString() + operator.toString() + rVal.toString();
+        if (operator == null && rVal == null){
+            return lVal.toString();
+        } else {
+            return lVal.toString() + operator.toString() + rVal.toString();
+        }
     }
 }
