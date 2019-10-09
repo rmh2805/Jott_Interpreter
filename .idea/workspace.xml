@@ -213,8 +213,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="473" />
-    <option name="y" value="103" />
+    <option name="x" value="468" />
+    <option name="y" value="23" />
     <option name="width" value="807" />
     <option name="height" value="746" />
   </component>
@@ -421,7 +421,7 @@
       <updated>1570425815795</updated>
       <workItem from="1570425817247" duration="713000" />
       <workItem from="1570426556753" duration="5241000" />
-      <workItem from="1570552925641" duration="35827000" />
+      <workItem from="1570552925641" duration="36085000" />
     </task>
     <task id="LOCAL-00001" summary="Prints working for doubles/ints , arithmetics, strings (need to adjust line number for quotes), others still need to be tested.">
       <created>1570661893870</created>
@@ -434,10 +434,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41781000" />
+    <option name="totallyTimeSpent" value="42039000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="473" y="103" width="807" height="746" extended-state="0" />
+    <frame x="468" y="23" width="807" height="746" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
