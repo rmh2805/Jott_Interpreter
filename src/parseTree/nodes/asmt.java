@@ -22,7 +22,12 @@ public class asmt extends stmt<Integer> implements node {
     }
 
     public void fixChildren() {
-        //todo Assign the proper children to their fields
+        //todo Potentially add validation in there
+        t = (Type) children.get(0);
+        name = (id) children.get(1);
+        op = (asmt_op) children.get(3);
+        exp = (expr) children.get(4);
+        endStmt = (end_stmt) children.get(5);
     }
 
     public List<Object> getChildren() {
