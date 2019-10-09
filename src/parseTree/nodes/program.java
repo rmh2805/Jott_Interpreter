@@ -43,6 +43,7 @@ public class program {
 
         while(statement != null) {
             acc = acc.concat(statement.toString()).concat("\n");
+            statement = statement.getNext();
         }
 
         return acc;
