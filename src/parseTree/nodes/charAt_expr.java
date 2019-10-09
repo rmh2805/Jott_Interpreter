@@ -8,12 +8,12 @@ import src.parseTree.tokens.*;
 import src.typeIdx;
 
 public class charAt_expr extends str_expr {
-    charAt_label op;
-    start_paren startParen;
-    str_val strExpr;
-    comma sep;
-    int_expr intExpr;
-    end_paren endParen;
+    private charAt_label op;
+    private start_paren startParen;
+    private str_val strExpr;
+    private comma sep;
+    private int_expr intExpr;
+    private end_paren endParen;
 
     public charAt_expr(charAt_label op, start_paren startParen, str_val strExpr, comma sep, int_expr intExpr, end_paren endParen) {
         this.op = op;

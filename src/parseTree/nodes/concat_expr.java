@@ -7,12 +7,12 @@ import src.parseTree.tokens.end_paren;
 import src.parseTree.tokens.start_paren;
 
 public class concat_expr extends str_expr implements str_val {
-    concat_label op;
-    start_paren startParen;
-    str_val lStr;
-    comma sep;
-    str_val rStr;
-    end_paren endParen;
+    private concat_label op;
+    private start_paren startParen;
+    private str_val lStr;
+    private comma sep;
+    private str_val rStr;
+    private end_paren endParen;
 
     public concat_expr(concat_label op, start_paren startParen, str_val lStr, comma sep, str_val rStr, end_paren endParen) {
         this.op = op;
