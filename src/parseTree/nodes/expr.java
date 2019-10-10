@@ -1,6 +1,6 @@
 package src.parseTree.nodes;
 
-public abstract class expr<T> extends stmt<T> {
+public abstract class expr<T> extends stmt<T> implements node {
 
     /**
      * Evaluates this expression

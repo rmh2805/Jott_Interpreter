@@ -21,152 +21,115 @@ public class tokenizer {
      */
     public static List<token> tokenize(String filepath) throws FileNotFoundException {
         Scanner sc = new Scanner(new File(filepath));
-        int lineCount = 1;  //An incrementing line counter
+        int lineCount = 0;  //An incrementing line counter
         List<token> tokenList = new LinkedList<>(); //The list of tokens which will be returned
 
         while (sc.hasNextLine()) {  //For each line of the source file
+            lineCount++;
             String line = sc.nextLine();    //Grab the line
             int lineLength = line.length(); //Grab its length once
 
-            for (int i = 0; i < lineLength; i++) {
-                //Repeat these actions while there are still chars on the line
+            for (int i = 0; i < lineLength; i++) { // Process every token on the line
                 StringBuilder tok = new StringBuilder();
-
-                //Clear whitespace to start of new token
-                while (i < lineLength) {
-                    char ch = line.charAt(i);
-                    if (!Character.isWhitespace(ch))
-                        break;
-                    i++;
-                }
-
-                while (i < lineLength) {    //Tokens end at the end of a line
-                    char ch = line.charAt(i);
-                    if (Character.isWhitespace(ch))  //Tokens also end on whitespace
-                        break;
-
-                    if (ch == ';' || ch == '(' || ch == ')' || ch == ',' || ch == '"') {
-                        if (!tok.toString().isEmpty()) {
+                char ch = line.charAt(i);
+                if (Character.isWhitespace(ch)) continue; // Skip whitespace before grabbing a new token
+                if (ch == '/' && ++i < lineLength && line.charAt(i) == '/') break; // Ignore comment
+                if (Character.isAlphabetic(ch)) { // Identifier or keyword
+                    while (i < lineLength) {
+                        ch = line.charAt(i);
+                        if (!Character.isAlphabetic(ch) && !Character.isDigit(ch)) {
                             i--;
                             break;
                         }
-                        else {
+                        tok.append(ch);
+                        i++;
+                    }
+                    // Check reserved keywords
+                    switch (tok.toString()) {
+                        case "print":
+                            tokenList.add(new print_label(lineCount));
+                            break;
+                        case "concat":
+                            tokenList.add(new concat_label(lineCount));
+                            break;
+                        case "charAt":
+                            tokenList.add(new charAt_label(lineCount));
+                            break;
+                        case "Double":
+                            tokenList.add(new double_label(lineCount));
+                            break;
+                        case "Integer":
+                            tokenList.add(new int_label(lineCount));
+                            break;
+                        case "String":
+                            tokenList.add(new str_label(lineCount));
+                            break;
+                        default:
+                            if (Character.isLowerCase(tok.charAt(0)))
+                                tokenList.add(new id(lineCount, tok.toString()));
+                            else errorPrinter.throwError(lineCount, new Syntax("invalid type"));
+                            break;
+                    }
+                } else if (ch == '"') { // str_literal
+                    tok.append(ch);
+                    i++;
+                    while (i < lineLength) {
+                        ch = line.charAt(i);
+                        if (ch == '"') {
                             tok.append(ch);
                             break;
                         }
-                    }
-                    tok.append(ch);
-
-                    i++;
-                }
-
-                //Handle the gathered token
-                if ("=".equals(tok.toString())) {
-                    tokenList.add(new asmt_op(lineCount));
-                }
-                else if ("charAt".equals(tok.toString())) {
-                    tokenList.add(new charAt_label(lineCount));
-                }
-                else if (",".equals(tok.toString())) {
-                    tokenList.add(new comma(lineCount));
-                }
-                else if ("concat".equals(tok.toString())) {
-                    tokenList.add(new concat_label(lineCount));
-                }
-                else if ("Double".equals(tok.toString())) {
-                    tokenList.add(new double_label(lineCount));
-                }
-                else if (")".equals(tok.toString())) {
-                    tokenList.add(new end_paren(lineCount));
-                }
-                else if (";".equals(tok.toString())) {
-                    tokenList.add(new end_stmt(lineCount));
-                }
-                else if ("Integer".equals(tok.toString())) {
-                    tokenList.add(new int_label(lineCount));
-                }
-                else if ("print".equals(tok.toString())) {
-                    tokenList.add(new print_label(lineCount));
-                }
-                else if ("(".equals(tok.toString())) {
-                    tokenList.add(new start_paren(lineCount));
-                }
-                else if ("String".equals(tok.toString())) {
-                    tokenList.add(new str_label(lineCount));
-                }
-                else if ("*".equals(tok.toString()) || "/".equals(tok.toString()) || "^".equals(tok.toString()) ||
-                        "+".equals(tok.toString()) || "-".equals(tok.toString())) {
-                    tokenList.add(new op(lineCount, tok.toString()));
-                }
-                else if ("\"".equals(tok.toString())) {
-                    //String literal
-                    tokenList.add(new quote(lineCount));
-
-                    tok = new StringBuilder();
-
-                    i++;
-                    while (i < lineLength) {
-                        char ch = line.charAt(i);
-                        if (ch == '"')
-                            break;
-
-                        if (!((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9') || ch == ' '))
+                        if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && ch != ' ')
                             errorPrinter.throwError(lineCount, new Syntax("Illegal character '" + ch +
                                     "' detected in string literal"));
-
                         tok.append(ch);
-
                         i++;
                     }
-
                     if (i == lineLength)
                         errorPrinter.throwError(lineCount, new Syntax("Strings cannot wrap lines"));
-
                     tokenList.add(new str_token(lineCount, tok.toString()));
-                    tokenList.add(new quote(lineCount));
-                }
-                else if (tok.charAt(0) == '+' || tok.charAt(0) == '-' || tok.charAt(0) == '.' || Character.isDigit(tok.charAt(0))) {
+                } else if (Character.isDigit(ch) || ch == '.') { // Integer or Double
                     boolean isDouble = false;
-                    int intV = -1;
-                    double dblV = -1;
-                    try {
-                        intV = Integer.parseInt(tok.toString());
-                    } catch (NumberFormatException n) {
-                        try {
-                            dblV = Double.parseDouble(tok.toString());
+                    int z = -1;
+                    double dbl = -1;
+                    while (i < lineLength) {
+                        ch = line.charAt(i);
+                        if (ch == '.' && !isDouble) {
                             isDouble = true;
-                        } catch (NumberFormatException m) {
+                            tok.append(ch);
+                            i++;
+                            continue;
+                        }
+                        if (!Character.isDigit(ch)) {
+                            i--;
+                            break;
+                        }
+                        tok.append(ch);
+                        i++;
+                    }
+                    if (isDouble) {
+                        try {
+                            dbl = Double.parseDouble(tok.toString());
+                            tokenList.add(new double_token(lineCount, dbl));
+                        } catch (NumberFormatException e) {
                             errorPrinter.throwError(lineCount, new Syntax("invalid representation of a number"));
                         }
+                    } else {
+                        z = Integer.parseInt(tok.toString());
+                        tokenList.add(new int_token(lineCount, z));
                     }
-
-                    if (isDouble) {
-                        tokenList.add(new double_token(lineCount, dblV));
-                    }
-                    else {
-                        tokenList.add(new int_token(lineCount, intV));
-                    }
-
-                }
-                else if (Character.isLowerCase(tok.charAt(0))) {
-                    for (int j = 1; j < tok.length(); j++) {
-                        char ch = tok.charAt(j);
-                        if (!Character.isAlphabetic(ch) && !Character.isDigit(ch))
-                            errorPrinter.throwError(lineCount, new Syntax("invalid character in variable/function identifier"));
-                    }
-                    tokenList.add(new id(lineCount, tok.toString()));
-                }
-                else {
-                    errorPrinter.throwError(lineCount, new Syntax("Malformed token at index "
-                            + (i - tok.length() + 1)));
-                }
-
+                } else if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^') // op
+                    tokenList.add(new op(lineCount, Character.toString(ch)));
+                else if (ch == '=') tokenList.add(new asmt_op(lineCount));
+                else if (ch == '(') tokenList.add(new start_paren(lineCount));
+                else if (ch == ')') tokenList.add(new end_paren(lineCount));
+                else if (ch == ';') tokenList.add(new end_stmt(lineCount));
+                else if (ch == ',') tokenList.add(new comma(lineCount));
+                else errorPrinter.throwError(lineCount, new Syntax("Malformed token at index " + i));
             }
-
-            lineCount++;
         }
 
-
+        tokenList.add(new EOF(++lineCount));
         return tokenList;
     }
 }
