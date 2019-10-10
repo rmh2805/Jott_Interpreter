@@ -2,8 +2,8 @@ package src.parseTree.tokens;
 
 public class EOF extends token {
 
-    public EOF (int lineNum) {
-        super(lineNum);
+    public EOF (int lineNumber, int index) {
+        super(lineNumber, index);
     }
 
     @Override

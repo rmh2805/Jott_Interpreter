@@ -49,27 +49,27 @@ public class tokenizer {
                     // Check reserved keywords
                     switch (tok.toString()) {
                         case "print":
-                            tokenList.add(new print_label(lineCount));
+                            tokenList.add(new print_label(lineCount, i + 1));
                             break;
                         case "concat":
-                            tokenList.add(new concat_label(lineCount));
+                            tokenList.add(new concat_label(lineCount, i + 1));
                             break;
                         case "charAt":
-                            tokenList.add(new charAt_label(lineCount));
+                            tokenList.add(new charAt_label(lineCount, i + 1));
                             break;
                         case "Double":
-                            tokenList.add(new double_label(lineCount));
+                            tokenList.add(new double_label(lineCount, i + 1));
                             break;
                         case "Integer":
-                            tokenList.add(new int_label(lineCount));
+                            tokenList.add(new int_label(lineCount, i + 1));
                             break;
                         case "String":
-                            tokenList.add(new str_label(lineCount));
+                            tokenList.add(new str_label(lineCount, i + 1));
                             break;
                         default:
                             if (Character.isLowerCase(tok.charAt(0)))
-                                tokenList.add(new id(lineCount, tok.toString()));
-                            else errorPrinter.throwError(lineCount, new Syntax("invalid type"));
+                                tokenList.add(new id(lineCount, i + 1, tok.toString()));
+                            else errorPrinter.throwError(lineCount, i + 1, new Syntax("invalid type"));
                             break;
                     }
                 } else if (ch == '"') { // str_literal
@@ -82,14 +82,14 @@ public class tokenizer {
                             break;
                         }
                         if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && ch != ' ')
-                            errorPrinter.throwError(lineCount, new Syntax("Illegal character '" + ch +
+                            errorPrinter.throwError(lineCount, i + 1, new Syntax("Illegal character '" + ch +
                                     "' detected in string literal"));
                         tok.append(ch);
                         i++;
                     }
                     if (i == lineLength)
-                        errorPrinter.throwError(lineCount, new Syntax("Strings cannot wrap lines"));
-                    tokenList.add(new str_token(lineCount, tok.toString()));
+                        errorPrinter.throwError(lineCount, i + 1, new Syntax("Strings cannot wrap lines"));
+                    tokenList.add(new str_token(lineCount, i + 1, tok.toString()));
                 } else if (Character.isDigit(ch) || ch == '.') { // Integer or Double
                     boolean isDouble = false;
                     int intIn = -1;
@@ -112,27 +112,27 @@ public class tokenizer {
                     if (isDouble) {
                         try {
                             dbl = Double.parseDouble(tok.toString());
-                            tokenList.add(new double_token(lineCount, dbl));
+                            tokenList.add(new double_token(lineCount, i + 1, dbl));
                         } catch (NumberFormatException e) {
-                            errorPrinter.throwError(lineCount, new Syntax("invalid representation of a number"));
+                            errorPrinter.throwError(lineCount, i + 1, new Syntax("invalid representation of a number"));
                         }
                     } else {
                         intIn = Integer.parseInt(tok.toString());
-                        tokenList.add(new int_token(lineCount, intIn));
+                        tokenList.add(new int_token(lineCount, i + 1, intIn));
                     }
                 } else if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^') // op
-                    tokenList.add(new op(lineCount, Character.toString(ch)));
-                else if (ch == '=') tokenList.add(new asmt_op(lineCount));
-                else if (ch == '(') tokenList.add(new start_paren(lineCount));
-                else if (ch == ')') tokenList.add(new end_paren(lineCount));
-                else if (ch == ';') tokenList.add(new end_stmt(lineCount));
-                else if (ch == ',') tokenList.add(new comma(lineCount));
-                else errorPrinter.throwError(lineCount, new Syntax("Malformed token at index " + i));
+                    tokenList.add(new op(lineCount, i + 1, Character.toString(ch)));
+                else if (ch == '=') tokenList.add(new asmt_op(lineCount, i + 1));
+                else if (ch == '(') tokenList.add(new start_paren(lineCount, i + 1));
+                else if (ch == ')') tokenList.add(new end_paren(lineCount, i + 1));
+                else if (ch == ';') tokenList.add(new end_stmt(lineCount, i + 1));
+                else if (ch == ',') tokenList.add(new comma(lineCount, i + 1));
+                else errorPrinter.throwError(lineCount, i + 1, new Syntax("Malformed token"));
             }
             lineCount++;
         }
 
-        tokenList.add(new EOF(++lineCount));
+        tokenList.add(new EOF(++lineCount, 1));
         return tokenList;
     }
 }

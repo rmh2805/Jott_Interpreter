@@ -46,7 +46,7 @@ public class int_expr extends expr<Integer> implements int_val {
             case "^":
                 return (int) java.lang.Math.pow(left, right);
             default:
-                errorPrinter.throwError(operator.getLineNumber(), new Runtime("Unrecognized operator: " + operator.toString()));
+                errorPrinter.throwError(operator, new Runtime("Unrecognized operator: " + operator.toString()));
                 return null;
         }
     }
@@ -62,7 +62,7 @@ public class int_expr extends expr<Integer> implements int_val {
             //TODO come back to this
             id tok = (id) token;
             if (nameTableSingleton.getInstance().getType(tok) != typeIdx.k_Integer)
-                errorPrinter.throwError(((id) token).getLineNumber(), new Runtime("Error, attempt to use a non-int ID in a double expression"));
+                errorPrinter.throwError(((id) token), new Runtime("Error, attempt to use a non-int ID in a double expression"));
             return nameTableSingleton.getInstance().getInt(tok);
         }
 

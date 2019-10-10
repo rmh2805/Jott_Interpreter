@@ -1,8 +1,8 @@
 package src.parseTree.tokens;
 
 public class comma extends token {
-    public comma(int lineNumber) {
-        super(lineNumber);
+    public comma(int lineNumber, int index) {
+        super(lineNumber, index);
     }
 
     @Override

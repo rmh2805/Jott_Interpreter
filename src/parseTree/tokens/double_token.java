@@ -5,8 +5,8 @@ import src.parseTree.categories.double_val;
 public class double_token extends token implements double_val {
     double val;
 
-    public double_token(int lineNum, double val) {
-        super(lineNum);
+    public double_token(int lineNumber, int index, double val) {
+        super(lineNumber, index);
         this.val = val;
     }
 

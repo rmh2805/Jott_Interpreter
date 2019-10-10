@@ -51,7 +51,7 @@ public class nameTableSingleton {
 
     public void setInt(id name, Integer val) {
         if (isAssigned(name))
-            errorPrinter.throwError(name.getLineNumber(), new Syntax("Cannot reassign variables"));
+            errorPrinter.throwError(name, new Syntax("Cannot reassign variables"));
 
         typeMap.put(name.toString(), typeIdx.k_Integer);
         intMap.put(name.toString(), val);
@@ -59,7 +59,7 @@ public class nameTableSingleton {
 
     public void setDouble(id name, Double val) {
         if (isAssigned(name))
-            errorPrinter.throwError(name.getLineNumber(), new Syntax("Cannot reassign variables"));
+            errorPrinter.throwError(name, new Syntax("Cannot reassign variables"));
 
         typeMap.put(name.toString(), typeIdx.k_Double);
         doubleMap.put(name.toString(), val);
@@ -67,7 +67,7 @@ public class nameTableSingleton {
 
     public void setString(id name, String val) {
         if (isAssigned(name))
-            errorPrinter.throwError(name.getLineNumber(), new Syntax("Cannot reassign variables"));
+            errorPrinter.throwError(name, new Syntax("Cannot reassign variables"));
 
         typeMap.put(name.toString(), typeIdx.k_String);
         strMap.put(name.toString(), val);

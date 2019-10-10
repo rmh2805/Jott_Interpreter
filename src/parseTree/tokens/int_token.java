@@ -5,8 +5,8 @@ import src.parseTree.categories.int_val;
 public class int_token extends token implements int_val {
     private int val;
 
-    public int_token(int lineNum, int val) {
-        super(lineNum);
+    public int_token(int lineNumber, int index, int val) {
+        super(lineNumber, index);
         this.val = val;
     }
 

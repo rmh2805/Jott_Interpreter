@@ -5,6 +5,8 @@ import src.tokenizer;
 
 import java.util.List;
 
+import static src.nameTableSingleton.init_nameTable;
+
 public class testTokenizer {
 
     public static void main(String[] args) throws Exception {
@@ -13,6 +15,7 @@ public class testTokenizer {
             System.exit(1);
         }
         else {
+            init_nameTable(args[0]);
             List<token> tokenList = tokenizer.tokenize(args[0]);
 
             System.out.println("\n\n\tToken List");

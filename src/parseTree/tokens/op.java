@@ -1,17 +1,15 @@
 package src.parseTree.tokens;
 
-import src.parseTree.tokens.token;
-
 public class op extends token{
     private String operator;
 
-    public op (int lineNum, String operator) {
-        super(lineNum);
+    public op (int lineNumber, int index, String operator) {
+        super(lineNumber, index);
         this.operator = operator;
     }
 
-    public op (int lineNum, char operator) {
-        this(lineNum, ""+operator);
+    public op (int lineNumber, int index, char operator) {
+        this(lineNumber, index, ""+operator);
     }
     
     public String toString () {

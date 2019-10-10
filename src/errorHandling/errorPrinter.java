@@ -2,19 +2,32 @@ package src.errorHandling;
 
 import src.errorHandling.types.abstract_error;
 import src.nameTableSingleton;
+import src.parseTree.tokens.token;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class errorPrinter {
+
+    /**
+     * Prints out a standardized error message for a token
+     *
+     * @param token    The token throwing the error
+     * @param error    An object that represents an error
+     */
+    public static void throwError(token token, abstract_error error) {
+        throwError(token.getLineNumber(), token.getIndex(), error);
+    }
+
     /**
      * Prints out a standardized error message
      *
      * @param lineNum  The line the error was found on
+     * @param index    The index on the line the error was found on
      * @param error    An object that represents an error
      */
-    public static void throwError(int lineNum, abstract_error error) {
+    public static void throwError(int lineNum, int index, abstract_error error) {
         String filePath = nameTableSingleton.getFilePath();
         String line = "Something went wrong. Printing Java Stacktrace above.";
         try {
@@ -26,7 +39,7 @@ public class errorPrinter {
             e.printStackTrace();
         }
 
-        System.err.printf(error.toString(), line, lineNum);
+        System.err.printf(error.toString(), line, filePath, lineNum, index);
         System.exit(1);
     }
 }
