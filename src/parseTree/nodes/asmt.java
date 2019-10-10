@@ -1,24 +1,24 @@
 package src.parseTree.nodes;
 
-import src.parseTree.categories.Type;
+import src.parseTree.categories.type;
 import src.parseTree.tokens.asmt_op;
 import src.parseTree.tokens.end_stmt;
 import src.parseTree.tokens.id;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class asmt extends stmt<Integer> {
-    private Type t;
+    private type t;
     private id name;
     private asmt_op op;
     private expr exp;
     private end_stmt endStmt;
 
-    private List<Object> children = new ArrayList<>();
-
     public void fixChildren() {
-        //todo Assign the proper children to their fields
+        //todo Potentially add validation in there
+        t = (type) children.get(0);
+        name = (id) children.get(1);
+        op = (asmt_op) children.get(3);
+        exp = (expr) children.get(4);
+        endStmt = (end_stmt) children.get(5);
     }
 
     public String getType() {
