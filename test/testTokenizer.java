@@ -69,17 +69,10 @@ public class testTokenizer {
         } else {
             testFile(args[0]);
         }
-<<<<<<< HEAD
     }
 
     private static void testFile(String filepath) {
         init_nameTable(filepath);
-=======
-        else {
-            init_nameTable(args[0]);
-            // tokenizer
-            List<token> tokenList = tokenizer.tokenize(args[0]);
->>>>>>> master
 
         List<token> tokenList;
         try {
@@ -98,15 +91,7 @@ public class testTokenizer {
                 System.out.print("\nLine " + numLead + ":\t");
             }
 
-<<<<<<< HEAD
             System.out.print(tok + " | ");
-=======
-            // parser
-            List<Object> children = new ArrayList<>();
-            children.add(parse(tokenList));
-            int gen = 0;
-            parseOutput(gen, children);
->>>>>>> master
         }
         System.out.println("\n\n");
 
