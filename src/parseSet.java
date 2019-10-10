@@ -7,8 +7,8 @@ import java.util.*;
 class parseSet {
 
     private static final String DELIMITER = "[^a-zA-Z0-9_,]+";
-    private static final String FIRSTPATH = "Text/FIRST.txt";
-    private static final String PREDICTPATH = "Text/PREDICT.txt";
+    private static final String FIRSTPATH = "./Text/FIRST.txt";
+    private static final String PREDICTPATH = "./Text/PREDICT.txt";
     static Map<String, Map<String, Boolean>> FIRST = new HashMap<>();
     static Map<String, Map<String, List<String>>> PREDICT = new HashMap<>();
 
@@ -62,9 +62,15 @@ class parseSet {
     static void loadParseSets() {
         try {
             loadSet(FIRSTPATH);
+        } catch (FileNotFoundException e) {
+            System.out.println("Invalid file path for parse set: " + FIRSTPATH);
+            System.exit(-1);
+        }
+
+        try {
             loadSet(PREDICTPATH);
         } catch (FileNotFoundException e) {
-            System.out.println("Invalid file path for parse set");
+            System.out.println("Invalid file path for parse set: " + PREDICTPATH);
             System.exit(-1);
         }
     }

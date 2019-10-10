@@ -4,25 +4,13 @@ import src.parseTree.categories.str_val;
 import src.parseTree.tokens.quote;
 import src.parseTree.tokens.str_token;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class str_literal extends str_expr implements str_val, node {
+public class str_literal extends str_expr implements str_val {
     private quote preQuote;
     private str_token data;
     private quote endQuote;
-    private List<Object> children = new ArrayList<>();
-
-    public void addChild(Object child) {
-        children.add(child);
-    }
 
     public void fixChildren() {
         //todo Assign the proper children to their fields
-    }
-
-    public List<Object> getChildren() {
-        return children;
     }
 
     public str_literal() {}

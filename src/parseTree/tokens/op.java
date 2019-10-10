@@ -1,7 +1,5 @@
 package src.parseTree.tokens;
 
-import src.parseTree.tokens.token;
-
 public class op extends token{
     private String operator;
 

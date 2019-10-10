@@ -6,10 +6,7 @@ import src.parseTree.tokens.comma;
 import src.parseTree.tokens.end_paren;
 import src.parseTree.tokens.start_paren;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class charAt_expr extends str_expr implements node {
+public class charAt_expr extends str_expr {
     private charAt_label op;
     private start_paren startParen;
     private str_val strExpr;
@@ -17,18 +14,8 @@ public class charAt_expr extends str_expr implements node {
     private int_expr intExpr;
     private end_paren endParen;
 
-    private List<Object> children = new ArrayList<>();
-
-    public void addChild(Object child) {
-        children.add(child);
-    }
-
     public void fixChildren() {
         //todo Assign the proper children to their fields
-    }
-
-    public List<Object> getChildren() {
-        return children;
     }
 
     @Override

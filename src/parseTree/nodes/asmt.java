@@ -8,7 +8,7 @@ import src.parseTree.tokens.id;
 import java.util.ArrayList;
 import java.util.List;
 
-public class asmt extends stmt<Integer> implements node {
+public class asmt extends stmt<Integer> {
     private Type t;
     private id name;
     private asmt_op op;
@@ -17,16 +17,8 @@ public class asmt extends stmt<Integer> implements node {
 
     private List<Object> children = new ArrayList<>();
 
-    public void addChild(Object child) {
-        children.add(child);
-    }
-
     public void fixChildren() {
         //todo Assign the proper children to their fields
-    }
-
-    public List<Object> getChildren() {
-        return children;
     }
 
     public String getType() {

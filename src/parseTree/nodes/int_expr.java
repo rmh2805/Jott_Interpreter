@@ -9,25 +9,13 @@ import src.parseTree.tokens.int_token;
 import src.parseTree.tokens.op;
 import src.typeIdx;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class int_expr extends expr<Integer> implements int_val, node {
+public class int_expr extends expr<Integer> implements int_val {
     private int_val lVal;
     private op operator;
     private int_val rVal;
-    private List<Object> children = new ArrayList<>();
-
-    public void addChild(Object child) {
-        children.add(child);
-    }
 
     public void fixChildren() {
         //todo Assign the proper children to their fields
-    }
-
-    public List<Object> getChildren() {
-        return children;
     }
 
     public int_expr() {}
