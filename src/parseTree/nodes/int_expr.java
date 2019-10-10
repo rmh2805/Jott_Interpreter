@@ -7,6 +7,7 @@ import src.parseTree.categories.int_val;
 import src.parseTree.tokens.id;
 import src.parseTree.tokens.int_token;
 import src.parseTree.tokens.op;
+import src.parseTree.tokens.token;
 import src.typeIdx;
 
 import java.util.ArrayList;
@@ -68,6 +69,13 @@ public class int_expr extends expr<Integer> implements int_val, node {
         }
     }
 
+    public int getLineNumber() {
+        if(lVal instanceof int_expr)
+            return ((int_expr) lVal).getLineNumber();
+        else
+            return ((token) lVal).getLineNumber();
+    }
+
     private int parseToken(int_val token) {
         if ((token instanceof int_expr)) {
             return ((int_expr) token).execute();
@@ -76,7 +84,6 @@ public class int_expr extends expr<Integer> implements int_val, node {
             return ((int_token) token).getValue();
         }
         else {
-            //TODO come back to this
             id tok = (id) token;
             if (nameTableSingleton.getInstance().getType(tok) != typeIdx.k_Integer)
                 errorPrinter.throwError(((id) token).getLineNumber(), new Runtime("Error, attempt to use a non-int ID in a double expression"));

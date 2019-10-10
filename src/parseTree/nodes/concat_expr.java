@@ -6,6 +6,7 @@ import src.parseTree.tokens.concat_label;
 import src.parseTree.tokens.end_paren;
 import src.parseTree.tokens.start_paren;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class concat_expr extends str_expr implements str_val, node {
     private comma sep;
     private str_val rStr;
     private end_paren endParen;
+
 
     private List<Object> children = new ArrayList<>();
 
@@ -33,11 +35,11 @@ public class concat_expr extends str_expr implements str_val, node {
 
     @Override
     public String execute() {
-        return null;
+        return str_val.execute(lStr).concat(str_val.execute(rStr));
     }
 
     @Override
     public String toString() {
-        return null;
+        return op.toString() + startParen.toString() + lStr.toString() + sep.toString() + rStr.toString() + endParen.toString();
     }
 }

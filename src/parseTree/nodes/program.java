@@ -44,4 +44,25 @@ public class program implements node {
         return this.firstStatement;
     }
 
+    public void execute () {
+        stmt_lst statement = firstStatement;
+
+        while(statement != null) {
+            statement.getStatement().execute();
+            statement = statement.getNext();
+        }
+    }
+
+    public String toString() {
+        String acc = "";
+        stmt_lst statement = firstStatement;
+
+        while(statement != null) {
+            acc = acc.concat(statement.toString()).concat("\n");
+            statement = statement.getNext();
+        }
+
+        return acc;
+    }
+
 }
