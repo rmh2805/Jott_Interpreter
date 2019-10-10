@@ -102,6 +102,12 @@ public class parser {
             }
 
             token token = tokenList.get(t_idx);
+            // handle eof
+            if (token instanceof EOF && child instanceof stmt_lst) {
+                stack.pop();
+                continue;
+            }
+
             if (!(child instanceof String && child.equals("op"))) { // child not "op"
                 // handle signed double and integer
                 switch (token.toString()) {
