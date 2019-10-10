@@ -3,10 +3,83 @@
   <component name="ChangeListManager">
     <list default="true" id="00da2c4e-ed15-4adf-b3d4-a24500f3f8e6" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Text/PREDICT.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Text/PREDICT.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parseTree/nodes/asmt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parseTree/nodes/asmt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/testTokenizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/testTokenizer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/.github/ISSUE_TEMPLATE/bug_report.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/Jott_Interpreter.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/Text/FIRST.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/Text/PREDICT.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/asmtSyntaxErr.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/charAtSyntaxErr.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/concatSyntaxErr.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/doubleNotLegal.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/example.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/extraParen.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/intNotLegal.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/legal.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/missingParen.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/missingSemicolon.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/reAsmtIllegal.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/signedNum.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/strExprSyntaxErr.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/strNotLegalErr.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/strSyntaxError.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/typeAsmtMismatch.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/typeExprMismatch.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/typeIdMismatch.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/typeLegal.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/jottExamples/varNotFound.j" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/errorHandling/errorPrinter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/errorHandling/types/Runtime.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/errorHandling/types/Syntax.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/errorHandling/types/abstract_error.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/nameTableSingleton.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseSet.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/categories/Type.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/categories/double_val.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/categories/int_val.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/categories/str_val.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/nodes/asmt.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/nodes/charAt_expr.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/nodes/concat_expr.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/nodes/double_expr.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/nodes/expr.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/nodes/int_expr.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/nodes/node.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/nodes/print_stmt.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/nodes/program.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/nodes/stmt.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/nodes/stmt_lst.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/nodes/str_expr.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/nodes/str_literal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/EOF.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/asmt_op.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/charAt_label.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/comma.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/concat_label.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/double_label.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/double_token.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/end_paren.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/end_stmt.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/id.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/int_label.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/int_token.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/op.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/print_label.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/quote.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/start_paren.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/str_label.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/str_token.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parseTree/tokens/token.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parser$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/parser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/tokenizer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/src/typeIdx.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/test/testTokenizer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Jott_Interpreter/tester.sh" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -42,7 +115,7 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="asmt.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="asmt.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/parseTree/nodes/asmt.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="119">
@@ -54,11 +127,20 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/.gitignore">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="51">
+                  <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="int_expr.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/parseTree/nodes/int_expr.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="357">
-                  <caret line="28" column="33" lean-forward="true" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+                  <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -207,6 +289,7 @@
         <option value="$PROJECT_DIR$/src/parseTree/nodes/stmt_lst.java" />
         <option value="$PROJECT_DIR$/src/parseTree/nodes/str_literal.java" />
         <option value="$PROJECT_DIR$/src/parseTree/nodes/asmt.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -250,39 +333,7 @@
             <path>
               <item name="Jott_Interpreter" type="b2602c69:ProjectViewProjectNode" />
               <item name="Jott_Interpreter" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="parseTree" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Jott_Interpreter" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Jott_Interpreter" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="parseTree" type="462c0819:PsiDirectoryNode" />
-              <item name="categories" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Jott_Interpreter" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Jott_Interpreter" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="parseTree" type="462c0819:PsiDirectoryNode" />
-              <item name="nodes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Jott_Interpreter" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Jott_Interpreter" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="parseTree" type="462c0819:PsiDirectoryNode" />
-              <item name="tokens" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Jott_Interpreter" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Jott_Interpreter" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Jott_Interpreter" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Jott_Interpreter" type="462c0819:PsiDirectoryNode" />
-              <item name="Text" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -421,7 +472,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24007000" />
+    <option name="totallyTimeSpent" value="24780000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
@@ -437,10 +488,10 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.25646552" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3297414" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.41056034" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.41056034" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1444563" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1444563" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -528,7 +579,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/global_state_singleton.java" />
     <entry file="file://$PROJECT_DIR$/src/parseTree/nodes/variable.java" />
     <entry file="file://$PROJECT_DIR$/src/parseTree/nodes/value_types/double_val.java" />
     <entry file="file://$PROJECT_DIR$/src/parseTree/nodes/value_types/str_val.java" />
@@ -787,7 +837,7 @@
     <entry file="file://$PROJECT_DIR$/src/parseTree/nodes/int_expr.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
-          <caret line="28" column="33" lean-forward="true" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+          <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -820,6 +870,13 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
         </state>
       </provider>
     </entry>
