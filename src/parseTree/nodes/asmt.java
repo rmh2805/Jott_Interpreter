@@ -24,6 +24,7 @@ public class asmt extends stmt<Integer> {
         exp = (expr) children.get(3);
         exp.fixChildren();
         endStmt = (end_stmt) children.get(4);
+        this.execute(); //todo why do we execute when fixing?
     }
 
     public String getType() {

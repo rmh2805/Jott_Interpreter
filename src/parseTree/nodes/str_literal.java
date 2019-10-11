@@ -19,23 +19,18 @@ public class str_literal extends str_expr implements str_val {
         //todo Assign the proper children to their fields
         if (children.get(0) instanceof str_token) {
             data = ((str_token) children.get(0));
-            preQuote = new quote(data.getLineNumber());
-            endQuote = new quote(data.getLineNumber());
-            alias = null;
+            this.str_literal_set(new quote(data.getLineNumber()), data, new quote(data.getLineNumber()), null);
         }
         else {
-            data = null;
-            preQuote = null;
-            endQuote = null;
-            alias = (id) children.get(0);
+            this.str_literal_set(null, null, null, (id) children.get(0));
         }
     }
 
     public str_literal() {
     }
 
-    public str_literal(quote preQuote, str_token data, quote endQuote) {
-        if (preQuote == null || data == null || endQuote == null) {
+    public void str_literal_set(quote preQuote, str_token data, quote endQuote, id alias) {
+        if (preQuote == null && data == null && endQuote == null && alias == null) {
             System.out.println("Error, missing a token to create a string literal");
             System.exit(1);
         }
@@ -43,6 +38,7 @@ public class str_literal extends str_expr implements str_val {
         this.preQuote = preQuote;
         this.data = data;
         this.endQuote = endQuote;
+        this.alias = alias;
     }
 
     public quote getPreQuote() {

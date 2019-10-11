@@ -35,14 +35,10 @@ public class testTokenizer {
             }
             System.out.println();
 
-
             List<Object> newChildren = new ArrayList<>();
-
 
             if(child instanceof stmt_lst)
                 gen--;
-
-
 
             if(child instanceof node) {
                 newChildren = ((node) child).getChildren();
