@@ -1,15 +1,7 @@
 package src.parseTree.nodes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class program implements node {
+public class program extends node {
     private stmt_lst firstStatement;
-    private List<Object> children = new ArrayList<>();
-
-    public void addChild(Object child) {
-        children.add(child);
-    }
 
     public void fixChildren() {
         firstStatement = (stmt_lst) children.get(0);
@@ -19,10 +11,6 @@ public class program implements node {
             statement.fixChildren();
             statement = statement.getNext();
         }
-    }
-
-    public List<Object> getChildren() {
-        return children;
     }
 
     /**

@@ -21,7 +21,6 @@ public class parser {
      *          false otherwise
      */
     private static boolean first(Object parent, token tok) {
-
         String parentName;
         if (parent instanceof String)
             parentName = (String) parent;
@@ -45,8 +44,6 @@ public class parser {
      *          or empty list (default)
      */
     private static List<String> predict(Object parent, token token) {
-        List<String> result;
-
         String parentName;
         if (parent instanceof String)
             parentName = (String) parent;
@@ -157,7 +154,7 @@ public class parser {
                 if (child instanceof String) childName = (String) child;
                 String tokenName = dummy.getClass().getSimpleName();
                 errorPrinter.throwError(token.getLineNumber(),
-                        new Syntax(String.format("%s expected but found %s", childName, tokenName)));
+                        new Syntax(String.format("%s expected but got %s", childName, tokenName)));
             }
 
             List<String> children = predict(child, dummy);

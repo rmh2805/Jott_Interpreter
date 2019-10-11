@@ -1,16 +1,8 @@
 package src.parseTree.nodes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class stmt_lst implements node {
+public class stmt_lst extends node {
     private stmt statement;
     private stmt_lst next;
-    private List<Object> children = new ArrayList<>();
-
-    public void addChild(Object child) {
-        children.add(child);
-    }
 
     public void fixChildren() {
         //todo Add some damned validation
@@ -19,10 +11,6 @@ public class stmt_lst implements node {
         if (children.size() == 2) {
             next = (stmt_lst) children.get(1);
         }
-    }
-
-    public List<Object> getChildren() {
-        return children;
     }
 
     public stmt_lst() {
