@@ -1,2 +1,1 @@
 Syntax Error: Type mismatch: Expected Integer got Double, "print( x + y );" (inputs/prog3.j:4)
-// todo would be nice to have Integer and Double instead of int_expr and double_token; would take some finagling though

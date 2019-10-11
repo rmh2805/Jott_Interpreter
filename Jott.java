@@ -26,6 +26,5 @@ public class Jott {
         // Parse the tokens and execute
         program root = parse(tokenList);
         root.fixChildren();
-        root.execute();
     }
 }
