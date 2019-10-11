@@ -72,7 +72,7 @@ public class testTokenizer {
 
             // parser
             List<Object> children = new ArrayList<>();
-            program root = parse(tokenList, args[0]);
+            program root = parse(tokenList);
             children.add(root);
             int gen = 0;
             parseOutput(gen, children);

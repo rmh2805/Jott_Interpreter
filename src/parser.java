@@ -67,7 +67,7 @@ public class parser {
      * @param tokenList list of tokens
      * @return the program
      */
-    public static program parse(List<token> tokenList, String filepath) {
+    public static program parse(List<token> tokenList) {
         loadParseSets();
         int t_idx = 0; // position in tokenList
         Deque<Object> stack = new ArrayDeque<>(); // CFG derivations
