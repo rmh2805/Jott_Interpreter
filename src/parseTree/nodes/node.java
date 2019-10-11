@@ -1,9 +1,10 @@
 package src.parseTree.nodes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class node {
-    protected List<Object> children;
+    protected List<Object> children = new ArrayList<>();
 
     /**
      * Adds a child to the node's internal list of children

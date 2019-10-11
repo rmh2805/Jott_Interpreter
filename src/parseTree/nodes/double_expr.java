@@ -20,7 +20,7 @@ public class double_expr extends expr<Double> implements double_val {
             ((node) lVal).fixChildren();
 
         if (children.size() == 2) {
-            System.out.println("Error, double expression creation must provide either only lVal or lVal, operator, and rVal");
+            System.err.println("Error, double expression creation must provide either only lVal or lVal, operator, and rVal");
             System.exit(1);
         }
         if (children.size() == 3) {
@@ -37,7 +37,7 @@ public class double_expr extends expr<Double> implements double_val {
 
     public double_expr(double_val lVal, op operator, double_val rVal) {
         if (lVal == null || (operator != null && rVal == null) || (operator == null && rVal != null)) {
-            System.out.println("Error, double expression creation must provide either only lVal or lVal, operator, and rVal");
+            System.err.println("Error, double expression creation must provide either only lVal or lVal, operator, and rVal");
             System.exit(1);
         }
         this.lVal = lVal;
