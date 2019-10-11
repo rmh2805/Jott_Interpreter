@@ -1,0 +1,2 @@
+Syntax Error: Expected , got ), "print(concat("");" (inputs/prog21.j:1)
+// todo better error syntax

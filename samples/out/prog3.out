@@ -1,0 +1,2 @@
+Syntax Error: Type mismatch: Expected Integer got Double, "print( x + y );" (inputs/prog3.j:4)
+// todo our error printing could be better formatted to be this
