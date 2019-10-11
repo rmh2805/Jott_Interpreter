@@ -71,12 +71,12 @@ public class int_expr extends expr<Integer> implements int_val, node {
             int_expr intExp = new int_expr();
             intExp.int_expr_set(lVal, operator, ((int_val) (((int_expr) rVal).getChildren().get(0))));
             left = intExp.execute();
-            right = parseToken((int_expr) ((int_expr) rVal).getChildren().get(2));
+            int_val tester= ((int_expr) ((int_expr) rVal).getChildren().get(2)).lVal;
+            right = parseToken(tester);
             operator = (op) ((int_expr) rVal).getChildren().get(1);
         } else {
             right = parseToken(rVal);
         }
-
         switch (operator.toString()) {
             case "+":
                 return left + right;

@@ -47,7 +47,7 @@ public class double_expr extends expr<Double> implements double_val, node {
     public double_expr() {
     }
 
-    public double_expr(double_val lVal, op operator, double_val rVal) {
+    public void double_expr_set(double_val lVal, op operator, double_val rVal) {
         if (lVal == null || (operator != null && rVal == null) || (operator == null && rVal != null)) {
             System.out.println("Error, double expression creation must provide either only lVal or lVal, operator, and rVal");
             System.exit(1);
@@ -60,11 +60,21 @@ public class double_expr extends expr<Double> implements double_val, node {
     @Override
     public Double execute() {
         double left = parseToken(lVal);
+        double right = 0;
 
         if (operator == null)
             return left;
 
-        double right = parseToken(rVal);
+        if (rVal instanceof double_expr && ((double_expr) rVal).children.size() == 3) {
+            double_expr doubleExpr = new double_expr();
+            doubleExpr.double_expr_set(lVal, operator, ((double_val) (((double_expr) rVal).getChildren().get(0))));
+            left = doubleExpr.execute();
+            double_val tester= ((double_expr) ((double_expr) rVal).getChildren().get(2)).lVal;
+            right = parseToken(tester);
+            operator = (op) ((double_expr) rVal).getChildren().get(1);
+        } else {
+            right = parseToken(rVal);
+        }
 
         switch (operator.toString()) {
             case "+":
@@ -74,6 +84,9 @@ public class double_expr extends expr<Double> implements double_val, node {
             case "*":
                 return left * right;
             case "/":
+                if (right == 0) {
+                    errorPrinter.throwError(operator.getLineNumber(), new Runtime("Divide by Zero"));
+                }
                 return left / right;
             case "^":
                 return Math.pow(left, right);
