@@ -73,14 +73,10 @@ public class tokenizer {
                             break;
                     }
                 } else if (ch == '"') { // str_literal
-                    tok.append(ch);
                     i++;
                     while (i < lineLength) {
                         ch = line.charAt(i);
-                        if (ch == '"') {
-                            tok.append(ch);
-                            break;
-                        }
+                        if (ch == '"') break;
                         if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && ch != ' ')
                             errorPrinter.throwError(lineCount, new Syntax("Illegal character '" + ch +
                                     "' detected in string literal"));
