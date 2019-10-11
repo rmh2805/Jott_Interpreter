@@ -21,7 +21,14 @@ public class print_stmt extends stmt<Integer> implements node {
     }
 
     public void fixChildren() {
-        //todo Assign the proper children to their fields
+        //todo Add some validation
+        printLabel = (print_label) children.get(0);
+        startParen = (start_paren) children.get(1);
+        toPrint = (expr) children.get(2);
+        if(toPrint instanceof node)
+        toPrint.fixChildren();
+        endParen = (end_paren) children.get(3);
+        endStmt = (end_stmt) children.get(4);
     }
 
     public List<Object> getChildren() {

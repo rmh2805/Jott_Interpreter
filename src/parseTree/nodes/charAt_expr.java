@@ -26,12 +26,14 @@ public class charAt_expr extends str_expr implements node {
     }
 
     public void fixChildren() {
-        //todo Assign the proper children to their fields
+        //todo Add validation here
         op = (charAt_label) children.get(0);
         startParen = (start_paren) children.get(1);
         strExpr = (str_expr) children.get(2);
+        strExpr.fixChildren();
         sep = (comma) children.get(3);
         intExpr = (int_expr) children.get(4);
+        intExpr.fixChildren();
         endParen = (end_paren) children.get(5);
     }
 

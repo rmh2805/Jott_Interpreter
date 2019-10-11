@@ -4,16 +4,10 @@ package src.parseTree.nodes;
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Runtime;
 import src.errorHandling.types.Syntax;
-
 import src.nameTableSingleton;
-import src.typeIdx;
-
 import src.parseTree.categories.Type;
-
 import src.parseTree.tokens.*;
-import src.parseTree.tokens.asmt_op;
-import src.parseTree.tokens.end_stmt;
-import src.parseTree.tokens.id;
+import src.typeIdx;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +29,10 @@ public class asmt extends stmt<Integer> implements node {
         //todo Potentially add validation in there
         t = (Type) children.get(0);
         name = (id) children.get(1);
-        op = (asmt_op) children.get(3);
-        exp = (expr) children.get(4);
-        endStmt = (end_stmt) children.get(5);
+        op = (asmt_op) children.get(2);
+        exp = (expr) children.get(3);
+        exp.fixChildren();
+        endStmt = (end_stmt) children.get(4);
     }
 
     public List<Object> getChildren() {

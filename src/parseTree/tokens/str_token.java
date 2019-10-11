@@ -6,6 +6,7 @@ public class str_token extends token {
     public str_token(int lineNumber, String data) {
         super(lineNumber);
         this.data = data;
+        //this.data = data.substring(1, data.length()-1);
     }
 
 
@@ -15,6 +16,6 @@ public class str_token extends token {
      * @return The string literal's data
      */
     public String toString() {
-        return data;
+        return data.substring(1, data.length() - 1);
     }
 }

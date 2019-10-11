@@ -23,14 +23,30 @@ public class double_expr extends expr<Double> implements double_val, node {
     }
 
     public void fixChildren() {
-        //todo Assign the proper children to their fields
+        lVal = (double_val) children.get(0);
+        if (lVal instanceof node)
+            ((node) lVal).fixChildren();
+
+        if (children.size() == 2) {
+            System.out.println("Error, double expression creation must provide either only lVal or lVal, operator, and rVal");
+            System.exit(1);
+        }
+        if (children.size() == 3) {
+            operator = (op) children.get(1);
+            rVal = (double_val) children.get(2);
+            if (rVal instanceof node)
+                ((node) rVal).fixChildren();
+
+        }
     }
 
     public List<Object> getChildren() {
         return children;
     }
 
-    public double_expr() {}
+    public double_expr() {
+    }
+
     public double_expr(double_val lVal, op operator, double_val rVal) {
         if (lVal == null || (operator != null && rVal == null) || (operator == null && rVal != null)) {
             System.out.println("Error, double expression creation must provide either only lVal or lVal, operator, and rVal");

@@ -13,14 +13,21 @@ public class stmt_lst implements node {
     }
 
     public void fixChildren() {
-        //todo Assign the proper children to their fields
+        //todo Add some damned validation
+        statement = (stmt) children.get(0);
+        statement.fixChildren();
+        if (children.size() == 2) {
+            next = (stmt_lst) children.get(1);
+        }
     }
 
     public List<Object> getChildren() {
         return children;
     }
 
-    public stmt_lst() {}
+    public stmt_lst() {
+    }
+
     /**
      * A node of the Jott statement list
      *
@@ -38,6 +45,7 @@ public class stmt_lst implements node {
 
     /**
      * Set the next node on the statement list
+     *
      * @param next The next node on the statement list
      */
     public void setNextStatement(stmt_lst next) {

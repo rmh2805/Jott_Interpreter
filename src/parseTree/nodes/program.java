@@ -13,6 +13,13 @@ public class program implements node {
 
     public void fixChildren() {
         //todo Assign the proper children to their fields
+        firstStatement = (stmt_lst) children.get(0);
+
+        stmt_lst statement = firstStatement;
+        while(statement != null) {
+            statement.fixChildren();
+            statement = statement.getNext();
+        }
     }
 
     public List<Object> getChildren() {

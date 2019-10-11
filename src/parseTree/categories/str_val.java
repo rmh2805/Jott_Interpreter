@@ -8,7 +8,7 @@ import src.parseTree.tokens.id;
 import src.typeIdx;
 
 public interface str_val {
-    static String execute (str_val strVal) {
+    static String execute(str_val strVal) {
         if (strVal instanceof id) {
             id strExpr = (id) strVal;
             nameTableSingleton nameTable = nameTableSingleton.getInstance();
@@ -25,4 +25,6 @@ public interface str_val {
             return strExpr.execute();
         }
     }
+
+    public void fixChildren();
 }

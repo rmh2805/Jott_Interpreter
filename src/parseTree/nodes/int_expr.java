@@ -24,14 +24,30 @@ public class int_expr extends expr<Integer> implements int_val, node {
     }
 
     public void fixChildren() {
-        //todo Assign the proper children to their fields
+        lVal = (int_val) children.get(0);
+        if (lVal instanceof node)
+            ((node) lVal).fixChildren();
+
+        if (children.size() == 2) {
+            System.out.println("Error, double expression creation must provide either only lVal or lVal, operator, and rVal");
+            System.exit(1);
+        }
+        if (children.size() == 3) {
+            operator = (op) children.get(1);
+            rVal = (int_val) children.get(2);
+            if (rVal instanceof node)
+                ((node) rVal).fixChildren();
+
+        }
     }
 
     public List<Object> getChildren() {
         return children;
     }
 
-    public int_expr() {}
+    public int_expr() {
+    }
+
     public int_expr(int_val lVal, op operator, int_val rVal) {
         if (lVal == null || (operator != null && rVal == null) || (operator == null && rVal != null)) {
             System.out.println("Error, int expression creation must provide either only lVal or lVal, operator, and rVal");
@@ -70,7 +86,7 @@ public class int_expr extends expr<Integer> implements int_val, node {
     }
 
     public int getLineNumber() {
-        if(lVal instanceof int_expr)
+        if (lVal instanceof int_expr)
             return ((int_expr) lVal).getLineNumber();
         else
             return ((token) lVal).getLineNumber();

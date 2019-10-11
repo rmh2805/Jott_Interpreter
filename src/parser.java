@@ -111,6 +111,7 @@ public class parser {
             if (!(child instanceof String && child.equals("op"))) { // child not "op"
                 // handle signed double and integer
                 switch (token.toString()) {
+                    //todo Check for negation of IDs and for multiple signs before any given number
                     case "+":
                     case "-":
                         token nextToken = tokenList.get(t_idx + 1);

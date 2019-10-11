@@ -1,5 +1,7 @@
 package src.parseTree.nodes;
 
+import java.util.List;
+
 public interface node {
     /**
      * Adds a child to the node's internal list of children
@@ -7,6 +9,8 @@ public interface node {
      * @param child The child to add to the node
      */
     public void addChild(Object child);
+
+    public List<Object> getChildren();
 
     /**
      * Assign children to their fields for execution
