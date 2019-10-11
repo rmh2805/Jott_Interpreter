@@ -78,8 +78,7 @@ public class tokenizer {
                         ch = line.charAt(i);
                         if (ch == '"') break;
                         if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && ch != ' ')
-                            errorPrinter.throwError(lineCount, new Syntax("Illegal character '" + ch +
-                                    "' detected in string literal"));
+                            errorPrinter.throwError(lineCount, new Syntax("Missing '\"' at end of string"));
                         tok.append(ch);
                         i++;
                     }

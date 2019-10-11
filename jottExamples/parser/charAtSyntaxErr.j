@@ -1,0 +1,1 @@
+String s = charAt("cat", 1.0);

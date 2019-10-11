@@ -1,7 +1,29 @@
 package src.parseTree.nodes;
 
-public class program {
+import java.util.ArrayList;
+import java.util.List;
+
+public class program implements node {
     private stmt_lst firstStatement;
+    private List<Object> children = new ArrayList<>();
+
+    public void addChild(Object child) {
+        children.add(child);
+    }
+
+    public void fixChildren() {
+        firstStatement = (stmt_lst) children.get(0);
+
+        stmt_lst statement = firstStatement;
+        while(statement != null) {
+            statement.fixChildren();
+            statement = statement.getNext();
+        }
+    }
+
+    public List<Object> getChildren() {
+        return children;
+    }
 
     /**
      * Root node of the Jott parse tree
@@ -26,6 +48,27 @@ public class program {
      */
     public stmt_lst getStatement () {
         return this.firstStatement;
+    }
+
+    public void execute () {
+        stmt_lst statement = firstStatement;
+
+        while(statement != null) {
+            statement.getStatement().execute();
+            statement = statement.getNext();
+        }
+    }
+
+    public String toString() {
+        String acc = "";
+        stmt_lst statement = firstStatement;
+
+        while(statement != null) {
+            acc = acc.concat(statement.toString()).concat("\n");
+            statement = statement.getNext();
+        }
+
+        return acc;
     }
 
 }

@@ -1,8 +1,32 @@
 package src.parseTree.nodes;
 
-public class stmt_lst {
+import java.util.ArrayList;
+import java.util.List;
+
+public class stmt_lst implements node {
     private stmt statement;
     private stmt_lst next;
+    private List<Object> children = new ArrayList<>();
+
+    public void addChild(Object child) {
+        children.add(child);
+    }
+
+    public void fixChildren() {
+        //todo Add some damned validation
+        statement = (stmt) children.get(0);
+        statement.fixChildren();
+        if (children.size() == 2) {
+            next = (stmt_lst) children.get(1);
+        }
+    }
+
+    public List<Object> getChildren() {
+        return children;
+    }
+
+    public stmt_lst() {
+    }
 
     /**
      * A node of the Jott statement list
@@ -21,6 +45,7 @@ public class stmt_lst {
 
     /**
      * Set the next node on the statement list
+     *
      * @param next The next node on the statement list
      */
     public void setNextStatement(stmt_lst next) {
