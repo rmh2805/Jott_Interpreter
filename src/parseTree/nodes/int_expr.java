@@ -67,13 +67,19 @@ public class int_expr extends expr<Integer> implements int_val, node {
         if (operator == null)
             return left;
 
+        //in the case that there are more than 2 values to compute: compute the first two, obtain the results, create a new
+        //int_expr containing the result, next operand, and value following the operand. This is recursively done until
+        //computation ends at the last value
         if (rVal instanceof int_expr && ((int_expr) rVal).children.size() == 3) {
             int_expr intExp = new int_expr();
             intExp.int_expr_set(lVal, operator, ((int_val) (((int_expr) rVal).getChildren().get(0))));
             left = intExp.execute();
-            int_val tester= ((int_expr) ((int_expr) rVal).getChildren().get(2)).lVal;
-            right = parseToken(tester);
+            int_val leftValue = new int_token(((int_token) lVal).getLineNumber(), left);
             operator = (op) ((int_expr) rVal).getChildren().get(1);
+            int_expr expr = new int_expr();
+            expr.int_expr_set(leftValue, operator, ((int_expr) (((int_expr) rVal).getChildren().get(2))));
+            int result = expr.execute();
+            return result;
         } else {
             right = parseToken(rVal);
         }

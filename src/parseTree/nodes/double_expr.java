@@ -65,13 +65,19 @@ public class double_expr extends expr<Double> implements double_val, node {
         if (operator == null)
             return left;
 
+        //in the case that there are more than 2 values to compute: compute the first two, obtain the results, create a new
+        //double_expr containing the result, next operand, and value following the operand. This is recursively done until
+        //computation ends at the last value
         if (rVal instanceof double_expr && ((double_expr) rVal).children.size() == 3) {
             double_expr doubleExpr = new double_expr();
             doubleExpr.double_expr_set(lVal, operator, ((double_val) (((double_expr) rVal).getChildren().get(0))));
             left = doubleExpr.execute();
-            double_val tester= ((double_expr) ((double_expr) rVal).getChildren().get(2)).lVal;
-            right = parseToken(tester);
+            double_val leftValue = new double_token(((double_token) lVal).getLineNumber(), left);
             operator = (op) ((double_expr) rVal).getChildren().get(1);
+            double_expr expr = new double_expr();
+            expr.double_expr_set(leftValue, operator, ((double_expr) (((double_expr) rVal).getChildren().get(2))));
+            Double result = expr.execute();
+            return result;
         } else {
             right = parseToken(rVal);
         }
