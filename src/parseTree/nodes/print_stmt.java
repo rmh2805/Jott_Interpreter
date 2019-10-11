@@ -25,7 +25,7 @@ public class print_stmt extends stmt<Integer> implements node {
         toPrint = (expr) children.get(2);
         this.print_stmt_set((print_label) children.get(0), (start_paren) children.get(1),
                 toPrint, (end_paren) children.get(3), (end_stmt) children.get(4));
-        if(toPrint instanceof node) toPrint.fixChildren();
+        if (toPrint != null) toPrint.fixChildren();
         this.execute();
     }
 
