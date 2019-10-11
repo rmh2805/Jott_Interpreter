@@ -9,21 +9,12 @@ import src.parseTree.categories.Type;
 import src.parseTree.tokens.*;
 import src.typeIdx;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class asmt extends stmt<Integer> implements node {
+public class asmt extends stmt<Integer> {
     private Type t;
     private id name;
     private asmt_op op;
     private expr exp;
     private end_stmt endStmt;
-
-    private List<Object> children = new ArrayList<>();
-
-    public void addChild(Object child) {
-        children.add(child);
-    }
 
     public void fixChildren() {
         //todo Potentially add validation in there
@@ -33,10 +24,6 @@ public class asmt extends stmt<Integer> implements node {
         exp = (expr) children.get(3);
         exp.fixChildren();
         endStmt = (end_stmt) children.get(4);
-    }
-
-    public List<Object> getChildren() {
-        return children;
     }
 
     public String getType() {

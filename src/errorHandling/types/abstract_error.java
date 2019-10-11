@@ -13,8 +13,9 @@ public abstract class abstract_error {
     public String toString() {
         return new StringBuilder("\n")
                 .append(type)
-                .append("Error: line '%s' %d. \n")
+                .append(" Error: ")
                 .append(remedy)
+                .append(", \"%s\" (%s:%d)")
                 .append("\n")
                 .toString();
     }

@@ -9,18 +9,10 @@ import src.parseTree.tokens.id;
 import src.parseTree.tokens.op;
 import src.typeIdx;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class double_expr extends expr<Double> implements double_val, node {
+public class double_expr extends expr<Double> implements double_val {
     private double_val lVal;
     private op operator;
     private double_val rVal;
-    private List<Object> children = new ArrayList<>();
-
-    public void addChild(Object child) {
-        children.add(child);
-    }
 
     public void fixChildren() {
         lVal = (double_val) children.get(0);
@@ -38,10 +30,6 @@ public class double_expr extends expr<Double> implements double_val, node {
                 ((node) rVal).fixChildren();
 
         }
-    }
-
-    public List<Object> getChildren() {
-        return children;
     }
 
     public double_expr() {

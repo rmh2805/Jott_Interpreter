@@ -1,2 +1,1 @@
 Syntax Error: Missing ", "print("foo );" (inputs/prog16.j:1)
-// todo the syntax error we throw is not the same, is this ok?

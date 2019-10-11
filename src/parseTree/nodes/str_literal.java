@@ -9,19 +9,11 @@ import src.parseTree.tokens.quote;
 import src.parseTree.tokens.str_token;
 import src.typeIdx;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class str_literal extends str_expr implements str_val, node {
+public class str_literal extends str_expr implements str_val {
     private quote preQuote;
     private str_token data;
     private quote endQuote;
     private id alias;
-    private List<Object> children = new ArrayList<>();
-
-    public void addChild(Object child) {
-        children.add(child);
-    }
 
     public void fixChildren() {
         //todo Assign the proper children to their fields
@@ -37,10 +29,6 @@ public class str_literal extends str_expr implements str_val, node {
             endQuote = null;
             alias = (id) children.get(0);
         }
-    }
-
-    public List<Object> getChildren() {
-        return children;
     }
 
     public str_literal() {

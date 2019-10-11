@@ -9,7 +9,7 @@ import java.util.List;
 import static src.parser.parse;
 
 public class Jott {
-    public static void main(String[] args) throws FileNotFoundException { // todo can we get rid of this exception?
+    public static void main(String[] args) throws FileNotFoundException {
         if (args.length != 1) { // check bad input length
             System.err.println("Correct usage: \n$java Jott {program.j}");
             return;

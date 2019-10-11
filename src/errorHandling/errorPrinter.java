@@ -14,6 +14,7 @@ public class errorPrinter {
      * @param lineNum  The line the error was found on
      * @param error    An object that represents an error
      */
+    // todo line position
     public static void throwError(int lineNum, abstract_error error) {
         String filePath = nameTableSingleton.getFilePath();
         String line = "Something went wrong. Printing Java Stacktrace above.";
@@ -27,7 +28,7 @@ public class errorPrinter {
         }
 
         System.out.flush();
-        System.err.printf(error.toString(), line, lineNum);
+        System.err.printf(error.toString(), line, filePath, lineNum);
         System.exit(1);
     }
 }
