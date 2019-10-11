@@ -32,7 +32,7 @@ public class tokenizer {
                 StringBuilder tok = new StringBuilder();
                 char ch = line.charAt(i);
                 if (Character.isWhitespace(ch)) continue; // Skip whitespace before grabbing a new token
-                if (ch == '/' && ++i < lineLength && line.charAt(i) == '/') { // Ignore comment
+                if (ch == '/' && i + 1 < lineLength && line.charAt(i + 1) == '/') { // Ignore comment
                     lineCount++;
                     break;
                 }
