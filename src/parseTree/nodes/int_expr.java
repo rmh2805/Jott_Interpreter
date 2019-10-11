@@ -76,7 +76,14 @@ public class int_expr extends expr<Integer> implements int_val, node {
             case "*":
                 return left * right;
             case "/":
-                return left / right;
+                int ret = 0;
+                try {
+                    ret = left / right;
+                } catch (ArithmeticException e) {
+                    errorPrinter.throwError(operator.getLineNumber(), new Runtime("Divide by zero."));
+                    System.exit(0);
+                }
+                return ret;
             case "^":
                 return (int) java.lang.Math.pow(left, right);
             default:
