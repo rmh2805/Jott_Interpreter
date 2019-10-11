@@ -33,6 +33,7 @@ public class asmt extends stmt<Integer> implements node {
         exp = (expr) children.get(3);
         exp.fixChildren();
         endStmt = (end_stmt) children.get(4);
+        this.execute();
     }
 
     public List<Object> getChildren() {
