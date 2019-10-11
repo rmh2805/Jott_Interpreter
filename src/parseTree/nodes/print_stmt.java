@@ -22,13 +22,11 @@ public class print_stmt extends stmt<Integer> implements node {
 
     public void fixChildren() {
         //todo Add some validation
-        printLabel = (print_label) children.get(0);
-        startParen = (start_paren) children.get(1);
         toPrint = (expr) children.get(2);
-        if(toPrint instanceof node)
-        toPrint.fixChildren();
-        endParen = (end_paren) children.get(3);
-        endStmt = (end_stmt) children.get(4);
+        this.print_stmt_set((print_label) children.get(0), (start_paren) children.get(1),
+                toPrint, (end_paren) children.get(3), (end_stmt) children.get(4));
+        if(toPrint instanceof node) toPrint.fixChildren();
+        this.execute();
     }
 
     public List<Object> getChildren() {
@@ -37,14 +35,14 @@ public class print_stmt extends stmt<Integer> implements node {
 
     public print_stmt() {}
     /**
-     * Create a new print statement
+     * sets the values for a print_stmt instance
      *
      * @param printLabel The "Print" token
      * @param startParen The "(" token
      * @param toPrint    The expression whose value I should print
      * @param endParen   The ")" token
      */
-    public print_stmt(print_label printLabel, start_paren startParen, expr toPrint, end_paren endParen, end_stmt endStmt) {
+    public void print_stmt_set(print_label printLabel, start_paren startParen, expr toPrint, end_paren endParen, end_stmt endStmt) {
         if (printLabel == null || startParen == null || toPrint == null || endParen == null) {
             System.out.println("Error, missing a required token in print statement");
             System.exit(1);

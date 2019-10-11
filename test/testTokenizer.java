@@ -35,14 +35,10 @@ public class testTokenizer {
             }
             System.out.println();
 
-
             List<Object> newChildren = new ArrayList<>();
-
 
             if(child instanceof stmt_lst)
                 gen--;
-
-
 
             if(child instanceof node) {
                 newChildren = ((node) child).getChildren();
@@ -76,7 +72,7 @@ public class testTokenizer {
 
             // parser
             List<Object> children = new ArrayList<>();
-            program root = parse(tokenList);
+            program root = parse(tokenList, args[0]);
             children.add(root);
             int gen = 0;
             parseOutput(gen, children);

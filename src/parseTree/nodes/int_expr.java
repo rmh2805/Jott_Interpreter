@@ -48,7 +48,7 @@ public class int_expr extends expr<Integer> implements int_val, node {
     public int_expr() {
     }
 
-    public int_expr(int_val lVal, op operator, int_val rVal) {
+    public void int_expr_set(int_val lVal, op operator, int_val rVal) {
         if (lVal == null || (operator != null && rVal == null) || (operator == null && rVal != null)) {
             System.out.println("Error, int expression creation must provide either only lVal or lVal, operator, and rVal");
             System.exit(1);
@@ -62,11 +62,20 @@ public class int_expr extends expr<Integer> implements int_val, node {
     @Override
     public Integer execute() {
         int left = parseToken(lVal);
+        int right = 0;
 
         if (operator == null)
             return left;
 
-        int right = parseToken(rVal);
+        if (rVal instanceof int_expr && ((int_expr) rVal).children.size() == 3) {
+            int_expr intExp = new int_expr();
+            intExp.int_expr_set(lVal, operator, ((int_val) (((int_expr) rVal).getChildren().get(0))));
+            left = intExp.execute();
+            right = parseToken((int_expr) ((int_expr) rVal).getChildren().get(2));
+            operator = (op) ((int_expr) rVal).getChildren().get(1);
+        } else {
+            right = parseToken(rVal);
+        }
 
         switch (operator.toString()) {
             case "+":
@@ -76,6 +85,9 @@ public class int_expr extends expr<Integer> implements int_val, node {
             case "*":
                 return left * right;
             case "/":
+                if (right == 0) {
+                    errorPrinter.throwError(operator.getLineNumber(), new Runtime("Divide by Zero"));
+                }
                 return left / right;
             case "^":
                 return (int) java.lang.Math.pow(left, right);
@@ -110,6 +122,10 @@ public class int_expr extends expr<Integer> implements int_val, node {
 
     @Override
     public String toString() {
-        return lVal.toString() + operator.toString() + rVal.toString();
+        if (operator != null && rVal != null) {
+            return lVal.toString() + operator.toString() + rVal.toString();
+        } else {
+            return lVal.toString();
+        }
     }
 }
