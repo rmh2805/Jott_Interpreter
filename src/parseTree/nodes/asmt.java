@@ -22,9 +22,7 @@ public class asmt extends stmt<Integer> {
         name = (id) children.get(1);
         op = (asmt_op) children.get(2);
         exp = (expr) children.get(3);
-        exp.fixChildren();
         endStmt = (end_stmt) children.get(4);
-        this.execute(); //todo why do we execute when fixing?
     }
 
     public String getType() {
@@ -37,6 +35,7 @@ public class asmt extends stmt<Integer> {
 
     @Override
     public Integer execute() {
+        this.fixChildren();
         if (nameTableSingleton.getInstance().isAssigned(name)) {
             errorPrinter.throwError(name.getLineNumber(), new Runtime("Attempting to assign to an already assigned id"));
         }
@@ -68,7 +67,7 @@ public class asmt extends stmt<Integer> {
                     nameTableSingleton.getInstance().setString(name, ((str_expr) exp).execute());
                 break;
             default:
-                errorPrinter.throwError(op.getLineNumber(), new Runtime("Attempted to cast incompatible types"));
+                errorPrinter.throwError(op.getLineNumber(), new Runtime("Attempt to assign to incompatible type"));
         }
 
         return 0;

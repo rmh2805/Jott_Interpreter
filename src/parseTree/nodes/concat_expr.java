@@ -19,16 +19,14 @@ public class concat_expr extends str_expr implements str_val {
         op = (concat_label) children.get(0);
         startParen = (start_paren) children.get(1);
         lStr = (str_val) children.get(2);
-        lStr.fixChildren();
         sep = (comma) children.get(3);
         rStr = (str_val) children.get(4);
-        rStr.fixChildren();
         endParen = (end_paren) children.get(5);
-
     }
 
     @Override
     public String execute() {
+        this.fixChildren();
         return str_val.execute(lStr).concat(str_val.execute(rStr));
     }
 
