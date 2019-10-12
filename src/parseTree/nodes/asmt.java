@@ -9,35 +9,19 @@ import src.parseTree.categories.Type;
 import src.parseTree.tokens.*;
 import src.typeIdx;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class asmt extends stmt<Integer> implements node {
+public class asmt extends stmt<Integer> {
     private Type t;
     private id name;
     private asmt_op op;
     private expr exp;
     private end_stmt endStmt;
 
-    private List<Object> children = new ArrayList<>();
-
-    public void addChild(Object child) {
-        children.add(child);
-    }
-
     public void fixChildren() {
-        //todo Potentially add validation in there
         t = (Type) children.get(0);
         name = (id) children.get(1);
         op = (asmt_op) children.get(2);
         exp = (expr) children.get(3);
-        exp.fixChildren();
         endStmt = (end_stmt) children.get(4);
-        this.execute();
-    }
-
-    public List<Object> getChildren() {
-        return children;
     }
 
     public String getType() {
@@ -50,6 +34,7 @@ public class asmt extends stmt<Integer> implements node {
 
     @Override
     public Integer execute() {
+        this.fixChildren();
         if (nameTableSingleton.getInstance().isAssigned(name)) {
             errorPrinter.throwError(name.getLineNumber(), new Runtime("Attempting to assign to an already assigned id"));
         }
@@ -81,7 +66,7 @@ public class asmt extends stmt<Integer> implements node {
                     nameTableSingleton.getInstance().setString(name, ((str_expr) exp).execute());
                 break;
             default:
-                errorPrinter.throwError(op.getLineNumber(), new Runtime("Attempted to cast incompatible types"));
+                errorPrinter.throwError(op.getLineNumber(), new Runtime("Attempt to assign to incompatible type"));
         }
 
         return 0;

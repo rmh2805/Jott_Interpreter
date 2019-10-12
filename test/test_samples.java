@@ -42,7 +42,7 @@ public class test_samples {
             List<token> tokenList = tokenizer.tokenize(fileName);
 
             program root = parse(tokenList);
-            root.fixChildren();
+            root.execute();
         }
     }
 }

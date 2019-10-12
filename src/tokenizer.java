@@ -21,11 +21,10 @@ public class tokenizer {
      */
     public static List<token> tokenize(String filepath) throws FileNotFoundException {
         Scanner sc = new Scanner(new File(filepath));
-        int lineCount = 0;  //An incrementing line counter
+        int lineCount = 1;  //An incrementing line counter
         List<token> tokenList = new LinkedList<>(); //The list of tokens which will be returned
 
         while (sc.hasNextLine()) {  //For each line of the source file
-            lineCount++;
             String line = sc.nextLine();    //Grab the line
             int lineLength = line.length(); //Grab its length once
 
@@ -33,7 +32,7 @@ public class tokenizer {
                 StringBuilder tok = new StringBuilder();
                 char ch = line.charAt(i);
                 if (Character.isWhitespace(ch)) continue; // Skip whitespace before grabbing a new token
-                if (ch == '/' && ++i < lineLength && line.charAt(i) == '/') break; // Ignore comment
+                if (ch == '/' && i + 1 < lineLength && line.charAt(i + 1) == '/') break; // Ignore comment
                 if (Character.isAlphabetic(ch)) { // Identifier or keyword
                     while (i < lineLength) {
                         ch = line.charAt(i);
@@ -71,14 +70,10 @@ public class tokenizer {
                             break;
                     }
                 } else if (ch == '"') { // str_literal
-                    tok.append(ch);
                     i++;
                     while (i < lineLength) {
                         ch = line.charAt(i);
-                        if (ch == '"') {
-                            tok.append(ch);
-                            break;
-                        }
+                        if (ch == '"') break;
                         if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && ch != ' ')
                             errorPrinter.throwError(lineCount, new Syntax("Missing '\"' at end of string"));
                         tok.append(ch);
@@ -89,7 +84,7 @@ public class tokenizer {
                     tokenList.add(new str_token(lineCount, tok.toString()));
                 } else if (Character.isDigit(ch) || ch == '.') { // Integer or Double
                     boolean isDouble = false;
-                    int z = -1;
+                    int intIn = -1;
                     double dbl = -1;
                     while (i < lineLength) {
                         ch = line.charAt(i);
@@ -114,8 +109,8 @@ public class tokenizer {
                             errorPrinter.throwError(lineCount, new Syntax("invalid representation of a number"));
                         }
                     } else {
-                        z = Integer.parseInt(tok.toString());
-                        tokenList.add(new int_token(lineCount, z));
+                        intIn = Integer.parseInt(tok.toString());
+                        tokenList.add(new int_token(lineCount, intIn));
                     }
                 } else if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^') // op
                     tokenList.add(new op(lineCount, Character.toString(ch)));
@@ -126,6 +121,7 @@ public class tokenizer {
                 else if (ch == ',') tokenList.add(new comma(lineCount));
                 else errorPrinter.throwError(lineCount, new Syntax("Malformed token at index " + i));
             }
+            lineCount++;
         }
 
         tokenList.add(new EOF(++lineCount));

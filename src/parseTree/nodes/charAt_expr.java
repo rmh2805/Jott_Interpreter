@@ -8,10 +8,7 @@ import src.parseTree.tokens.comma;
 import src.parseTree.tokens.end_paren;
 import src.parseTree.tokens.start_paren;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class charAt_expr extends str_expr implements node {
+public class charAt_expr extends str_expr {
     private charAt_label op;
     private start_paren startParen;
     private str_val strExpr;
@@ -19,30 +16,18 @@ public class charAt_expr extends str_expr implements node {
     private int_expr intExpr;
     private end_paren endParen;
     
-    private List<Object> children = new ArrayList<>();
-
-    public void addChild(Object child) {
-        children.add(child);
-    }
-
     public void fixChildren() {
-        //todo Add validation here
         op = (charAt_label) children.get(0);
         startParen = (start_paren) children.get(1);
         strExpr = (str_expr) children.get(2);
-        strExpr.fixChildren();
         sep = (comma) children.get(3);
         intExpr = (int_expr) children.get(4);
-        intExpr.fixChildren();
         endParen = (end_paren) children.get(5);
-    }
-
-    public List<Object> getChildren() {
-        return children;
     }
 
     @Override
     public String execute() {
+        this.fixChildren();
         String arg1 = str_val.execute(strExpr);
         Integer arg2 = intExpr.execute();
 
