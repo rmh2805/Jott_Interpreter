@@ -17,7 +17,6 @@ public class charAt_expr extends str_expr {
     private end_paren endParen;
     
     public void fixChildren() {
-        //todo Add validation here
         op = (charAt_label) children.get(0);
         startParen = (start_paren) children.get(1);
         strExpr = (str_expr) children.get(2);

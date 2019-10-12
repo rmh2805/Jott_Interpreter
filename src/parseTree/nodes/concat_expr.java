@@ -15,7 +15,6 @@ public class concat_expr extends str_expr implements str_val {
     private end_paren endParen;
 
     public void fixChildren() {
-        //todo Add validation here
         op = (concat_label) children.get(0);
         startParen = (start_paren) children.get(1);
         lStr = (str_val) children.get(2);

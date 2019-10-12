@@ -12,7 +12,6 @@ public class str_literal extends str_expr implements str_val {
     private str_token data;
 
     public void fixChildren() {
-        //todo Assign the proper children to their fields
         if (children.get(0) instanceof str_token) {
             data = ((str_token) children.get(0));
         }

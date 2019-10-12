@@ -5,7 +5,6 @@ public class stmt_lst extends node {
     private stmt_lst next;
 
     public void fixChildren() {
-        //todo Add some damned validation
         statement = (stmt) children.get(0);
         if (children.size() >= 2) { // if stmt -> expr,end_stmt stmt_list has three children
             next = (stmt_lst) children.get(children.size() - 1);

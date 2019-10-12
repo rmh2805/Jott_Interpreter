@@ -13,7 +13,6 @@ public class print_stmt extends stmt<Integer> {
     private end_stmt endStmt;
 
     public void fixChildren() {
-        //todo Add some validation
         this.printLabel = (print_label) children.get(0);
         this.startParen = (start_paren) children.get(1);
         this.toPrint = (expr) children.get(2);

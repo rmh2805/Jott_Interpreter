@@ -17,7 +17,6 @@ public class asmt extends stmt<Integer> {
     private end_stmt endStmt;
 
     public void fixChildren() {
-        //todo Potentially add validation in there
         t = (Type) children.get(0);
         name = (id) children.get(1);
         op = (asmt_op) children.get(2);
