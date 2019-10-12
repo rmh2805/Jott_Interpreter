@@ -28,6 +28,6 @@ public class Jott {
 
         program root = parse(tokenList);
         root.fixChildren();
-
+        root.execute();
     }
 }
