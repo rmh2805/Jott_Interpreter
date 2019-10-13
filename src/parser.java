@@ -129,9 +129,19 @@ public class parser {
                 if (child instanceof String && child.equals("id")) { // only time id is specifically required is for asmt
                     if (type != null) errorPrinter.throwError(token.getLineNumber(), new Syntax("Reassignment not allowed"));
                 } else {
-                    if (type == null) // referencing inexistent name
+                    if (type == null) { // referencing inexistent name
+                        // check if referencing the id is even valid
+                        if (!first(child, new double_token(0, 0)) &&
+                                (!first(child, new int_token(0, 0))) &&
+                                (!first(child, new str_token(0, "")))) {
+                            String childName = child.getClass().getSimpleName();
+                            if (child instanceof String) childName = (String) child;
+                            String tokenName = token.getClass().getSimpleName();
+                            errorPrinter.throwError(token.getLineNumber(),
+                                    new Syntax(String.format("%s expected but got %s", childName, tokenName)));
+                        }
                         errorPrinter.throwError(token.getLineNumber(), new Syntax("Unknown identifier"));
-                    else {
+                    } else {
                         // treat id as its reference
                         switch (type) {
                             case k_Double:
