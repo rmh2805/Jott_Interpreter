@@ -153,7 +153,9 @@ public class parser {
                 String childName = child.getClass().getSimpleName();
                 if (child instanceof String) childName = (String) child;
                 String tokenName = dummy.getClass().getSimpleName();
-                errorPrinter.throwError(token.getLineNumber(),
+                int lineNumber = token.getLineNumber();
+                if (token instanceof EOF) lineNumber--;
+                errorPrinter.throwError(lineNumber,
                         new Syntax(String.format("%s expected but got %s", childName, tokenName)));
             }
 

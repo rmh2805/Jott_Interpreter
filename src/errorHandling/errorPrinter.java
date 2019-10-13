@@ -5,6 +5,7 @@ import src.nameTableSingleton;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class errorPrinter {
@@ -22,7 +23,11 @@ public class errorPrinter {
             Scanner sc = new Scanner(new File(filePath));
             for (int i = 1; i < lineNum; i++)
                 sc.nextLine();
-            line = sc.nextLine();
+            try {
+                line = sc.nextLine();
+            } catch (NoSuchElementException e) {
+                // do nothing, this means that the line we want is really the
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
