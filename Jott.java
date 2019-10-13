@@ -9,7 +9,7 @@ import java.util.List;
 import static src.parser.parse;
 
 public class Jott {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         if (args.length != 1) { // check bad input length
             System.err.println("Correct usage: \n$java Jott {program.j}");
             return;
@@ -20,11 +20,18 @@ public class Jott {
         // Init the name table
         nameTableSingleton.init_nameTable(filename);
 
-        // Tokenize the file
-        List<token> tokenList = tokenizer.tokenize(filename);
 
-        // Parse the tokens and execute
-        program root = parse(tokenList);
-        root.execute();
+        try {
+            // Tokenize the file
+            List<token> tokenList = tokenizer.tokenize(args[0]);
+
+            // Parse the tokens and execute
+            program root = parse(tokenList);
+            root.execute();
+        } catch (FileNotFoundException e) {
+            System.err.println("Error: Specified Jott File: '" + args[0] + "not found");
+            e.printStackTrace();
+        }
+
     }
 }

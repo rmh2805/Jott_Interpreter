@@ -74,6 +74,8 @@ public class tokenizer {
                     while (i < lineLength) {
                         ch = line.charAt(i);
                         if (ch == '"') break;
+                        if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && ch != ' ')
+                            errorPrinter.throwError(lineCount, new Syntax("Invalid char '" + ch + "' in string"));
                         tok.append(ch);
                         i++;
                     }
