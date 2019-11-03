@@ -75,12 +75,12 @@ public class tokenizer {
                         ch = line.charAt(i);
                         if (ch == '"') break;
                         if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && ch != ' ')
-                            errorPrinter.throwError(lineCount, new Syntax("Missing '\"' at end of string"));
+                            errorPrinter.throwError(lineCount, new Syntax("Invalid char '" + ch + "' in string"));
                         tok.append(ch);
                         i++;
                     }
                     if (i == lineLength)
-                        errorPrinter.throwError(lineCount, new Syntax("Strings cannot wrap lines"));
+                        errorPrinter.throwError(lineCount, new Syntax("String does not close with a \""));
                     tokenList.add(new str_token(lineCount, tok.toString()));
                 } else if (Character.isDigit(ch) || ch == '.') { // Integer or Double
                     boolean isDouble = false;
@@ -124,7 +124,7 @@ public class tokenizer {
             lineCount++;
         }
 
-        tokenList.add(new EOF(++lineCount));
+        tokenList.add(new EOF(lineCount - 1)); // append EOF on last line
         return tokenList;
     }
 }

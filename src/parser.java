@@ -108,7 +108,6 @@ public class parser {
             if (!(child instanceof String && child.equals("op"))) { // child not "op"
                 // handle signed double and integer
                 switch (token.toString()) {
-                    //todo Check for negation of IDs and for multiple signs before any given number
                     case "+":
                     case "-":
                         token nextToken = tokenList.get(t_idx + 1);
@@ -125,13 +124,21 @@ public class parser {
 
             token dummy = token;
             if (token instanceof id) {
+                if (!first(child, token)) { // check if referencing the id is even valid
+                    String childName = child.getClass().getSimpleName();
+                    if (child instanceof String) childName = (String) child;
+                    String tokenName = token.getClass().getSimpleName();
+                    errorPrinter.throwError(token.getLineNumber(),
+                            new Syntax(String.format("%s expected but got %s", childName, tokenName)));
+                }
+
                 typeIdx type = symTab.get(token.toString());
                 if (child instanceof String && child.equals("id")) { // only time id is specifically required is for asmt
                     if (type != null) errorPrinter.throwError(token.getLineNumber(), new Syntax("Reassignment not allowed"));
                 } else {
-                    if (type == null) // referencing inexistent name
+                    if (type == null) { // referencing inexistent name
                         errorPrinter.throwError(token.getLineNumber(), new Syntax("Unknown identifier"));
-                    else {
+                    } else {
                         // treat id as its reference
                         switch (type) {
                             case k_Double:
@@ -153,7 +160,8 @@ public class parser {
                 String childName = child.getClass().getSimpleName();
                 if (child instanceof String) childName = (String) child;
                 String tokenName = dummy.getClass().getSimpleName();
-                errorPrinter.throwError(token.getLineNumber(),
+                int lineNumber = token.getLineNumber();
+                errorPrinter.throwError(lineNumber,
                         new Syntax(String.format("%s expected but got %s", childName, tokenName)));
             }
 
