@@ -115,7 +115,25 @@ public class tokenizer {
                     }
                 } else if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^') // op
                     tokenList.add(new op(lineCount, i + 1, Character.toString(ch)));
-                else if (ch == '=') tokenList.add(new asmt_op(lineCount, i + 1));
+                else if (ch == '>' || ch == '<' || ch == '=' || ch == '!') {
+                    tok.append(ch);
+                    if (i + 1 < lineLength) {
+                        ch = line.charAt(++i);
+                        if (ch == '=') tok.append(ch);
+                        else i--;
+                    }
+                    switch (tok.toString()) {
+                        case "!":
+                            errorPrinter.throwError(lineCount, i + 1, new Syntax("Malformed token"));
+                            break;
+                        case "=":
+                            tokenList.add(new asmt_op(lineCount, i + 1));
+                            break;
+                        default:
+                            tokenList.add(new rel_op(lineCount, i + 1, tok.toString()));
+                            break;
+                    }
+                }
                 else if (ch == '(') tokenList.add(new start_paren(lineCount, i + 1));
                 else if (ch == ')') tokenList.add(new end_paren(lineCount, i + 1));
                 else if (ch == ';') tokenList.add(new end_stmt(lineCount, i + 1));
