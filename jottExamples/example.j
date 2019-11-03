@@ -9,4 +9,4 @@ print(str);
 print(1 * 2);
 print ( 2.0 / 3.);
 print (1 ^ 5);
-print(charAt(concat(str, "kill me"), foo));
+print(charAt(concat(str, "kill me"), 0));

@@ -1,31 +1,22 @@
 package src.parseTree.nodes;
 
-public class program {
+public class program extends node {
     private stmt_lst firstStatement;
 
-    /**
-     * Root node of the Jott parse tree
-     */
-    public program () {
-        firstStatement = null;
+    public void fixChildren() {
+        if (children.size() == 1)
+        firstStatement = (stmt_lst) children.get(0);
     }
 
-    /**
-     * Sets the first statement on the statement list
-     *
-     * @param statement The first statement on the Jott statement list
-     */
-    public void setStatement (stmt_lst statement) {
-        this.firstStatement = statement;
+    public void execute () {
+        this.fixChildren();
+        if (firstStatement != null) firstStatement.execute();
     }
 
-    /**
-     * Returns the first statement of the Jott statement list
-     *
-     * @return The first statement of the Jott statement list
-     */
-    public stmt_lst getStatement () {
-        return this.firstStatement;
+    public String toString() {
+        String result = "";
+        if (firstStatement != null) result = firstStatement.toString();
+        return result;
     }
 
 }

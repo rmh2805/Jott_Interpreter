@@ -8,7 +8,6 @@ public class str_token extends token {
         this.data = data;
     }
 
-
     /**
      * Returns the string literal's data
      *

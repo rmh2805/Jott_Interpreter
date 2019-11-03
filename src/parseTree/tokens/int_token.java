@@ -19,6 +19,10 @@ public class int_token extends token implements int_val {
         return val;
     }
 
+    public void negate() {
+        val *= -1;
+    }
+
     public String toString() {
         return "" + val;
     }

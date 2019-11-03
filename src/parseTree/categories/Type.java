@@ -1,4 +1,4 @@
 package src.parseTree.categories;
 
-public interface type {
+public interface Type {
 }

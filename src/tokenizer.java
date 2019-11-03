@@ -32,10 +32,7 @@ public class tokenizer {
                 StringBuilder tok = new StringBuilder();
                 char ch = line.charAt(i);
                 if (Character.isWhitespace(ch)) continue; // Skip whitespace before grabbing a new token
-                if (ch == '/' && ++i < lineLength && line.charAt(i) == '/') { // Ignore comment
-                    lineCount++;
-                    break;
-                }
+                if (ch == '/' && i + 1 < lineLength && line.charAt(i + 1) == '/') break; // Ignore comment
                 if (Character.isAlphabetic(ch)) { // Identifier or keyword
                     while (i < lineLength) {
                         ch = line.charAt(i);
@@ -73,14 +70,10 @@ public class tokenizer {
                             break;
                     }
                 } else if (ch == '"') { // str_literal
-                    tok.append(ch);
                     i++;
                     while (i < lineLength) {
                         ch = line.charAt(i);
-                        if (ch == '"') {
-                            tok.append(ch);
-                            break;
-                        }
+                        if (ch == '"') break;
                         if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && ch != ' ')
                             errorPrinter.throwError(lineCount, i + 1, new Syntax("Illegal character '" + ch +
                                     "' detected in string literal"));
@@ -132,7 +125,7 @@ public class tokenizer {
             lineCount++;
         }
 
-        tokenList.add(new EOF(++lineCount, 1));
+        tokenList.add(new EOF(lineCount - 1, 0)); // append EOF on last line
         return tokenList;
     }
 }

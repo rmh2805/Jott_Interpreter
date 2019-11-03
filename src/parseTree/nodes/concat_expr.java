@@ -7,29 +7,30 @@ import src.parseTree.tokens.end_paren;
 import src.parseTree.tokens.start_paren;
 
 public class concat_expr extends str_expr implements str_val {
-    concat_label op;
-    start_paren startParen;
-    str_val lStr;
-    comma sep;
-    str_val rStr;
-    end_paren endParen;
+    private concat_label op;
+    private start_paren startParen;
+    private str_val lStr;
+    private comma sep;
+    private str_val rStr;
+    private end_paren endParen;
 
-    public concat_expr(concat_label op, start_paren startParen, str_val lStr, comma sep, str_val rStr, end_paren endParen) {
-        this.op = op;
-        this.startParen = startParen;
-        this.lStr = lStr;
-        this.sep = sep;
-        this.rStr = rStr;
-        this.endParen = endParen;
+    public void fixChildren() {
+        op = (concat_label) children.get(0);
+        startParen = (start_paren) children.get(1);
+        lStr = (str_val) children.get(2);
+        sep = (comma) children.get(3);
+        rStr = (str_val) children.get(4);
+        endParen = (end_paren) children.get(5);
     }
 
     @Override
     public String execute() {
-        return null;
+        this.fixChildren();
+        return str_val.execute(lStr).concat(str_val.execute(rStr));
     }
 
     @Override
     public String toString() {
-        return null;
+        return op.toString() + startParen.toString() + lStr.toString() + sep.toString() + rStr.toString() + endParen.toString();
     }
 }

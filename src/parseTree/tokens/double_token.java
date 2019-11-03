@@ -19,6 +19,10 @@ public class double_token extends token implements double_val {
         return this.val;
     }
 
+    public void negate() {
+        val *= -1;
+    }
+
     public String toString() {
         return "" + this.val;
     }

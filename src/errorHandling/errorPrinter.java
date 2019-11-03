@@ -39,6 +39,7 @@ public class errorPrinter {
             e.printStackTrace();
         }
 
+        System.out.flush();
         System.err.printf(error.toString(), line, filePath, lineNum, index);
         System.exit(1);
     }
