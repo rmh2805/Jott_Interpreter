@@ -108,7 +108,6 @@ public class parser {
             if (!(child instanceof String && child.equals("op"))) { // child not "op"
                 // handle signed double and integer
                 switch (token.toString()) {
-                    //todo Check for negation of IDs and for multiple signs before any given number
                     case "+":
                     case "-":
                         token nextToken = tokenList.get(t_idx + 1);
@@ -125,21 +124,19 @@ public class parser {
 
             token dummy = token;
             if (token instanceof id) {
+                if (!first(child, token)) { // check if referencing the id is even valid
+                    String childName = child.getClass().getSimpleName();
+                    if (child instanceof String) childName = (String) child;
+                    String tokenName = token.getClass().getSimpleName();
+                    errorPrinter.throwError(token.getLineNumber(),
+                            new Syntax(String.format("%s expected but got %s", childName, tokenName)));
+                }
+
                 typeIdx type = symTab.get(token.toString());
                 if (child instanceof String && child.equals("id")) { // only time id is specifically required is for asmt
                     if (type != null) errorPrinter.throwError(token.getLineNumber(), new Syntax("Reassignment not allowed"));
                 } else {
                     if (type == null) { // referencing inexistent name
-                        // check if referencing the id is even valid
-                        if (!first(child, new double_token(0, 0)) &&
-                                (!first(child, new int_token(0, 0))) &&
-                                (!first(child, new str_token(0, "")))) {
-                            String childName = child.getClass().getSimpleName();
-                            if (child instanceof String) childName = (String) child;
-                            String tokenName = token.getClass().getSimpleName();
-                            errorPrinter.throwError(token.getLineNumber(),
-                                    new Syntax(String.format("%s expected but got %s", childName, tokenName)));
-                        }
                         errorPrinter.throwError(token.getLineNumber(), new Syntax("Unknown identifier"));
                     } else {
                         // treat id as its reference
@@ -164,7 +161,6 @@ public class parser {
                 if (child instanceof String) childName = (String) child;
                 String tokenName = dummy.getClass().getSimpleName();
                 int lineNumber = token.getLineNumber();
-                if (token instanceof EOF) lineNumber--;
                 errorPrinter.throwError(lineNumber,
                         new Syntax(String.format("%s expected but got %s", childName, tokenName)));
             }

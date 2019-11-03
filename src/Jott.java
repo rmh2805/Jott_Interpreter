@@ -1,33 +1,37 @@
 package src;
 
+import java.io.FileNotFoundException;
+import java.util.List;
+
 import src.parseTree.nodes.program;
 import src.parseTree.tokens.token;
 
-import java.io.FileNotFoundException;
-import java.util.LinkedList;
-import java.util.List;
-
-import static src.nameTableSingleton.init_nameTable;
-import static src.parser.parse;
-
 public class Jott {
     public static void main(String[] args) {
-        if (args.length < 1) {
-            System.out.println("Error: Specify a file");
-            System.exit(1);
+        if (args.length != 1) {
+            System.err.println("Correct usage: \n$java Jott {program.j}");
+            return;
         }
 
-        init_nameTable(args[0]);
-        List<token> tokenList = new LinkedList<>();
+        String filename = args[0];
+
+        // Init the name table
+        nameTableSingleton.init_nameTable(filename);
+
+
         try {
-            tokenList = tokenizer.tokenize(args[0]);
+            // Tokenize the file
+            List<token> tokenList = tokenizer.tokenize(filename);
+
+            // Parse the tokens
+            program root = parser.parse(tokenList);
+
+            // Execute
+            root.execute();
         } catch (FileNotFoundException e) {
-            System.out.println("Error: Specified Jott File: '" + args[0] + "not found");
+            System.out.println("Error: Specified Jott File: '" + filename + "not found");
             e.printStackTrace();
         }
 
-        program root = parse(tokenList);
-        root.fixChildren();
-        root.execute();
     }
 }

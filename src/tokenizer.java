@@ -124,7 +124,7 @@ public class tokenizer {
             lineCount++;
         }
 
-        tokenList.add(new EOF(lineCount));
+        tokenList.add(new EOF(lineCount - 1)); // append EOF on last line
         return tokenList;
     }
 }
