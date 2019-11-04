@@ -54,8 +54,10 @@ public class parser {
 
         if (PREDICT.get(parentName) == null || PREDICT.get(parentName).get(tokenName) == null)
             return new ArrayList<>(); // assume to be valid, parent-token verified by first
-        else
-            return PREDICT.get(parentName).get(tokenName);
+        else {
+            List<String> original = PREDICT.get(parentName).get(tokenName);
+            return new ArrayList<>(original);
+        }
     }
 
     /**
@@ -93,6 +95,8 @@ public class parser {
                         case "String":
                             symTab.put(name, typeIdx.k_String);
                             break;
+                        default: // type == "", i.e. reassignment
+                            break;
                     }
                 }
                 continue;
@@ -123,22 +127,18 @@ public class parser {
             }
 
             token dummy = token;
-            if (token instanceof id) {
-                if (!first(child, token)) { // check if referencing the id is even valid
-                    String childName = child.getClass().getSimpleName();
-                    if (child instanceof String) childName = (String) child;
-                    String tokenName = token.getClass().getSimpleName();
-                    errorPrinter.throwError(token,
-                            new Syntax(String.format("%s expected but got %s", childName, tokenName)));
-                }
-
+            if (token instanceof id && first(child, token)) {
                 typeIdx type = symTab.get(token.toString());
                 if (child instanceof String && child.equals("id")) { // only time id is specifically required is for asmt
-                    if (type != null) errorPrinter.throwError(token, new Syntax("Reassignment not allowed"));
+                    if (!"".equals(((asmt) parent).getType()) && type != null) // if asmt initializes id and id exists
+                        errorPrinter.throwError(token, new Syntax("Identifier already exists"));
                 } else {
-                    if (type == null) { // referencing inexistent name
-                        errorPrinter.throwError(token, new Syntax("Unknown identifier"));
-                    } else {
+                    if (type == null) errorPrinter.throwError(token, new Syntax("Unknown identifier"));
+
+                    // lookahead(1) to check for asmt_op
+                    // if asmt_op, id not being referenced
+                    token nextToken = tokenList.get(t_idx + 1);
+                    if (!(nextToken instanceof asmt_op)) {
                         // treat id as its reference
                         switch (type) {
                             case k_Double:
@@ -168,13 +168,29 @@ public class parser {
 
             // default: d_expr/i_expr -> d_token/i_token
             // lookahead(1) to check for op
-            // if op, d_expr/i_expr -> d_token/i_token,op,d_expr,i_expr
+            // if op, d_expr/i_expr -> d_token/i_token,op,d_expr/i_expr
             if (child instanceof double_expr || child instanceof int_expr) {
                 token nextToken = tokenList.get(t_idx + 1);
                 if (nextToken instanceof op) {
                     if (child instanceof double_expr) stack.push(new double_expr());
                     else stack.push(new int_expr());
                     stack.push("op");
+                }
+            }
+
+            if (child instanceof asmt && dummy instanceof id) {
+                ((asmt) child).addChild(null); // in place of type
+                typeIdx type = symTab.get(token.toString());
+                switch (type) {
+                    case k_String:
+                        children.set(2, "str_expr");
+                        break;
+                    case k_Double:
+                        children.set(2, "double_expr");
+                        break;
+                    case k_Integer:
+                        children.set(2, "int_expr");
+                        break;
                 }
             }
 

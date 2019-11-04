@@ -25,6 +25,7 @@ public class asmt extends stmt<Integer> {
     }
 
     public String getType() {
+        if (children.get(0) == null) return "";
         return children.get(0).toString();
     }
 
@@ -35,13 +36,13 @@ public class asmt extends stmt<Integer> {
     @Override
     public Integer execute() {
         this.fixChildren();
-        if (nameTableSingleton.getInstance().isAssigned(name)) {
-            errorPrinter.throwError(name, new Runtime("Attempting to assign to an already assigned id"));
-        }
+        nameTableSingleton nameTable = nameTableSingleton.getInstance();
 
         //Get the labeled type for the name table singleton and for type validation
         typeIdx t;
-        if (this.t instanceof int_label)
+        if (nameTable.isAssigned(name))
+            t = nameTable.getType(name);
+        else if (this.t instanceof int_label)
             t = typeIdx.k_Integer;
         else if (this.t instanceof double_label)
             t = typeIdx.k_Double;
@@ -55,15 +56,15 @@ public class asmt extends stmt<Integer> {
         switch (t) {
             case k_Double:
                 if (exp instanceof double_expr)
-                    nameTableSingleton.getInstance().setDouble(name, ((double_expr) exp).execute());
+                    nameTable.setDouble(name, ((double_expr) exp).execute());
                 break;
             case k_Integer:
                 if (exp instanceof int_expr)
-                    nameTableSingleton.getInstance().setInt(name, ((int_expr) exp).execute());
+                    nameTable.setInt(name, ((int_expr) exp).execute());
                 break;
             case k_String:
                 if (exp instanceof str_expr)
-                    nameTableSingleton.getInstance().setString(name, ((str_expr) exp).execute());
+                    nameTable.setString(name, ((str_expr) exp).execute());
                 break;
             default:
                 errorPrinter.throwError(op, new Runtime("Attempt to assign to incompatible type"));
@@ -74,6 +75,6 @@ public class asmt extends stmt<Integer> {
 
     @Override
     public String toString() {
-        return t.toString() + name.toString() + op.toString() + exp.toString() + endStmt.toString();
+        return ((t == null) ? "" : t.toString()) + name.toString() + op.toString() + exp.toString() + endStmt.toString();
     }
 }

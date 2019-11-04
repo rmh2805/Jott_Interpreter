@@ -28,7 +28,8 @@ public class testTokenizer {
             for (int i = 0; i < gen; i++)
                 System.out.print("\t");
 
-            System.out.print(child.getClass().getSimpleName());
+            if (child == null) System.out.print("\"\"");
+            else System.out.print(child.getClass().getSimpleName());
             if (child instanceof token) {
                 System.out.println("('" + child.toString() + "')");
                 continue;
