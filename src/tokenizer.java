@@ -144,6 +144,7 @@ public class tokenizer {
         }
 
         tokenList.add(new EOF(lineCount - 1, 0)); // append EOF on last line
+        sc.close();
         return tokenList;
     }
 }
