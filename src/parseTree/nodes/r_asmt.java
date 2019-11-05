@@ -3,16 +3,13 @@ package src.parseTree.nodes;
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Runtime;
 import src.nameTableSingleton;
-import src.parseTree.categories.Type;
 import src.parseTree.tokens.*;
 import src.typeIdx;
 
 public class r_asmt extends stmt<Integer> {
-    private Type t;
     private id name;
     private asmt_op op;
     private expr exp;
-    private end_stmt endStmt;
 
     public void fixChildren() {
         name = (id) children.get(0);
