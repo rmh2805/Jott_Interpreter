@@ -130,7 +130,7 @@ public class parser {
             if (token instanceof id && first(child, token)) {
                 typeIdx type = symTab.get(token.toString());
                 if (child instanceof String && child.equals("id")) { // only time id is specifically required is for asmt
-                    if (!"".equals(((asmt) parent).getType()) && type != null) // if asmt initializes id and id exists
+                    if (parent instanceof asmt && type != null)
                         errorPrinter.throwError(token, new Syntax("Identifier already exists"));
                 } else {
                     if (type == null) errorPrinter.throwError(token, new Syntax("Unknown identifier"));
@@ -178,8 +178,7 @@ public class parser {
                 }
             }
 
-            if (child instanceof asmt && dummy instanceof id) {
-                ((asmt) child).addChild(null); // in place of type
+            if (child instanceof r_asmt && dummy instanceof id) {
                 typeIdx type = symTab.get(token.toString());
                 switch (type) {
                     case k_String:
@@ -222,6 +221,9 @@ public class parser {
                         break;
                     case "print_stmt":
                         newChild = new print_stmt();
+                        break;
+                    case "r_asmt":
+                        newChild = new r_asmt();
                         break;
                     case "stmt_lst":
                         newChild = new stmt_lst();
