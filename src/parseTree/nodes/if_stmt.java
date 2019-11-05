@@ -6,9 +6,12 @@ public class if_stmt extends stmt<Integer> {
     private b_stmt_lst alt;
 
     public void fixChildren() {
-        cond = (int_expr) children.get(0); // todo writeup states expr
-        body = (b_stmt_lst) children.get(1);
-        if (children.size() == 3) alt = (b_stmt_lst) children.get(2);
+        // if(0), start_paren(1), end_paren(3)
+        cond = (int_expr) children.get(2); // todo writeup states expr
+        // start_brace(4), end_brace(6)
+        body = (b_stmt_lst) children.get(5);
+        // else(7), start_brace(8), end_brace(10)
+        if (children.size() > 7) alt = (b_stmt_lst) children.get(9);
     }
 
     public Integer execute() {

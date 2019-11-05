@@ -5,8 +5,10 @@ public class while_stmt extends stmt<Integer> {
     private b_stmt_lst body;
 
     public void fixChildren() {
-        cond = (int_expr) children.get(0);
-        body = (b_stmt_lst) children.get(1);
+        // while(0), start_paren(1), end_paren(3)
+        cond = (int_expr) children.get(2);
+        // start_brace(4), end_brace(6)
+        body = (b_stmt_lst) children.get(5);
     }
 
     public Integer execute() {

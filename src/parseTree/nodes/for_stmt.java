@@ -7,10 +7,12 @@ public class for_stmt extends stmt<Integer> {
     private b_stmt_lst body;
 
     public void fixChildren() {
-        init = (asmt) children.get(0);
-        cond = (int_expr) children.get(1);
-        inc = (r_asmt) children.get(2); // todo throw error if inc not related to init
-        body = (b_stmt_lst) children.get(3);
+        // for(0), start_paren(1), end_stmt(4), end_paren(6)
+        init = (asmt) children.get(2);
+        cond = (int_expr) children.get(3);
+        inc = (r_asmt) children.get(5); // todo throw error if inc not related to init
+        // start_brace(7), end_brace(9)
+        body = (b_stmt_lst) children.get(8);
     }
 
     public Integer execute() {
