@@ -68,6 +68,9 @@ public class tokenizer {
                         case "if":
                             tokenList.add(new if_label(lineCount, col));
                             break;
+                        case "else":
+                            tokenList.add(new else_label(lineCount, col));
+                            break;
                         case "while":
                             tokenList.add(new while_label(lineCount, col));
                             break;
