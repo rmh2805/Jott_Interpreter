@@ -104,11 +104,6 @@ public class parser {
             }
 
             token token = tokenList.get(t_idx);
-            // handle eof
-            if (token instanceof EOF && child instanceof stmt_lst) {
-                stack.pop();
-                continue;
-            }
 
             if (!(child instanceof String && child.equals("op"))) { // child not "op"
                 // handle signed double and integer
@@ -196,8 +191,11 @@ public class parser {
 
             if (child instanceof String) stack.pop(); // remove tokens and abstract nodes
             if (children.size() <= 0) { // if no children, it is a token
-                if (parent != null) parent.addChild(token); // add to parent
-                t_idx++;
+                if (child instanceof node) stack.pop(); // handle epsilon transitions (stmt_lst, b_stmt_lst)
+                else {
+                    if (parent != null) parent.addChild(token); // add to parent
+                    t_idx++;
+                }
             } else if (child instanceof node) parents.push((node) child);
 
             // add children to stack in reverse order
