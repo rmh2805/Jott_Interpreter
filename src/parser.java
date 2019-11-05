@@ -105,6 +105,15 @@ public class parser {
 
             token token = tokenList.get(t_idx);
 
+            // handle if statement w/out else
+            // by default, else is expected to follow if
+            // if else is expected but not received, remove else components
+            if (child instanceof String && child.equals("else_label") && !(token instanceof else_label)) {
+                // pop else, {, b_stmt_lst, }
+                for (int i = 0; i < 4; i++) stack.pop();
+                continue;
+            }
+
             if (!(child instanceof String && child.equals("op"))) { // child not "op"
                 // handle signed double and integer
                 switch (token.toString()) {
@@ -221,14 +230,26 @@ public class parser {
                     case "print_stmt":
                         newChild = new print_stmt();
                         break;
-                    case "r_asmt":
-                        newChild = new r_asmt();
-                        break;
                     case "stmt_lst":
                         newChild = new stmt_lst();
                         break;
                     case "str_literal":
                         newChild = new str_literal();
+                        break;
+                    case "r_asmt":
+                        newChild = new r_asmt();
+                        break;
+                    case "b_stmt_lst":
+                        newChild = new b_stmt_lst();
+                        break;
+                    case "if_stmt":
+                        newChild = new if_stmt();
+                        break;
+                    case "for_stmt":
+                        newChild = new for_stmt();
+                        break;
+                    case "while_stmt":
+                        newChild = new while_stmt();
                         break;
                     default: // token or abstract parent
                         newChild = name;
