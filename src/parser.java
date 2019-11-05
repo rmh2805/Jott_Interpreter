@@ -29,6 +29,7 @@ public class parser {
 
         String tokenName = tok.getClass().getSimpleName();
 
+        if (parentName.equals(tokenName)) return true;
         if (FIRST.get(parentName) == null || FIRST.get(parentName).get(tokenName) == null)
             return false;
         else
