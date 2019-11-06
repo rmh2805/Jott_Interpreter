@@ -31,39 +31,16 @@ public class int_expr extends expr<Integer> implements int_val {
 
     public int_expr() {}
 
-    private int_expr(int_val lVal, op operator, int_val rVal) {
-        if (lVal == null || (operator != null && rVal == null) || (operator == null && rVal != null)) {
-            System.out.println("Error, int expression creation must provide either only lVal or lVal, operator, and rVal");
-            System.exit(1);
-        }
-
-        this.lVal = lVal;
-        this.operator = operator;
-        this.rVal = rVal;
-    }
-
     @Override
     public Integer execute() {
         this.fixChildren();
         int left = parseToken(lVal);
-        int right = 0;
 
         if (operator == null)
             return left;
 
-        //in the case that there are more than 2 values to compute: compute the first two, obtain the results, create a new
-        //int_expr containing the result, next operand, and value following the operand. This is recursively done until
-        //computation ends at the last value
-        if (rVal instanceof int_expr && ((int_expr) rVal).children.size() == 3) {
-            int_expr intExp = new int_expr(lVal, operator, (int_val) (((int_expr) rVal).children.get(0)));
-            left = intExp.execute();
-            int_val leftValue = new int_token(((token) lVal).getLineNumber(), ((token) lVal).getIndex(), left);
-            operator = (op) ((int_expr) rVal).children.get(1);
-            int_expr expr = new int_expr(leftValue, operator, ((int_expr) (((int_expr) rVal).children.get(2))));
-            return expr.execute();
-        } else {
-            right = parseToken(rVal);
-        }
+        int right = parseToken(rVal);
+
         switch (operator.toString()) {
             case "+":
                 return left + right;
@@ -85,7 +62,13 @@ public class int_expr extends expr<Integer> implements int_val {
     }
 
     public int getLineNumber() {
-        return ((token) lVal).getLineNumber();
+        if (lVal instanceof token) return ((token) lVal).getLineNumber();
+        else return ((int_expr) lVal).getLineNumber();
+    }
+
+    public int getIndex() {
+        if (lVal instanceof token) return ((token) lVal).getIndex();
+        else return ((int_expr) lVal).getIndex();
     }
 
     private int parseToken(int_val token) {

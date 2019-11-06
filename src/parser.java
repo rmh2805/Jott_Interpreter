@@ -166,23 +166,30 @@ public class parser {
 
             List<String> children = predict(child, dummy);
 
-            // default: d_expr/i_expr -> d_token/i_token
-            // lookahead(1) to check for op
-            // if op, d_expr/i_expr -> d_token/i_token,op,d_expr,i_expr
-            if (child instanceof double_expr || child instanceof int_expr) {
-                token nextToken = tokenList.get(t_idx + 1);
-                if (nextToken instanceof op) {
-                    if (child instanceof double_expr) stack.push(new double_expr());
-                    else stack.push(new int_expr());
-                    stack.push("op");
-                }
-            }
-
             if (child instanceof String) stack.pop(); // remove tokens and abstract nodes
             if (children.size() <= 0) { // if no children, it is a token
                 if (parent != null) parent.addChild(token); // add to parent
                 t_idx++;
-            } else if (child instanceof node) parents.push((node) child);
+            } else if (child instanceof node) {
+                parent = (node) child;
+                parents.push(parent);
+            }
+
+            // default: d_expr/i_expr -> d_token/i_token
+            // if op follows token, add op,token to stack to build expr
+            if ((parent instanceof int_expr || parent instanceof double_expr) && parent.getChildren().size() > 0) {
+                token nextToken = tokenList.get(t_idx);
+                if (!(dummy instanceof op) && nextToken instanceof op) {
+                    parents.pop(); // recently pushed expr is actually a left child
+                    node newParent = new double_expr();
+                    if (parent instanceof int_expr) newParent = new int_expr();
+                    newParent.addChild(stack.pop());
+                    parents.push(newParent);
+                    stack.push(newParent);
+                    stack.push(dummy.getClass().getSimpleName());
+                    stack.push("op");
+                }
+            }
 
             // add children to stack in reverse order
             for (int i = children.size() - 1; i >= 0; i--) {

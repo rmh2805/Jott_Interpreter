@@ -29,7 +29,7 @@ public class charAt_expr extends str_expr {
         Integer arg2 = intExpr.execute();
 
         if (arg2 < 0 || arg2 >= arg1.length())
-            errorPrinter.throwError((token) intExpr.children.get(0), new Runtime("Trying to access an index (" + arg2 + ") outside of the provided string"));
+            errorPrinter.throwError(intExpr.getLineNumber(), intExpr.getIndex(), new Runtime("Trying to access an index (" + arg2 + ") outside of the provided string"));
 
         return Character.toString(arg1.charAt(arg2));
     }
