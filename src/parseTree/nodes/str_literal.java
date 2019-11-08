@@ -29,6 +29,14 @@ public class str_literal extends str_expr implements str_val {
         return data.toString();
     }
 
+    public int getLineNumber() {
+        return data.getLineNumber();
+    }
+
+    public int getIndex() {
+        return data.getIndex();
+    }
+
     public String toString() {
         return data.toString();
     }

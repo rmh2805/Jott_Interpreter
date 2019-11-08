@@ -175,20 +175,71 @@ public class parser {
                 parents.push(parent);
             }
 
-            // default: d_expr/i_expr -> d_token/i_token
-            // if op follows token, add op,token to stack to build expr
-            if ((parent instanceof int_expr || parent instanceof double_expr) && parent.getChildren().size() > 0) {
-                token nextToken = tokenList.get(t_idx);
-                if (!(dummy instanceof op) && nextToken instanceof op) {
-                    parents.pop(); // recently pushed expr is actually a left child
+            token nextToken = tokenList.get(t_idx);
+            // 1) if op follows an int_expr -> int_token or double_expr -> double_token, the expr is the parent
+            // modify stack and parents so the T_expr is a left child of a new T_expr
+            // result stack: ..., T_expr, op, T_token, T_expr (new), ...
+            // result parents: ..., T_expr, T_expr (new), ...
+            // 2) if op follows relational int_expr -> T_expr,rel_op,T_expr, the expr is the "grandparent"
+            // modify stack and parents so the int_expr (grandparent) is left child of a new int_expr
+            // result stack: ..., T_expr, int_expr, op, int_token, int_expr (new), ...
+            // result parents: ..., T_expr, int_expr, int_expr (new), ...
+            if (nextToken instanceof op) {
+                parents.pop();
+                if (parent instanceof int_expr || parent instanceof double_expr || parents.peek() instanceof int_expr) {
+                    node grandparent = parents.peek();
                     node newParent = new double_expr();
-                    if (parent instanceof int_expr) newParent = new int_expr();
-                    newParent.addChild(stack.pop());
-                    parents.push(newParent);
-                    stack.push(newParent);
-                    stack.push(dummy.getClass().getSimpleName());
+                    if (parent instanceof int_expr || grandparent instanceof int_expr) newParent = new int_expr();
+                    
+                    Deque<Object> tempStack = new ArrayDeque<>();
+                    while (stack.peek() != parent) tempStack.push(stack.pop()); // get to parent
+                    tempStack.push(stack.pop()); // remove parent, insert just below parent
+                    if (grandparent instanceof int_expr) { // if condition 2, insert just below grandparent
+                        tempStack.push(stack.pop());
+                        parents.pop();
+                    }
+                    
+                    stack.push(newParent); // insert new parent
+                    if (grandparent instanceof int_expr) stack.push("int_token"); // push expected right child of new parent
+                    else stack.push(dummy.getClass().getSimpleName());
                     stack.push("op");
+                    while (!tempStack.isEmpty()) stack.push(tempStack.pop());
+                    
+                    parents.push(newParent); // update parents
+                    if (grandparent instanceof int_expr) parents.push(grandparent);
                 }
+                parents.push(parent);
+            }
+
+            // 1) rel_op may change current expr type (to int_expr) if expr is child of print, which takes any type
+            // 2) rel_op may follow an int_expr (parent) -> int_token or a relational int_expr (grandparent)
+            if (nextToken instanceof rel_op) {
+                parents.pop();
+                if (parents.peek() instanceof print_stmt ||
+                        parents.peek() instanceof int_expr ||
+                        parent instanceof int_expr) {
+                    node grandparent = parents.peek();
+                    node newParent = new int_expr();
+
+                    Deque<Object> tempStack = new ArrayDeque<>();
+                    while (stack.peek() != parent) tempStack.push(stack.pop());
+                    tempStack.push(stack.pop());
+                    if (grandparent instanceof int_expr) {
+                        tempStack.push(stack.pop());
+                        parents.pop();
+                    }
+
+                    stack.push(newParent);
+                    if (parent instanceof int_expr || grandparent instanceof int_expr) stack.push("int_token");
+                    else if (parent instanceof double_expr) stack.push("double_token");
+                    else if (parent instanceof str_expr) stack.push("str_expr");
+                    stack.push("rel_op");
+                    while (!tempStack.isEmpty()) stack.push(tempStack.pop());
+
+                    parents.push(newParent);
+                    if (grandparent instanceof int_expr) parents.push(grandparent);
+                }
+                parents.push(parent);
             }
 
             // add children to stack in reverse order

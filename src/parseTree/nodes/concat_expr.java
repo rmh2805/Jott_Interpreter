@@ -29,6 +29,14 @@ public class concat_expr extends str_expr implements str_val {
         return str_val.execute(lStr).concat(str_val.execute(rStr));
     }
 
+    public int getLineNumber() {
+        return op.getLineNumber();
+    }
+
+    public int getIndex() {
+        return op.getIndex();
+    }
+
     @Override
     public String toString() {
         return op.toString() + startParen.toString() + lStr.toString() + sep.toString() + rStr.toString() + endParen.toString();

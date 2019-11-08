@@ -7,6 +7,7 @@ import src.parseTree.categories.double_val;
 import src.parseTree.tokens.double_token;
 import src.parseTree.tokens.id;
 import src.parseTree.tokens.op;
+import src.parseTree.tokens.token;
 import src.typeIdx;
 
 public class double_expr extends expr<Double> implements double_val {
@@ -58,6 +59,16 @@ public class double_expr extends expr<Double> implements double_val {
                 errorPrinter.throwError(operator, new Runtime("Unrecognized operator: " + operator.toString()));
                 return null;
         }
+    }
+
+    public int getLineNumber() {
+        if (lVal instanceof token) return ((token) lVal).getLineNumber();
+        return ((double_expr) lVal).getLineNumber();
+    }
+
+    public int getIndex() {
+        if (lVal instanceof token) return ((token) lVal).getIndex();
+        return ((double_expr) lVal).getIndex();
     }
 
     private double parseToken(double_val token) {

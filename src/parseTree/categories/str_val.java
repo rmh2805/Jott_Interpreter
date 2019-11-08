@@ -25,6 +25,4 @@ public interface str_val {
             return strExpr.execute();
         }
     }
-
-    public void fixChildren();
 }

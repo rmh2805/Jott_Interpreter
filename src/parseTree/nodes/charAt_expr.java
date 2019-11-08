@@ -34,6 +34,15 @@ public class charAt_expr extends str_expr {
         return Character.toString(arg1.charAt(arg2));
     }
 
+
+    public int getLineNumber() {
+        return op.getLineNumber();
+    }
+
+    public int getIndex() {
+        return op.getIndex();
+    }
+
     @Override
     public String toString() {
         return op.toString() + startParen.toString() + strExpr.toString() + sep.toString() + intExpr.toString() + endParen.toString();

@@ -3,29 +3,35 @@ package src.parseTree.nodes;
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Runtime;
 import src.nameTableSingleton;
+import src.parseTree.categories.double_val;
 import src.parseTree.categories.int_val;
-import src.parseTree.tokens.id;
-import src.parseTree.tokens.int_token;
-import src.parseTree.tokens.op;
-import src.parseTree.tokens.token;
+import src.parseTree.categories.str_val;
+import src.parseTree.tokens.*;
 import src.typeIdx;
 
 public class int_expr extends expr<Integer> implements int_val {
-    private int_val lVal;
-    private op operator;
-    private int_val rVal;
+    private Object lVal;
+    private token operator;
+    private Object rVal;
+    private typeIdx type;
 
     public void fixChildren() {
-        if (lVal != null) return; // instances constructed with params have no children
-        lVal = (int_val) children.get(0);
+        lVal = children.get(0);
+        if (lVal instanceof id) {
+            nameTableSingleton nT = nameTableSingleton.getInstance();
+            type = nT.getType((id) lVal);
+        }
+        else if (lVal instanceof int_val) type = typeIdx.k_Integer;
+        else if (lVal instanceof double_val) type = typeIdx.k_Double;
+        else if (lVal instanceof str_val) type = typeIdx.k_String;
 
         if (children.size() == 2) {
             System.out.println("Error, int expression creation must provide either only lVal or lVal, operator, and rVal");
             System.exit(1);
         }
         if (children.size() == 3) {
-            operator = (op) children.get(1);
-            rVal = (int_val) children.get(2);
+            operator = (token) children.get(1);
+            rVal = children.get(2);
         }
     }
 
@@ -34,27 +40,55 @@ public class int_expr extends expr<Integer> implements int_val {
     @Override
     public Integer execute() {
         this.fixChildren();
-        int left = parseToken(lVal);
+        
+        double left = 0;
+        String strLeft = "";
+        if (type == typeIdx.k_Integer) left = parseToken((int_val) lVal);
+        else if (type == typeIdx.k_Double) left = double_val.execute((double_val) lVal);
+        else if (type == typeIdx.k_String) strLeft = str_val.execute((str_val) lVal);
 
         if (operator == null)
-            return left;
+            return (int) left;
 
-        int right = parseToken(rVal);
+        // todo this does not work for ids
+        double right = 0;
+        String strRight = "";
+        if (type == typeIdx.k_Integer) right = parseToken((int_val) rVal);
+        else if (type == typeIdx.k_Double) right = double_val.execute((double_val) rVal);
+        else if (type == typeIdx.k_String) strRight = str_val.execute((str_val) rVal);
 
         switch (operator.toString()) {
             case "+":
-                return left + right;
+                return (int) (left + right);
             case "-":
-                return left - right;
+                return (int) (left - right);
             case "*":
-                return left * right;
+                return (int) (left * right);
             case "/":
                 if (right == 0) {
                     errorPrinter.throwError(operator, new Runtime("Divide by Zero"));
                 }
-                return left / right;
+                return (int) (left / right);
             case "^":
                 return (int) java.lang.Math.pow(left, right);
+            case ">":
+                if (type == typeIdx.k_String) return strLeft.compareTo(strRight) > 0 ? 1 : 0;
+                return left > right ? 1 : 0;
+            case ">=":
+                if (type == typeIdx.k_String) return strLeft.compareTo(strRight) >= 0 ? 1 : 0;
+                return left >= right ? 1 : 0;
+            case "<":
+                if (type == typeIdx.k_String) return strLeft.compareTo(strRight) < 0 ? 1 : 0;
+                return left < right ? 1 : 0;
+            case "<=":
+                if (type == typeIdx.k_String) return strLeft.compareTo(strRight) <= 0 ? 1 : 0;
+                return left <= right ? 1 : 0;
+            case "==":
+                if (type == typeIdx.k_String) return strLeft.compareTo(strRight) == 0 ? 1 : 0;
+                return left == right ? 1 : 0;
+            case "!=":
+                if (type == typeIdx.k_String) return strLeft.compareTo(strRight) != 0 ? 1 : 0;
+                return left != right ? 1 : 0;
             default:
                 errorPrinter.throwError(operator, new Runtime("Unrecognized operator: " + operator.toString()));
                 return null;
@@ -63,12 +97,16 @@ public class int_expr extends expr<Integer> implements int_val {
 
     public int getLineNumber() {
         if (lVal instanceof token) return ((token) lVal).getLineNumber();
-        else return ((int_expr) lVal).getLineNumber();
+        else if (type == typeIdx.k_Integer) return ((int_expr) lVal).getLineNumber();
+        else if (type == typeIdx.k_Double) return ((double_expr) lVal).getLineNumber();
+        else return ((str_expr) lVal).getLineNumber();
     }
 
     public int getIndex() {
         if (lVal instanceof token) return ((token) lVal).getIndex();
-        else return ((int_expr) lVal).getIndex();
+        else if (type == typeIdx.k_Integer) return ((int_expr) lVal).getIndex();
+        else if (type == typeIdx.k_Double) return ((double_expr) lVal).getIndex();
+        else return ((str_expr) lVal).getIndex();
     }
 
     private int parseToken(int_val token) {
