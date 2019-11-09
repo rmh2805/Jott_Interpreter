@@ -224,7 +224,10 @@ public class parser {
             // 2) rel_op may follow an int_expr (parent) -> int_token or a relational int_expr (grandparent)
             if (nextToken instanceof rel_op) {
                 parents.pop();
-                if (parents.peek() instanceof print_stmt ||
+                if (parents.peek() instanceof int_expr && parents.peek().isEmpty()) { // handle only chaining of rel_ops
+                    ; // ignore initial LHS expr of relational statement. rel_op,token already on stack
+                }
+                else if (parents.peek() instanceof print_stmt ||
                         parents.peek() instanceof int_expr ||
                         parent instanceof int_expr) {
                     node grandparent = parents.peek();
