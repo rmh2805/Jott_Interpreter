@@ -29,6 +29,7 @@ public class parser {
 
         String tokenName = tok.getClass().getSimpleName();
 
+        if (parentName.equals(tokenName)) return true;
         if (FIRST.get(parentName) == null || FIRST.get(parentName).get(tokenName) == null)
             return false;
         else
@@ -103,9 +104,13 @@ public class parser {
             }
 
             token token = tokenList.get(t_idx);
-            // handle eof
-            if (token instanceof EOF && child instanceof stmt_lst) {
-                stack.pop();
+
+            // handle if statement w/out else
+            // by default, else is expected to follow if
+            // if else is expected but not received, remove else components
+            if (child instanceof String && child.equals("else_label") && !(token instanceof else_label)) {
+                // pop else, {, b_stmt_lst, }
+                for (int i = 0; i < 4; i++) stack.pop();
                 continue;
             }
 
@@ -195,8 +200,11 @@ public class parser {
 
             if (child instanceof String) stack.pop(); // remove tokens and abstract nodes
             if (children.size() <= 0) { // if no children, it is a token
-                if (parent != null) parent.addChild(token); // add to parent
-                t_idx++;
+                if (child instanceof node) stack.pop(); // handle epsilon transitions (stmt_lst, b_stmt_lst)
+                else {
+                    if (parent != null) parent.addChild(token); // add to parent
+                    t_idx++;
+                }
             } else if (child instanceof node) parents.push((node) child);
 
             // add children to stack in reverse order
@@ -222,14 +230,26 @@ public class parser {
                     case "print_stmt":
                         newChild = new print_stmt();
                         break;
-                    case "r_asmt":
-                        newChild = new r_asmt();
-                        break;
                     case "stmt_lst":
                         newChild = new stmt_lst();
                         break;
                     case "str_literal":
                         newChild = new str_literal();
+                        break;
+                    case "r_asmt":
+                        newChild = new r_asmt();
+                        break;
+                    case "b_stmt_lst":
+                        newChild = new b_stmt_lst();
+                        break;
+                    case "if_stmt":
+                        newChild = new if_stmt();
+                        break;
+                    case "for_stmt":
+                        newChild = new for_stmt();
+                        break;
+                    case "while_stmt":
+                        newChild = new while_stmt();
                         break;
                     default: // token or abstract parent
                         newChild = name;

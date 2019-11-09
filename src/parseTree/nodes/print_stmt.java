@@ -5,7 +5,7 @@ import src.parseTree.tokens.end_stmt;
 import src.parseTree.tokens.print_label;
 import src.parseTree.tokens.start_paren;
 
-public class print_stmt extends stmt<Integer> {
+public class print_stmt extends b_stmt<Integer> {
     private print_label printLabel;
     private start_paren startParen;
     private expr toPrint;
