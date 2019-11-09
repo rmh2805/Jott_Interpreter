@@ -12,10 +12,6 @@ public class id extends token implements int_val, double_val, str_val {
         this.id = id;
     }
 
-    public void fixChildren() {
-
-    }
-
     public String toString () {
         return id;
     }

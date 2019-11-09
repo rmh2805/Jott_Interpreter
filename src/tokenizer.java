@@ -129,7 +129,25 @@ public class tokenizer {
                     }
                 } else if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^') // op
                     tokenList.add(new op(lineCount, col, Character.toString(ch)));
-                else if (ch == '=') tokenList.add(new asmt_op(lineCount, col));
+                else if (ch == '>' || ch == '<' || ch == '=' || ch == '!') {
+                    tok.append(ch);
+                    if (i + 1 < lineLength) {
+                        ch = line.charAt(++i);
+                        if (ch == '=') tok.append(ch);
+                        else i--;
+                    }
+                    switch (tok.toString()) {
+                        case "!":
+                            errorPrinter.throwError(lineCount, col, new Syntax("Malformed token"));
+                            break;
+                        case "=":
+                            tokenList.add(new asmt_op(lineCount, col));
+                            break;
+                        default:
+                            tokenList.add(new rel_op(lineCount, col, tok.toString()));
+                            break;
+                    }
+                }
                 else if (ch == '(') tokenList.add(new start_paren(lineCount, col));
                 else if (ch == ')') tokenList.add(new end_paren(lineCount, col));
                 else if (ch == '{') tokenList.add(new start_brace(lineCount, col));
@@ -143,6 +161,7 @@ public class tokenizer {
         }
 
         tokenList.add(new EOF(lineCount - 1, col)); // append EOF on last line
+        sc.close();
         return tokenList;
     }
 }

@@ -171,18 +171,6 @@ public class parser {
 
             List<String> children = predict(child, dummy);
 
-            // default: d_expr/i_expr -> d_token/i_token
-            // lookahead(1) to check for op
-            // if op, d_expr/i_expr -> d_token/i_token,op,d_expr/i_expr
-            if (child instanceof double_expr || child instanceof int_expr) {
-                token nextToken = tokenList.get(t_idx + 1);
-                if (nextToken instanceof op) {
-                    if (child instanceof double_expr) stack.push(new double_expr());
-                    else stack.push(new int_expr());
-                    stack.push("op");
-                }
-            }
-
             if (child instanceof r_asmt && dummy instanceof id) {
                 typeIdx type = symTab.get(token.toString());
                 switch (type) {
@@ -205,7 +193,89 @@ public class parser {
                     if (parent != null) parent.addChild(token); // add to parent
                     t_idx++;
                 }
-            } else if (child instanceof node) parents.push((node) child);
+            } else if (child instanceof node) {
+                parent = (node) child;
+                parents.push(parent);
+            }
+
+            token nextToken = tokenList.get(t_idx);
+            // 1) if op follows an int_expr -> int_token or double_expr -> double_token, the expr is the parent
+            // modify stack and parents so the T_expr is a left child of a new T_expr
+            // result stack: ..., T_expr, op, T_token, T_expr (new), ...
+            // result parents: ..., T_expr, T_expr (new), ...
+            // 2) if op follows relational int_expr -> T_expr,rel_op,T_expr, the expr is the "grandparent"
+            // modify stack and parents so the int_expr (grandparent) is left child of a new int_expr
+            // result stack: ..., T_expr, int_expr, op, int_token, int_expr (new), ...
+            // result parents: ..., T_expr, int_expr, int_expr (new), ...
+            if (nextToken instanceof op) {
+                parents.pop();
+                if (token instanceof op) { // if currentToken is op, and nextToken is op,
+                    ; // assume nextToken is signed number, not op
+                }
+                else if (parent instanceof int_expr ||
+                        parent instanceof double_expr ||
+                        parents.peek() instanceof int_expr && !parents.peek().isEmpty()) {
+                    node grandparent = parents.peek();
+                    node newParent = new double_expr();
+                    if (parent instanceof int_expr ||
+                            grandparent instanceof int_expr && !grandparent.isEmpty())
+                        newParent = new int_expr();
+
+                    Deque<Object> tempStack = new ArrayDeque<>();
+                    while (stack.peek() != parent) tempStack.push(stack.pop()); // get to parent
+                    tempStack.push(stack.pop()); // remove parent, insert just below parent
+                    if (grandparent instanceof int_expr && !grandparent.isEmpty()) { // if condition 2, insert just below grandparent
+                        tempStack.push(stack.pop());
+                        parents.pop();
+                    }
+
+                    stack.push(newParent); // insert new parent
+                    if (grandparent instanceof int_expr && !grandparent.isEmpty())
+                        stack.push("int_token"); // push expected right child of new parent
+                    else if (parent instanceof int_expr) stack.push("int_token");
+                    else if (parent instanceof double_expr) stack.push("double_token");
+                    stack.push("op");
+                    while (!tempStack.isEmpty()) stack.push(tempStack.pop());
+
+                    parents.push(newParent); // update parents
+                    if (grandparent instanceof int_expr && !grandparent.isEmpty()) parents.push(grandparent);
+                }
+                parents.push(parent);
+            }
+
+            // 1) rel_op may change current expr type (to int_expr) if expr is child of print, which takes any type
+            // 2) rel_op may follow an int_expr (parent) -> int_token or a relational int_expr (grandparent)
+            if (nextToken instanceof rel_op) {
+                parents.pop();
+                if (parents.peek() instanceof int_expr && parents.peek().isEmpty()) { // handle only chaining of rel_ops
+                    ; // ignore initial LHS expr of relational statement. rel_op,token already on stack
+                }
+                else if (parents.peek() instanceof print_stmt ||
+                        parents.peek() instanceof int_expr ||
+                        parent instanceof int_expr) {
+                    node grandparent = parents.peek();
+                    node newParent = new int_expr();
+
+                    Deque<Object> tempStack = new ArrayDeque<>();
+                    while (stack.peek() != parent) tempStack.push(stack.pop());
+                    tempStack.push(stack.pop());
+                    if (grandparent instanceof int_expr) {
+                        tempStack.push(stack.pop());
+                        parents.pop();
+                    }
+
+                    stack.push(newParent);
+                    if (parent instanceof int_expr || grandparent instanceof int_expr) stack.push("int_token");
+                    else if (parent instanceof double_expr) stack.push("double_token");
+                    else if (parent instanceof str_expr) stack.push("str_expr");
+                    stack.push("rel_op");
+                    while (!tempStack.isEmpty()) stack.push(tempStack.pop());
+
+                    parents.push(newParent);
+                    if (grandparent instanceof int_expr) parents.push(grandparent);
+                }
+                parents.push(parent);
+            }
 
             // add children to stack in reverse order
             for (int i = children.size() - 1; i >= 0; i--) {

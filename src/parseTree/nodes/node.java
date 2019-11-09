@@ -23,6 +23,13 @@ public abstract class node {
     }
 
     /**
+     * Return whether or not node has no children
+     */
+    public boolean isEmpty() {
+        return children.size() == 0;
+    }
+
+    /**
      * Assign children to their fields for execution
      */
     public abstract void fixChildren();

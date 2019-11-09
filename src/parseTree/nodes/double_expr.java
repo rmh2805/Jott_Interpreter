@@ -31,38 +31,15 @@ public class double_expr extends expr<Double> implements double_val {
 
     public double_expr() {}
 
-    private double_expr(double_val lVal, op operator, double_val rVal) {
-        if (lVal == null || (operator != null && rVal == null) || (operator == null && rVal != null)) {
-            System.out.println("Error, double expression creation must provide either only lVal or lVal, operator, and rVal");
-            System.exit(1);
-        }
-        this.lVal = lVal;
-        this.operator = operator;
-        this.rVal = rVal;
-    }
-
     @Override
     public Double execute() {
         this.fixChildren();
         double left = parseToken(lVal);
-        double right = 0;
 
         if (operator == null)
             return left;
 
-        //in the case that there are more than 2 values to compute: compute the first two, obtain the results, create a new
-        //double_expr containing the result, next operand, and value following the operand. This is recursively done until
-        //computation ends at the last value
-        if (rVal instanceof double_expr && ((double_expr) rVal).children.size() == 3) {
-            double_expr doubleExpr = new double_expr(lVal, operator, (double_val) ((double_expr) rVal).children.get(0));
-            left = doubleExpr.execute();
-            double_val leftValue = new double_token(((token) lVal).getLineNumber(), ((token) lVal).getIndex(), left);
-            operator = (op) ((double_expr) rVal).children.get(1);
-            double_expr expr = new double_expr(leftValue, operator, ((double_expr) (((double_expr) rVal).children.get(2))));
-            return expr.execute();
-        } else {
-            right = parseToken(rVal);
-        }
+        double right = parseToken(rVal);
 
         switch (operator.toString()) {
             case "+":
@@ -82,6 +59,16 @@ public class double_expr extends expr<Double> implements double_val {
                 errorPrinter.throwError(operator, new Runtime("Unrecognized operator: " + operator.toString()));
                 return null;
         }
+    }
+
+    public int getLineNumber() {
+        if (lVal instanceof token) return ((token) lVal).getLineNumber();
+        return ((double_expr) lVal).getLineNumber();
+    }
+
+    public int getIndex() {
+        if (lVal instanceof token) return ((token) lVal).getIndex();
+        return ((double_expr) lVal).getIndex();
     }
 
     private double parseToken(double_val token) {
