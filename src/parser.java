@@ -186,11 +186,14 @@ public class parser {
             // result parents: ..., T_expr, int_expr, int_expr (new), ...
             if (nextToken instanceof op) {
                 parents.pop();
-                if (parent instanceof int_expr || parent instanceof double_expr || parents.peek() instanceof int_expr) {
+                if (token instanceof op) { // if currentToken is op, and nextToken is op,
+                    ; // assume nextToken is signed number, not op
+                }
+                else if (parent instanceof int_expr || parent instanceof double_expr || parents.peek() instanceof int_expr) {
                     node grandparent = parents.peek();
                     node newParent = new double_expr();
                     if (parent instanceof int_expr || grandparent instanceof int_expr) newParent = new int_expr();
-                    
+
                     Deque<Object> tempStack = new ArrayDeque<>();
                     while (stack.peek() != parent) tempStack.push(stack.pop()); // get to parent
                     tempStack.push(stack.pop()); // remove parent, insert just below parent
@@ -198,13 +201,13 @@ public class parser {
                         tempStack.push(stack.pop());
                         parents.pop();
                     }
-                    
+
                     stack.push(newParent); // insert new parent
                     if (grandparent instanceof int_expr) stack.push("int_token"); // push expected right child of new parent
                     else stack.push(dummy.getClass().getSimpleName());
                     stack.push("op");
                     while (!tempStack.isEmpty()) stack.push(tempStack.pop());
-                    
+
                     parents.push(newParent); // update parents
                     if (grandparent instanceof int_expr) parents.push(grandparent);
                 }
