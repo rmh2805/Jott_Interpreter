@@ -50,26 +50,26 @@ public class nameTableSingleton {
     }
 
     public void setInt(id name, Integer val) {
-        if (isAssigned(name))
-            errorPrinter.throwError(name, new Syntax("Cannot reassign variables"));
-
-        typeMap.put(name.toString(), typeIdx.k_Integer);
+        if (!isAssigned(name))
+            typeMap.put(name.toString(), typeIdx.k_Integer);
+        else if (getType(name) != typeIdx.k_Integer)
+            errorPrinter.throwError(name, new Syntax("Incompatible types, requires Integer"));
         intMap.put(name.toString(), val);
     }
 
     public void setDouble(id name, Double val) {
-        if (isAssigned(name))
-            errorPrinter.throwError(name, new Syntax("Cannot reassign variables"));
-
-        typeMap.put(name.toString(), typeIdx.k_Double);
+        if (!isAssigned(name))
+            typeMap.put(name.toString(), typeIdx.k_Double);
+        else if (getType(name) != typeIdx.k_Double)
+            errorPrinter.throwError(name, new Syntax("Incompatible types, requires Double"));
         doubleMap.put(name.toString(), val);
     }
 
     public void setString(id name, String val) {
-        if (isAssigned(name))
-            errorPrinter.throwError(name, new Syntax("Cannot reassign variables"));
-
-        typeMap.put(name.toString(), typeIdx.k_String);
+        if (!isAssigned(name))
+            typeMap.put(name.toString(), typeIdx.k_String);
+        else if (getType(name) != typeIdx.k_String)
+            errorPrinter.throwError(name, new Syntax("Incompatible types, requires String"));
         strMap.put(name.toString(), val);
     }
 
