@@ -189,27 +189,33 @@ public class parser {
                 if (token instanceof op) { // if currentToken is op, and nextToken is op,
                     ; // assume nextToken is signed number, not op
                 }
-                else if (parent instanceof int_expr || parent instanceof double_expr || parents.peek() instanceof int_expr) {
+                else if (parent instanceof int_expr ||
+                        parent instanceof double_expr ||
+                        parents.peek() instanceof int_expr && !parents.peek().isEmpty()) {
                     node grandparent = parents.peek();
                     node newParent = new double_expr();
-                    if (parent instanceof int_expr || grandparent instanceof int_expr) newParent = new int_expr();
+                    if (parent instanceof int_expr ||
+                            grandparent instanceof int_expr && !grandparent.isEmpty())
+                        newParent = new int_expr();
 
                     Deque<Object> tempStack = new ArrayDeque<>();
                     while (stack.peek() != parent) tempStack.push(stack.pop()); // get to parent
                     tempStack.push(stack.pop()); // remove parent, insert just below parent
-                    if (grandparent instanceof int_expr) { // if condition 2, insert just below grandparent
+                    if (grandparent instanceof int_expr && !grandparent.isEmpty()) { // if condition 2, insert just below grandparent
                         tempStack.push(stack.pop());
                         parents.pop();
                     }
 
                     stack.push(newParent); // insert new parent
-                    if (grandparent instanceof int_expr) stack.push("int_token"); // push expected right child of new parent
-                    else stack.push(dummy.getClass().getSimpleName());
+                    if (grandparent instanceof int_expr && !grandparent.isEmpty())
+                        stack.push("int_token"); // push expected right child of new parent
+                    else if (parent instanceof int_expr) stack.push("int_token");
+                    else if (parent instanceof double_expr) stack.push("double_token");
                     stack.push("op");
                     while (!tempStack.isEmpty()) stack.push(tempStack.pop());
 
                     parents.push(newParent); // update parents
-                    if (grandparent instanceof int_expr) parents.push(grandparent);
+                    if (grandparent instanceof int_expr && !grandparent.isEmpty()) parents.push(grandparent);
                 }
                 parents.push(parent);
             }
