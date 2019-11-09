@@ -8,7 +8,7 @@ public class stmt_lst extends node {
         if (children.size() == 0) return;
         statement = (stmt) children.get(0);
         if (children.size() >= 2) { // if stmt -> expr,end_stmt stmt_list has three children
-            if (children.get(children.size() - 1) instanceof b_stmt_lst)
+            if (children.get(children.size() - 1) instanceof stmt_lst)
                 next = (stmt_lst) children.get(children.size() - 1);
         }
     }
