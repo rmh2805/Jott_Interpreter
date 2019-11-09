@@ -8,7 +8,8 @@ public class b_stmt_lst extends node {
         if (children.size() == 0) return;
         statement = (b_stmt) children.get(0);
         if (children.size() >= 2) { // if b_stmt -> expr,end_stmt b_stmt_list has three children
-            next = (b_stmt_lst) children.get(children.size() - 1);
+            if (children.get(children.size() - 1) instanceof b_stmt_lst)
+                next = (b_stmt_lst) children.get(children.size() - 1);
         }
     }
 
