@@ -6,7 +6,7 @@ import src.nameTableSingleton;
 import src.parseTree.tokens.*;
 import src.typeIdx;
 
-public class r_asmt extends stmt<Integer> {
+public class r_asmt extends b_stmt<Integer> {
     private id name;
     private asmt_op op;
     private expr exp;
