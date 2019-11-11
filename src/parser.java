@@ -3,7 +3,7 @@ package src;
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Syntax;
 import src.parseTree.nodes.*;
-import src.parseTree.tokens.*;
+import src.tokenizer.tokens.*;
 
 import java.util.*;
 

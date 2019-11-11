@@ -1,4 +1,4 @@
-package src.parseTree.tokens;
+package src.tokenizer.tokens;
 
 public class charAt_label extends token {
     public charAt_label(int lineNumber) {

@@ -1,10 +1,10 @@
 package src.parseTree.nodes;
 
 import src.parseTree.categories.str_val;
-import src.parseTree.tokens.comma;
-import src.parseTree.tokens.concat_label;
-import src.parseTree.tokens.end_paren;
-import src.parseTree.tokens.start_paren;
+import src.tokenizer.tokens.comma;
+import src.tokenizer.tokens.concat_label;
+import src.tokenizer.tokens.end_paren;
+import src.tokenizer.tokens.start_paren;
 
 public class concat_expr extends str_expr implements str_val {
     private concat_label op;

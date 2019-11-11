@@ -1,4 +1,4 @@
-package src.parseTree.tokens;
+package src.tokenizer.tokens;
 
 public class print_label extends token {
 

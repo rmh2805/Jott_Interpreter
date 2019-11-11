@@ -1,4 +1,4 @@
-package src.parseTree.tokens;
+package src.tokenizer.tokens;
 
 public class concat_label extends token {
 

@@ -1,4 +1,4 @@
-package src.parseTree.tokens;
+package src.tokenizer.tokens;
 
 public class asmt_op extends token {
     public asmt_op(int lineNumber) {

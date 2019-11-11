@@ -4,7 +4,7 @@ import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Runtime;
 import src.nameTableSingleton;
 import src.parseTree.nodes.str_expr;
-import src.parseTree.tokens.id;
+import src.tokenizer.tokens.id;
 import src.typeIdx;
 
 public interface str_val {

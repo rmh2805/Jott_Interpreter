@@ -2,7 +2,7 @@ package src;
 
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Syntax;
-import src.parseTree.tokens.id;
+import src.tokenizer.tokens.id;
 
 import java.util.HashMap;
 import java.util.Map;

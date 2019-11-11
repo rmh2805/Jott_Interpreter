@@ -3,8 +3,8 @@ package test;
 import src.parseTree.nodes.node;
 import src.parseTree.nodes.program;
 import src.parseTree.nodes.stmt_lst;
-import src.parseTree.tokens.token;
-import src.tokenizer;
+import src.tokenizer.tokens.token;
+import src.tokenizer.tokenizer;
 
 import java.util.ArrayList;
 import java.util.List;

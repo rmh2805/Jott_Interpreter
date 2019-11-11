@@ -3,10 +3,10 @@ package src.parseTree.nodes;
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Runtime;
 import src.parseTree.categories.str_val;
-import src.parseTree.tokens.charAt_label;
-import src.parseTree.tokens.comma;
-import src.parseTree.tokens.end_paren;
-import src.parseTree.tokens.start_paren;
+import src.tokenizer.tokens.charAt_label;
+import src.tokenizer.tokens.comma;
+import src.tokenizer.tokens.end_paren;
+import src.tokenizer.tokens.start_paren;
 
 public class charAt_expr extends str_expr {
     private charAt_label op;

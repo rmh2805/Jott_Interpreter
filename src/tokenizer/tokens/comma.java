@@ -1,4 +1,4 @@
-package src.parseTree.tokens;
+package src.tokenizer.tokens;
 
 public class comma extends token {
     public comma(int lineNumber) {

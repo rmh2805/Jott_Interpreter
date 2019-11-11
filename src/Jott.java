@@ -4,7 +4,8 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 import src.parseTree.nodes.program;
-import src.parseTree.tokens.token;
+import src.tokenizer.tokenizer;
+import src.tokenizer.tokens.token;
 
 public class Jott {
     public static void main(String[] args) {

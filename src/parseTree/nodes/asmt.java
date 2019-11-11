@@ -6,7 +6,7 @@ import src.errorHandling.types.Runtime;
 import src.errorHandling.types.Syntax;
 import src.nameTableSingleton;
 import src.parseTree.categories.Type;
-import src.parseTree.tokens.*;
+import src.tokenizer.tokens.*;
 import src.typeIdx;
 
 public class asmt extends stmt<Integer> {

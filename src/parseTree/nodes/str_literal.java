@@ -4,8 +4,8 @@ import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Runtime;
 import src.nameTableSingleton;
 import src.parseTree.categories.str_val;
-import src.parseTree.tokens.id;
-import src.parseTree.tokens.str_token;
+import src.tokenizer.tokens.id;
+import src.tokenizer.tokens.str_token;
 import src.typeIdx;
 
 public class str_literal extends str_expr implements str_val {

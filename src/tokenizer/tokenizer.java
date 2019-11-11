@@ -1,8 +1,8 @@
-package src;
+package src.tokenizer;
 
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Syntax;
-import src.parseTree.tokens.*;
+import src.tokenizer.tokens.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,9 +1,9 @@
 package src.parseTree.nodes;
 
-import src.parseTree.tokens.end_paren;
-import src.parseTree.tokens.end_stmt;
-import src.parseTree.tokens.print_label;
-import src.parseTree.tokens.start_paren;
+import src.tokenizer.tokens.end_paren;
+import src.tokenizer.tokens.end_stmt;
+import src.tokenizer.tokens.print_label;
+import src.tokenizer.tokens.start_paren;
 
 public class print_stmt extends stmt<Integer> {
     private print_label printLabel;

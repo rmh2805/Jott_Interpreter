@@ -1,7 +1,7 @@
 import src.nameTableSingleton;
 import src.parseTree.nodes.program;
-import src.parseTree.tokens.token;
-import src.tokenizer;
+import src.tokenizer.tokens.token;
+import src.tokenizer.tokenizer;
 
 import java.io.FileNotFoundException;
 import java.util.List;

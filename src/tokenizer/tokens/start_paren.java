@@ -1,6 +1,4 @@
-package src.parseTree.tokens;
-
-import src.parseTree.tokens.token;
+package src.tokenizer.tokens;
 
 public class start_paren extends token{
     public start_paren (int lineNumber) {

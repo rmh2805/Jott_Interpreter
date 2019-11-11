@@ -4,10 +4,10 @@ import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Runtime;
 import src.nameTableSingleton;
 import src.parseTree.categories.int_val;
-import src.parseTree.tokens.id;
-import src.parseTree.tokens.int_token;
-import src.parseTree.tokens.op;
-import src.parseTree.tokens.token;
+import src.tokenizer.tokens.id;
+import src.tokenizer.tokens.int_token;
+import src.tokenizer.tokens.op;
+import src.tokenizer.tokens.token;
 import src.typeIdx;
 
 public class int_expr extends expr<Integer> implements int_val {

@@ -1,6 +1,4 @@
-package src.parseTree.tokens;
-
-import src.parseTree.tokens.token;
+package src.tokenizer.tokens;
 
 public class op extends token{
     private String operator;
