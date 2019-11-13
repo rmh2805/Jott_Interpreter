@@ -1,13 +1,13 @@
 package src.parseTree.nodes;
 
 public class if_stmt extends stmt<Integer> {
-    private int_expr cond; // todo writeup states expr
+    private expr cond;
     private b_stmt_lst body;
     private b_stmt_lst alt;
 
     public void fixChildren() {
         // if(0), start_paren(1), end_paren(3)
-        cond = (int_expr) children.get(2); // todo writeup states expr
+        cond = (expr) children.get(2);
         // start_brace(4), end_brace(6)
         body = (b_stmt_lst) children.get(5);
         // else(7), start_brace(8), end_brace(10)
@@ -16,7 +16,11 @@ public class if_stmt extends stmt<Integer> {
 
     public Integer execute() {
         this.fixChildren();
-        if (cond.execute() == 1) body.execute(); // todo writeup states expr
+        Object condValue = cond.execute();
+        if (condValue instanceof String ||
+                condValue instanceof Integer && ((int) condValue) != 0 ||
+                condValue instanceof Double && ((double) condValue) != 0.0)
+            body.execute();
         else alt.execute();
 
         return 0;
