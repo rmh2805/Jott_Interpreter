@@ -13,7 +13,7 @@ public class while_stmt extends stmt<Integer> {
 
     public Integer execute() {
         this.fixChildren();
-        while (cond.execute() == 1) body.execute();
+        while (cond.execute() != 0) body.execute();
 
         return 0;
     }

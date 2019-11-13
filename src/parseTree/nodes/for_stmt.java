@@ -18,7 +18,7 @@ public class for_stmt extends stmt<Integer> {
     public Integer execute() {
         this.fixChildren();
         init.execute();
-        while (cond.execute() == 1) {
+        while (cond.execute() != 1) {
             body.execute();
             inc.execute();
         }
