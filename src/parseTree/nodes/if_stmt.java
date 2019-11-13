@@ -21,7 +21,9 @@ public class if_stmt extends stmt<Integer> {
                 condValue instanceof Integer && ((int) condValue) != 0 ||
                 condValue instanceof Double && ((double) condValue) != 0.0)
             body.execute();
-        else alt.execute();
+        else {
+            if (alt != null) alt.execute();
+        }
 
         return 0;
     }
