@@ -243,7 +243,7 @@ public class parser {
                 parents.push(parent);
             }
 
-            // 1) rel_op may change current expr type (to int_expr) if expr is child of print, which takes any type
+            // 1) rel_op may change current expr type (to int_expr) if expr is child of print/if stmt, which take any type
             // 2) rel_op may follow an int_expr (parent) -> int_token or a relational int_expr (grandparent)
             if (nextToken instanceof rel_op) {
                 parents.pop();
@@ -251,6 +251,7 @@ public class parser {
                     ; // ignore initial LHS expr of relational statement. rel_op,token already on stack
                 }
                 else if (parents.peek() instanceof print_stmt ||
+                        parents.peek() instanceof if_stmt ||
                         parents.peek() instanceof int_expr ||
                         parent instanceof int_expr) {
                     node grandparent = parents.peek();
