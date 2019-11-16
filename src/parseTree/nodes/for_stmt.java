@@ -1,6 +1,6 @@
 package src.parseTree.nodes;
 
-public class for_stmt extends stmt<Integer> {
+public class for_stmt extends b_stmt<Integer> {
     private asmt init;
     private int_expr cond;
     private r_asmt inc;
