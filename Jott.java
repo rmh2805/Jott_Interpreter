@@ -30,8 +30,7 @@ public class Jott {
             // Execute
             root.execute();
         } catch (FileNotFoundException e) {
-            System.out.println("Error: Specified Jott File: '" + filename + "not found");
-            e.printStackTrace();
+            System.out.println("Error: Specified Jott File: '" + filename + "' not found");
         }
 
     }
