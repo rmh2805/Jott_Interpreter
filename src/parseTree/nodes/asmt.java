@@ -71,6 +71,9 @@ public class asmt extends stmt<Integer> {
 
     @Override
     public String toString() {
-        return t.toString() + name.toString() + op.toString() + exp.toString() + endStmt.toString();
+        if (t != null && name != null && op != null && exp != null && endStmt != null) {
+            return t.toString() + name.toString() + op.toString() + exp.toString() + endStmt.toString();
+        }
+        return "asmt";
     }
 }

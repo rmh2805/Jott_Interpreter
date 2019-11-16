@@ -82,7 +82,16 @@ public class parser {
                 parents.pop();
                 stack.pop();
                 parent = parents.peek();
-                if (parent != null) parent.addChild(child); // parent == null if derivations merged into start symbol
+                if (parent != null) {
+                    if (parent instanceof b_stmt_lst && child instanceof if_stmt) {
+                        parents.pop();
+                        parent = parents.peek();
+                        parent.addChild(child);
+                    }
+                    else {
+                        parent.addChild(child); // parent == null if derivations merged into start symbol
+                    }
+                }
                 if (child instanceof asmt) { // add to symbol table
                     String type = ((asmt) child).getType();
                     String name = ((asmt) child).getId();
