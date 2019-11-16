@@ -165,6 +165,13 @@ public class parser {
                 String childName = child.getClass().getSimpleName();
                 if (child instanceof String) childName = (String) child;
                 String tokenName = dummy.getClass().getSimpleName();
+                if (childName.equals("rel_op")) {
+                    childName = "Integer";
+                    Object lhs = parent.getChildren().get(0);
+                    if (lhs instanceof double_expr) tokenName = "Double";
+                    else if (lhs instanceof str_expr) tokenName = "String";
+                    else tokenName = lhs.getClass().getSimpleName();
+                }
                 errorPrinter.throwError(token,
                         new Syntax(String.format("%s expected but got %s", childName, tokenName)));
             }
