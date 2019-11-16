@@ -1,6 +1,6 @@
 package src.parseTree.nodes;
 
-public class while_stmt extends stmt<Integer> {
+public class while_stmt extends b_stmt<Integer> {
     private int_expr cond;
     private b_stmt_lst body;
 
