@@ -77,6 +77,9 @@ public class tokenizer {
                         case "for":
                             tokenList.add(new for_label(lineCount, col));
                             break;
+                        case "Void":
+                            tokenList.add(new void_label(lineCount, col));
+                            break;
                         default:
                             if (Character.isLowerCase(tok.charAt(0)))
                                 tokenList.add(new id(lineCount, col, tok.toString()));
