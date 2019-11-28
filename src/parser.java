@@ -84,21 +84,9 @@ public class parser {
                 parent = parents.peek();
                 if (parent != null) parent.addChild(child); // parent == null if derivations merged into start symbol
                 if (child instanceof asmt) { // add to symbol table
-                    String type = ((asmt) child).getType();
+                    typeIdx type = ((asmt) child).getType();
                     String name = ((asmt) child).getId();
-                    switch (type) {
-                        case "Double":
-                            symTab.put(name, typeIdx.k_Double);
-                            break;
-                        case "Integer":
-                            symTab.put(name, typeIdx.k_Integer);
-                            break;
-                        case "String":
-                            symTab.put(name, typeIdx.k_String);
-                            break;
-                        default: // type == "", i.e. reassignment
-                            break;
-                    }
+                    symTab.put(name, type);
                 }
                 continue;
             }
