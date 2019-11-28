@@ -43,19 +43,79 @@ public class nameTableSingleton {
         return global.getType(name);
     }
 
+    /**
+     * Map integer value to identifier in local scope, used for initial assignments.
+     *
+     * @param name the identifier
+     * @param val  the value
+     */
     public void setInt(id name, Integer val) {
         dataFrame local = stackFrame.peekFirst();
         local.setInt(name, val);
     }
 
+    /**
+     * Map double value to identifier in local scope, used for initial assignments.
+     *
+     * @param name the identifier
+     * @param val  the value
+     */
     public void setDouble(id name, Double val) {
         dataFrame local = stackFrame.peekFirst();
         local.setDouble(name, val);
     }
 
+    /**
+     * Map string value to identifier in local scope, used for initial assignments.
+     *
+     * @param name the identifier
+     * @param val  the value
+     */
     public void setString(id name, String val) {
         dataFrame local = stackFrame.peekFirst();
         local.setString(name, val);
+    }
+
+    /**
+     * Map integer value to immediate scope where identifier exists, used for reassignments.
+     * Parsing phase ensures the identifier exists.
+     *
+     * @param name the identifier
+     * @param val  the value
+     */
+    public void resetInt(id name, Integer val) {
+        dataFrame local = stackFrame.peekFirst();
+        dataFrame global = stackFrame.peekLast();
+        if (local.isAssigned(name)) local.setInt(name, val);
+        else global.setInt(name, val);
+    }
+
+    /**
+     * Map double value to immediate scope where identifier exists, used for reassignments.
+     * Parsing phase ensures the identifier exists.
+     *
+     * @param name the identifier
+     * @param val  the value
+     */
+    public void resetDouble(id name, Double val) {
+        dataFrame local = stackFrame.peekFirst();
+        dataFrame global = stackFrame.peekLast();
+        if (local.isAssigned(name)) local.setDouble(name, val);
+        else global.setDouble(name, val);
+    }
+
+    /**
+     * Map string value to immediate scope where identifier exists, used for reassignments.
+     * Parsing phase ensures the identifier exists.
+     *
+     * @param name the identifier
+     * @param val  the value
+     */
+    public void resetString(id name, String val) {
+        dataFrame local = stackFrame.peekFirst();
+        dataFrame global = stackFrame.peekLast();
+        if (local.isAssigned(name)) local.setString(name, val);
+        else global.setString(name, val);
     }
 
     public Integer getInt(id name) {

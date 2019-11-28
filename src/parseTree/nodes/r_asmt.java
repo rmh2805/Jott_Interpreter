@@ -31,15 +31,15 @@ public class r_asmt extends b_stmt<Integer> {
         switch (t) {
             case k_Double:
                 if (exp instanceof double_expr)
-                    nameTable.setDouble(name, ((double_expr) exp).execute());
+                    nameTable.resetDouble(name, ((double_expr) exp).execute());
                 break;
             case k_Integer:
                 if (exp instanceof int_expr)
-                    nameTable.setInt(name, ((int_expr) exp).execute());
+                    nameTable.resetInt(name, ((int_expr) exp).execute());
                 break;
             case k_String:
                 if (exp instanceof str_expr)
-                    nameTable.setString(name, ((str_expr) exp).execute());
+                    nameTable.resetString(name, ((str_expr) exp).execute());
                 break;
             default:
                 errorPrinter.throwError(op, new Runtime("Attempt to assign to incompatible type"));
