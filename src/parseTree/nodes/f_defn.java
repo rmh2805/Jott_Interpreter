@@ -47,6 +47,15 @@ public class f_defn extends stmt<Integer> {
         return 0;
     }
 
+    Object call(fc_p_lst values) {
+        params.execute(values);
+        body.execute();
+        if (ret_val instanceof int_return) return ((int_return) ret_val).execute();
+        else if (ret_val instanceof double_return) return ((double_return) ret_val).execute();
+        else if (ret_val instanceof str_return) return ((str_return) ret_val).execute();
+        return null;
+    }
+
     /**
      * The string representation of this function definition
      *

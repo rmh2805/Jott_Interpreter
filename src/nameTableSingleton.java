@@ -154,6 +154,14 @@ public class nameTableSingleton {
         else return global.getString(name);
     }
 
+    public void addStack() {
+        stackFrame.push(new dataFrame());
+    }
+
+    public void popStack() {
+        stackFrame.pop();
+    }
+
     public void mapFun(id name, f_defn fun) {
         funType.put(name.toString(), fun.getType());
         funTable.put(name.toString(), fun);
