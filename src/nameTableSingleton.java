@@ -1,25 +1,15 @@
 package src;
 
-import src.errorHandling.errorPrinter;
-import src.errorHandling.types.Syntax;
 import src.parseTree.tokens.id;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class nameTableSingleton {
     private static nameTableSingleton instance;
     private static String filePath;
 
-    private Map<String, typeIdx> typeMap;
-    private Map<String, Integer> intMap;
-    private Map<String, Double> doubleMap;
-    private Map<String, String> strMap;
-
-    /*
-     *  For part 3, add a new table for function statement lists, as well as a stack of local variable maps
-     */
-
+    private static Deque<dataFrame> stackFrame;
 
     public static void init_nameTable(String filepath) {
         instance = new nameTableSingleton();
@@ -27,10 +17,9 @@ public class nameTableSingleton {
     }
 
     private nameTableSingleton() {
-        typeMap = new HashMap<>();
-        intMap = new HashMap<>();
-        doubleMap = new HashMap<>();
-        strMap = new HashMap<>();
+        stackFrame = new ArrayDeque<>();
+        dataFrame global = new dataFrame();
+        stackFrame.add(global);
     }
 
     public static nameTableSingleton getInstance() {
@@ -42,47 +31,52 @@ public class nameTableSingleton {
     }
 
     public boolean isAssigned(id name) {
-        return typeMap.get(name.toString()) != null;
+        dataFrame local = stackFrame.peekFirst();
+        dataFrame global = stackFrame.peekLast();
+        return local.isAssigned(name) || global.isAssigned(name);
     }
 
     public typeIdx getType(id name) {
-        return typeMap.get(name.toString());
+        dataFrame local = stackFrame.peekFirst();
+        dataFrame global = stackFrame.peekLast();
+        if (local.isAssigned(name)) return local.getType(name);
+        return global.getType(name);
     }
 
     public void setInt(id name, Integer val) {
-        if (!isAssigned(name))
-            typeMap.put(name.toString(), typeIdx.k_Integer);
-        else if (getType(name) != typeIdx.k_Integer)
-            errorPrinter.throwError(name, new Syntax("Incompatible types, requires Integer"));
-        intMap.put(name.toString(), val);
+        dataFrame local = stackFrame.peekFirst();
+        local.setInt(name, val);
     }
 
     public void setDouble(id name, Double val) {
-        if (!isAssigned(name))
-            typeMap.put(name.toString(), typeIdx.k_Double);
-        else if (getType(name) != typeIdx.k_Double)
-            errorPrinter.throwError(name, new Syntax("Incompatible types, requires Double"));
-        doubleMap.put(name.toString(), val);
+        dataFrame local = stackFrame.peekFirst();
+        local.setDouble(name, val);
     }
 
     public void setString(id name, String val) {
-        if (!isAssigned(name))
-            typeMap.put(name.toString(), typeIdx.k_String);
-        else if (getType(name) != typeIdx.k_String)
-            errorPrinter.throwError(name, new Syntax("Incompatible types, requires String"));
-        strMap.put(name.toString(), val);
+        dataFrame local = stackFrame.peekFirst();
+        local.setString(name, val);
     }
 
     public Integer getInt(id name) {
-        return intMap.get(name.toString());
+        dataFrame local = stackFrame.peekFirst();
+        dataFrame global = stackFrame.peekLast();
+        if (local.getType(name) == typeIdx.k_Integer) return local.getInt(name);
+        else return global.getInt(name);
     }
 
     public Double getDouble(id name) {
-        return doubleMap.get(name.toString());
+        dataFrame local = stackFrame.peekFirst();
+        dataFrame global = stackFrame.peekLast();
+        if (local.getType(name) == typeIdx.k_Double) return local.getDouble(name);
+        else return global.getDouble(name);
     }
 
     public String getString(id name) {
-        return strMap.get(name.toString());
+        dataFrame local = stackFrame.peekFirst();
+        dataFrame global = stackFrame.peekLast();
+        if (local.getType(name) == typeIdx.k_String) return local.getString(name);
+        else return global.getString(name);
     }
 
 }
