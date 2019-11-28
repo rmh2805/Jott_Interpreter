@@ -1,14 +1,19 @@
 package src;
 
+import src.parseTree.nodes.f_defn;
 import src.parseTree.tokens.id;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
 
 public class nameTableSingleton {
     private static nameTableSingleton instance;
     private static String filePath;
 
+    private static Map<String, typeIdx> funType;
+    private static Map<String, f_defn> funTable;
     private static Deque<dataFrame> stackFrame;
 
     public static void init_nameTable(String filepath) {
@@ -17,6 +22,8 @@ public class nameTableSingleton {
     }
 
     private nameTableSingleton() {
+        funType = new HashMap<>();
+        funTable = new HashMap<>();
         stackFrame = new ArrayDeque<>();
         dataFrame global = new dataFrame();
         stackFrame.add(global);
@@ -41,6 +48,10 @@ public class nameTableSingleton {
         dataFrame global = stackFrame.peekLast();
         if (local.isAssigned(name)) return local.getType(name);
         return global.getType(name);
+    }
+
+    public typeIdx getFunType(id name) {
+        return funType.get(name.toString());
     }
 
     /**
@@ -118,6 +129,10 @@ public class nameTableSingleton {
         else global.setString(name, val);
     }
 
+    public f_defn getFun(id name) {
+        return funTable.get(name.toString());
+    }
+
     public Integer getInt(id name) {
         dataFrame local = stackFrame.peekFirst();
         dataFrame global = stackFrame.peekLast();
@@ -139,5 +154,9 @@ public class nameTableSingleton {
         else return global.getString(name);
     }
 
+    public void mapFun(id name, f_defn fun) {
+        funType.put(name.toString(), fun.getType());
+        funTable.put(name.toString(), fun);
+    }
 }
 
