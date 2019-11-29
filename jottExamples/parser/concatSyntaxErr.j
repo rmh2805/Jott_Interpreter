@@ -1,1 +1,0 @@
-String s = concat("hello", 1);
