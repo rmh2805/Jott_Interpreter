@@ -2,6 +2,7 @@ package src;
 
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Syntax;
+import src.parseTree.categories.Type;
 import src.parseTree.nodes.*;
 import src.parseTree.tokens.*;
 
@@ -88,10 +89,28 @@ public class parser {
                     String name = ((asmt) child).getId();
                     symTab.put(name, type);
                 }
+                if (child instanceof p_lst || child instanceof fc_p_lst) {
+                    token token = tokenList.get(t_idx);
+                    if (token instanceof comma) {
+                        if (child instanceof p_lst) stack.push(new p_lst());
+                        else stack.push(new fc_p_lst());
+                    }
+                }
                 continue;
             }
 
             token token = tokenList.get(t_idx);
+
+            // handle function defn/calls without parameters
+            if (child instanceof p_lst && parent instanceof f_defn &&
+                    !(first("p_lst", token))) {
+                stack.pop();
+                continue;
+            } else if (child instanceof fc_p_lst && parent instanceof f_call &&
+                    !(first("fc_p_lst", token))) {
+                stack.pop();
+                continue;
+            }
 
             // handle if statement w/out else
             // by default, else is expected to follow if
