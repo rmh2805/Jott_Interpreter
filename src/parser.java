@@ -76,6 +76,7 @@ public class parser {
         program root = new program();
         stack.push(root);
         Map<String, typeIdx> symTab = new HashMap<>();
+        Map<String, typeIdx> symTab_ = new HashMap<>();
         Map<String, typeIdx> funTab = new HashMap<>();
         while (!stack.isEmpty()) {
             Object child = stack.peek();
@@ -88,7 +89,8 @@ public class parser {
                 if (child instanceof asmt) { // add to symbol table
                     typeIdx type = ((asmt) child).getType();
                     String name = ((asmt) child).getId();
-                    symTab.put(name, type);
+                    if (symTab.containsKey(name)) symTab_.put(name, type);
+                    else symTab.put(name, type);
                 }
                 if (child instanceof p_lst || child instanceof fc_p_lst) {
                     token token = tokenList.get(t_idx);
@@ -179,6 +181,23 @@ public class parser {
                             case k_Void:
                                 dummy = new void_token(token.getLineNumber(), token.getIndex());
                                 break;
+                        }
+
+                        if (!first(child, dummy) && type != ftype) {
+                            type = symTab_.get(token.toString());
+                            if (type != null) {
+                                switch (type) {
+                                    case k_Double:
+                                        dummy = new double_token(token.getLineNumber(), token.getIndex(), 0.0);
+                                        break;
+                                    case k_Integer:
+                                        dummy = new int_token(token.getLineNumber(), token.getIndex(), 0);
+                                        break;
+                                    case k_String:
+                                        dummy = new str_token(token.getLineNumber(), token.getIndex(), "");
+                                        break;
+                                }
+                            }
                         }
                     }
                 }
