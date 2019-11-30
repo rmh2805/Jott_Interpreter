@@ -97,6 +97,7 @@ public class parser {
                     if (token instanceof comma) {
                         if (child instanceof p_lst) stack.push(new p_lst());
                         else stack.push(new fc_p_lst());
+                        stack.push("comma");
                     }
                 }
                 continue;
@@ -219,7 +220,7 @@ public class parser {
                         new Syntax(String.format("%s expected but got %s", childName, tokenName)));
             }
 
-            List<String> children = predict(child, dummy);
+            List<String> children = new ArrayList<>(predict(child, dummy));
 
             if (children.size() > 0 && children.get(0).equals("asmt")) {
                 if (nextToken instanceof id && nnToken instanceof start_paren)
