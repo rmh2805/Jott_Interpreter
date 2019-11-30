@@ -76,7 +76,7 @@ public class parser {
         program root = new program();
         stack.push(root);
         Map<String, typeIdx> symTab = new HashMap<>();
-        Map<String, typeIdx> symTab_ = new HashMap<>();
+        Map<String, typeIdx> localSymTab = null;
         Map<String, typeIdx> funTab = new HashMap<>();
         while (!stack.isEmpty()) {
             Object child = stack.peek();
@@ -89,9 +89,10 @@ public class parser {
                 if (child instanceof asmt) { // add to symbol table
                     typeIdx type = ((asmt) child).getType();
                     String name = ((asmt) child).getId();
-                    if (symTab.containsKey(name)) symTab_.put(name, type);
+                    if (localSymTab != null) localSymTab.put(name, type);
                     else symTab.put(name, type);
                 }
+                if (child instanceof f_defn) localSymTab = null;
                 if (child instanceof p_lst || child instanceof fc_p_lst) {
                     token token = tokenList.get(t_idx);
                     if (token instanceof comma) {
@@ -148,7 +149,9 @@ public class parser {
             token dummy = token;
             if (token instanceof id && first(child, token)) {
                 typeIdx ftype = funTab.get(token.toString());
-                typeIdx type = symTab.get(token.toString());
+                typeIdx type;
+                if (localSymTab != null) type = localSymTab.get(token.toString());
+                else type = symTab.get(token.toString());
                 if (child instanceof String && child.equals("id")) { // id required for asmt, f_call, f_defn
                     if (parent instanceof asmt && type != null)
                         errorPrinter.throwError(token, new Syntax("Identifier already exists"));
@@ -185,18 +188,20 @@ public class parser {
                         }
 
                         if (!first(child, dummy) && type != ftype) {
-                            type = symTab_.get(token.toString());
-                            if (type != null) {
-                                switch (type) {
-                                    case k_Double:
-                                        dummy = new double_token(token.getLineNumber(), token.getIndex(), 0.0);
-                                        break;
-                                    case k_Integer:
-                                        dummy = new int_token(token.getLineNumber(), token.getIndex(), 0);
-                                        break;
-                                    case k_String:
-                                        dummy = new str_token(token.getLineNumber(), token.getIndex(), "");
-                                        break;
+                            if (type != symTab.get(token.toString())) {
+                                type = symTab.get(token.toString());
+                                if (type != null) {
+                                    switch (type) {
+                                        case k_Double:
+                                            dummy = new double_token(token.getLineNumber(), token.getIndex(), 0.0);
+                                            break;
+                                        case k_Integer:
+                                            dummy = new int_token(token.getLineNumber(), token.getIndex(), 0);
+                                            break;
+                                        case k_String:
+                                            dummy = new str_token(token.getLineNumber(), token.getIndex(), "");
+                                            break;
+                                    }
                                 }
                             }
                         }
@@ -397,6 +402,7 @@ public class parser {
                         newChild = new f_call();
                         break;
                     case "f_defn":
+                        localSymTab = new HashMap<>();
                         newChild = new f_defn();
                         break;
                     case "f_stmt_lst":
