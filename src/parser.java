@@ -152,7 +152,8 @@ public class parser {
                 typeIdx type;
                 if (localSymTab != null) type = localSymTab.get(token.toString());
                 else type = symTab.get(token.toString());
-                if (child instanceof String && child.equals("id")) { // id required for asmt, f_call, f_defn, p_lst
+                if (child instanceof f_call) ;
+                else if (child instanceof String && child.equals("id")) { // id required for asmt, f_call, f_defn, p_lst
                     if (parent instanceof asmt && type != null)
                         errorPrinter.throwError(token, new Syntax("Identifier already exists"));
                     else if (parent instanceof f_defn) {
