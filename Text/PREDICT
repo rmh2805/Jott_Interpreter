@@ -32,6 +32,7 @@ program [ if_label ] -> stmt_lst
 program [ for_label ] -> stmt_lst
 program [ while_label ] -> stmt_lst
 program [ void_token ] -> stmt_lst
+program [ void_label ] -> stmt_lst
 stmt [ charAt_label ] -> charAt_expr,end_stmt
 stmt [ concat_label ] -> concat_expr,end_stmt
 stmt [ double_label ] -> asmt
@@ -46,6 +47,7 @@ stmt [ if_label ] -> if_stmt
 stmt [ for_label ] -> for_stmt
 stmt [ while_label ] -> while_stmt
 stmt [ void_token ] -> f_call,end_stmt
+stmt [ void_label ] -> f_defn
 stmt_lst [ charAt_label ] -> stmt,stmt_lst
 stmt_lst [ concat_label ] -> stmt,stmt_lst
 stmt_lst [ double_label ] -> stmt,stmt_lst
@@ -60,6 +62,7 @@ stmt_lst [ if_label ] -> stmt,stmt_lst
 stmt_lst [ for_label ] -> stmt,stmt_lst
 stmt_lst [ while_label ] -> stmt,stmt_lst
 stmt_lst [ void_token ] -> stmt,stmt_lst
+stmt_lst [ void_label ] -> stmt,stmt_lst
 str_expr [ charAt_label ] -> charAt_expr
 str_expr [ concat_label ] -> concat_expr
 str_expr [ str_token ] -> str_literal
