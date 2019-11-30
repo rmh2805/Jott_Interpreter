@@ -27,6 +27,7 @@ public class parser {
         else
             parentName = parent.getClass().getSimpleName();
 
+        if (tok == null) return false;
         String tokenName = tok.getClass().getSimpleName();
 
         if (parentName.equals(tokenName)) return true;
@@ -100,6 +101,10 @@ public class parser {
             }
 
             token token = tokenList.get(t_idx);
+            token nextToken = null;
+            token nnToken = null;
+            if (t_idx + 1 < tokenList.size()) nextToken = tokenList.get(t_idx + 1);
+            if (t_idx + 2 < tokenList.size()) nnToken = tokenList.get(t_idx + 2);
 
             // handle function defn/calls without parameters
             if (child instanceof p_lst && parent instanceof f_defn &&
@@ -126,7 +131,6 @@ public class parser {
                 switch (token.toString()) {
                     case "+":
                     case "-":
-                        token nextToken = tokenList.get(t_idx + 1);
                         if (first(child, nextToken)) {
                             if ("-".equals(token.toString())) {
                                 if (nextToken instanceof int_token) ((int_token) nextToken).negate();
@@ -150,7 +154,6 @@ public class parser {
                     else if (parent instanceof f_call && ftype == null)
                         errorPrinter.throwError(token, new Syntax("Function undefined"));
                 } else {
-                    token nextToken = tokenList.get(t_idx + 1);
                     if (nextToken instanceof start_paren) {
                         type = ftype;
                         if (ftype == null) errorPrinter.throwError(token, new Syntax("Function undefined"));
@@ -159,7 +162,7 @@ public class parser {
 
                     // lookahead(1) to check for asmt_op
                     // if asmt_op, id not being referenced
-                    if (!(nextToken instanceof asmt_op)) {
+                    if (nextToken != null && !(nextToken instanceof asmt_op)) {
                         // treat id as its reference
                         switch (type) {
                             case k_Double:
@@ -198,7 +201,6 @@ public class parser {
             List<String> children = predict(child, dummy);
 
             if (token instanceof id) {
-                token nextToken = tokenList.get(t_idx + 1);
                 if (nextToken instanceof start_paren && !children.isEmpty()) {
                     switch (children.get(0)) {
                         case "int_token":
@@ -237,7 +239,7 @@ public class parser {
                 parents.push(parent);
             }
 
-            token nextToken = tokenList.get(t_idx);
+            token nextToken_ = tokenList.get(t_idx); // nextToken_ = next if t_idx incremented, else token
             // 1) if op follows an int_expr -> int_token or double_expr -> double_token, the expr is the parent
             // modify stack and parents so the T_expr is a left child of a new T_expr
             // result stack: ..., T_expr, op, T_token, T_expr (new), ...
@@ -246,7 +248,7 @@ public class parser {
             // modify stack and parents so the int_expr (grandparent) is left child of a new int_expr
             // result stack: ..., T_expr, int_expr, op, int_token, int_expr (new), ...
             // result parents: ..., T_expr, int_expr, int_expr (new), ...
-            if (nextToken instanceof op) {
+            if (nextToken_ instanceof op) {
                 parents.pop();
                 if (token instanceof op) { // if currentToken is op, and nextToken is op,
                     ; // assume nextToken is signed number, not op
@@ -284,7 +286,7 @@ public class parser {
 
             // 1) rel_op may change current expr type (to int_expr) if expr is child of print/if stmt, which take any type
             // 2) rel_op may follow an int_expr (parent) -> int_token or a relational int_expr (grandparent)
-            if (nextToken instanceof rel_op) {
+            if (nextToken_ instanceof rel_op) {
                 parents.pop();
                 if (parents.peek() instanceof int_expr && parents.peek().isEmpty()) { // handle only chaining of rel_ops
                     ; // ignore initial LHS expr of relational statement. rel_op,token already on stack
@@ -360,6 +362,30 @@ public class parser {
                         break;
                     case "while_stmt":
                         newChild = new while_stmt();
+                        break;
+                    case "double_return":
+                        newChild = new double_return();
+                        break;
+                    case "f_call":
+                        newChild = new f_call();
+                        break;
+                    case "f_defn":
+                        newChild = new f_defn();
+                        break;
+                    case "f_stmt_lst":
+                        newChild = new f_stmt_lst();
+                        break;
+                    case "fc_p_lst":
+                        newChild = new fc_p_lst();
+                        break;
+                    case "int_return":
+                        newChild = new int_return();
+                        break;
+                    case "p_lst":
+                        newChild = new p_lst();
+                        break;
+                    case "str_return":
+                        newChild = new str_return();
                         break;
                     default: // token or abstract parent
                         newChild = name;
