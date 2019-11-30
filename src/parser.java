@@ -152,7 +152,7 @@ public class parser {
                 typeIdx type;
                 if (localSymTab != null) type = localSymTab.get(token.toString());
                 else type = symTab.get(token.toString());
-                if (child instanceof String && child.equals("id")) { // id required for asmt, f_call, f_defn
+                if (child instanceof String && child.equals("id")) { // id required for asmt, f_call, f_defn, p_lst
                     if (parent instanceof asmt && type != null)
                         errorPrinter.throwError(token, new Syntax("Identifier already exists"));
                     else if (parent instanceof f_defn) {
@@ -161,6 +161,11 @@ public class parser {
                     }
                     else if (parent instanceof f_call && ftype == null)
                         errorPrinter.throwError(token, new Syntax("Function undefined"));
+                    else if (parent instanceof p_lst) {
+                        if (localSymTab.containsKey(token.toString()))
+                            errorPrinter.throwError(token, new Syntax("Duplicate parameter name"));
+                        localSymTab.put(token.toString(), ((p_lst) parent).getType());
+                    }
                 } else {
                     if (nextToken instanceof start_paren) {
                         type = ftype;
