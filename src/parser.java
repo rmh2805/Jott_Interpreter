@@ -250,7 +250,10 @@ public class parser {
             }
 
             if (child instanceof r_asmt && dummy instanceof id) {
-                typeIdx type = symTab.get(token.toString());
+                typeIdx type;
+                if (localSymTab != null && localSymTab.containsKey(token.toString()))
+                    type = localSymTab.get(token.toString());
+                else type = symTab.get(token.toString());
                 switch (type) {
                     case k_String:
                         children.set(2, "str_expr");
