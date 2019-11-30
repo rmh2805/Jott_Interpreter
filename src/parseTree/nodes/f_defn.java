@@ -27,6 +27,10 @@ public class f_defn extends stmt<Integer> {
         // end_brace
     }
 
+    public String getId() {
+        return children.get(1).toString();
+    }
+
     public typeIdx getType() {
         switch (children.get(0).toString()) {
             case "Integer":

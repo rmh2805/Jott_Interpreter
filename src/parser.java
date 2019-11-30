@@ -149,8 +149,10 @@ public class parser {
                 if (child instanceof String && child.equals("id")) { // id required for asmt, f_call, f_defn
                     if (parent instanceof asmt && type != null)
                         errorPrinter.throwError(token, new Syntax("Identifier already exists"));
-                    else if (parent instanceof f_defn && ftype != null)
-                        errorPrinter.throwError(token, new Syntax("Function already exists"));
+                    else if (parent instanceof f_defn) {
+                        if (ftype != null) errorPrinter.throwError(token, new Syntax("Function already exists"));
+                        else funTab.put(token.toString(), ((f_defn) parent).getType());
+                    }
                     else if (parent instanceof f_call && ftype == null)
                         errorPrinter.throwError(token, new Syntax("Function undefined"));
                 } else {
@@ -199,6 +201,11 @@ public class parser {
             }
 
             List<String> children = predict(child, dummy);
+
+            if (children.size() > 0 && children.get(0).equals("asmt")) {
+                if (nextToken instanceof id && nnToken instanceof start_paren)
+                    children.set(0, "f_defn");
+            }
 
             if (token instanceof id) {
                 if (nextToken instanceof start_paren && !children.isEmpty()) {
