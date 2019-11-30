@@ -31,6 +31,7 @@ program [ EOF ] -> stmt_lst
 program [ if_label ] -> stmt_lst
 program [ for_label ] -> stmt_lst
 program [ while_label ] -> stmt_lst
+program [ void_token ] -> stmt_lst
 stmt [ charAt_label ] -> charAt_expr,end_stmt
 stmt [ concat_label ] -> concat_expr,end_stmt
 stmt [ double_label ] -> asmt
@@ -40,10 +41,11 @@ stmt [ int_label ] -> asmt
 stmt [ int_token ] -> int_expr,end_stmt
 stmt [ print_label ] -> print_stmt
 stmt [ str_label ] -> asmt
-stmt [ str_token ] -> str_token,end_stmt
+stmt [ str_token ] -> str_literal,end_stmt
 stmt [ if_label ] -> if_stmt
 stmt [ for_label ] -> for_stmt
 stmt [ while_label ] -> while_stmt
+stmt [ void_token ] -> f_call,end_stmt
 stmt_lst [ charAt_label ] -> stmt,stmt_lst
 stmt_lst [ concat_label ] -> stmt,stmt_lst
 stmt_lst [ double_label ] -> stmt,stmt_lst
@@ -57,6 +59,7 @@ stmt_lst [ str_token ] -> stmt,stmt_lst
 stmt_lst [ if_label ] -> stmt,stmt_lst
 stmt_lst [ for_label ] -> stmt,stmt_lst
 stmt_lst [ while_label ] -> stmt,stmt_lst
+stmt_lst [ void_token ] -> stmt,stmt_lst
 str_expr [ charAt_label ] -> charAt_expr
 str_expr [ concat_label ] -> concat_expr
 str_expr [ str_token ] -> str_literal
@@ -68,10 +71,11 @@ b_stmt [ double_token ] -> double_expr,end_stmt
 b_stmt [ id ] -> r_asmt,end_stmt
 b_stmt [ int_token ] -> int_expr,end_stmt
 b_stmt [ print_label ] -> print_stmt
-b_stmt [ str_token ] -> str_token,end_stmt
+b_stmt [ str_token ] -> str_literal,end_stmt
 b_stmt [ if_label ] -> if_stmt
 b_stmt [ for_label ] -> for_stmt
 b_stmt [ while_label ] -> while_stmt
+b_stmt [ void_token ] -> f_call,end_stmt
 b_stmt_lst [ charAt_label ] -> b_stmt,b_stmt_lst
 b_stmt_lst [ concat_label ] -> b_stmt,b_stmt_lst
 b_stmt_lst [ double_token ] -> b_stmt,b_stmt_lst
@@ -82,6 +86,7 @@ b_stmt_lst [ str_token ] -> b_stmt,b_stmt_lst
 b_stmt_lst [ if_label ] -> b_stmt,b_stmt_lst
 b_stmt_lst [ for_label ] -> b_stmt,b_stmt_lst
 b_stmt_lst [ while_label ] -> b_stmt,b_stmt_lst
+b_stmt_lst [ void_token ] -> b_stmt,b_stmt_lst
 if_stmt [ if_label ] -> if_label,start_paren,expr,end_paren,start_brace,b_stmt_lst,end_brace,else_label,start_brace,b_stmt_lst,end_brace
 for_stmt [ for_label ] -> for_label,start_paren,asmt,int_expr,end_stmt,r_asmt,end_paren,start_brace,b_stmt_lst,end_brace
 while_stmt [ while_label ] -> while_label,start_paren,int_expr,end_paren,start_brace,b_stmt_lst,end_brace
@@ -104,6 +109,7 @@ f_stmt_lst [ str_token ] -> stmt,f_stmt_lst
 f_stmt_lst [ if_label ] -> stmt,f_stmt_lst
 f_stmt_lst [ for_label ] -> stmt,f_stmt_lst
 f_stmt_lst [ while_label ] -> stmt,f_stmt_lst
+f_stmt_lst [ void_token ] -> stmt,f_stmt_lst
 fc_p_lst [ charAt_label ] -> expr
 fc_p_lst [ concat_label ] -> expr
 fc_p_lst [ double_token ] -> expr

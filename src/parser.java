@@ -2,7 +2,6 @@ package src;
 
 import src.errorHandling.errorPrinter;
 import src.errorHandling.types.Syntax;
-import src.parseTree.categories.Type;
 import src.parseTree.nodes.*;
 import src.parseTree.tokens.*;
 
@@ -76,6 +75,7 @@ public class parser {
         program root = new program();
         stack.push(root);
         Map<String, typeIdx> symTab = new HashMap<>();
+        Map<String, typeIdx> funTab = new HashMap<>();
         while (!stack.isEmpty()) {
             Object child = stack.peek();
             node parent = parents.peek();
@@ -140,16 +140,25 @@ public class parser {
 
             token dummy = token;
             if (token instanceof id && first(child, token)) {
+                typeIdx ftype = funTab.get(token.toString());
                 typeIdx type = symTab.get(token.toString());
-                if (child instanceof String && child.equals("id")) { // only time id is specifically required is for asmt
+                if (child instanceof String && child.equals("id")) { // id required for asmt, f_call, f_defn
                     if (parent instanceof asmt && type != null)
                         errorPrinter.throwError(token, new Syntax("Identifier already exists"));
+                    else if (parent instanceof f_defn && ftype != null)
+                        errorPrinter.throwError(token, new Syntax("Function already exists"));
+                    else if (parent instanceof f_call && ftype == null)
+                        errorPrinter.throwError(token, new Syntax("Function undefined"));
                 } else {
-                    if (type == null) errorPrinter.throwError(token, new Syntax("Unknown identifier"));
+                    token nextToken = tokenList.get(t_idx + 1);
+                    if (nextToken instanceof start_paren) {
+                        type = ftype;
+                        if (ftype == null) errorPrinter.throwError(token, new Syntax("Function undefined"));
+                    }
+                    else if (type == null) errorPrinter.throwError(token, new Syntax("Unknown identifier"));
 
                     // lookahead(1) to check for asmt_op
                     // if asmt_op, id not being referenced
-                    token nextToken = tokenList.get(t_idx + 1);
                     if (!(nextToken instanceof asmt_op)) {
                         // treat id as its reference
                         switch (type) {
@@ -161,6 +170,9 @@ public class parser {
                                 break;
                             case k_String:
                                 dummy = new str_token(token.getLineNumber(), token.getIndex(), "");
+                                break;
+                            case k_Void:
+                                dummy = new void_token(token.getLineNumber(), token.getIndex());
                                 break;
                         }
                     }
@@ -184,6 +196,19 @@ public class parser {
             }
 
             List<String> children = predict(child, dummy);
+
+            if (token instanceof id) {
+                token nextToken = tokenList.get(t_idx + 1);
+                if (nextToken instanceof start_paren && !children.isEmpty()) {
+                    switch (children.get(0)) {
+                        case "int_token":
+                        case "double_token":
+                        case "str_token":
+                            children.set(0, "f_call");
+                            break;
+                    }
+                }
+            }
 
             if (child instanceof r_asmt && dummy instanceof id) {
                 typeIdx type = symTab.get(token.toString());
