@@ -232,6 +232,12 @@ public class parser {
                     else if (lhs instanceof str_expr) tokenName = "String";
                     else tokenName = lhs.getClass().getSimpleName();
                 }
+                if (childName.startsWith("str")) childName = "String";
+                else if (childName.startsWith("double")) childName = "Double";
+                else if (childName.startsWith("int")) childName = "Integer";
+                if (tokenName.startsWith("str")) tokenName = "String";
+                else if (tokenName.startsWith("double")) tokenName = "Double";
+                else if (tokenName.startsWith("int")) tokenName = "Integer";
                 errorPrinter.throwError(token,
                         new Syntax(String.format("%s expected but got %s", childName, tokenName)));
             }
