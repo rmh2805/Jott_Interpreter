@@ -4,7 +4,7 @@ import src.nameTableSingleton;
 import src.parseTree.categories.*;
 import src.parseTree.tokens.id;
 
-public class f_call extends stmt<Object> implements int_val, double_val, str_val {
+public class f_call extends b_stmt<Object> implements int_val, double_val, str_val {
     private id name;
     private fc_p_lst values;
 
