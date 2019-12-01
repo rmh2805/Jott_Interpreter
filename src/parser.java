@@ -272,7 +272,7 @@ public class parser {
 
             if (child instanceof String) stack.pop(); // remove tokens and abstract nodes
             if (children.size() <= 0) { // if no children, it is a token
-                if (child instanceof node) stack.pop(); // handle epsilon transitions (stmt_lst, b_stmt_lst)
+                if (child instanceof node) parent.addChild(stack.pop()); // handle epsilon transitions (stmt_lst, b_stmt_lst)
                 else {
                     if (parent != null) parent.addChild(token); // add to parent
                     t_idx++;
