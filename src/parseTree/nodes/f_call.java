@@ -1,5 +1,7 @@
 package src.parseTree.nodes;
 
+import src.errorHandling.errorPrinter;
+import src.errorHandling.types.Syntax;
 import src.nameTableSingleton;
 import src.parseTree.categories.*;
 import src.parseTree.tokens.id;
@@ -15,15 +17,17 @@ public class f_call extends b_stmt<Object> implements int_val, double_val, str_v
         // end_paren, end_stmt
     }
 
+    public id getName() {
+        return (id) children.get(0);
+    }
+
     public Object execute() {
         this.fixChildren();
 
-        nameTableSingleton nT = nameTableSingleton.getInstance();
-        nT.addStack();
-        f_defn fun = nT.getFun(name);
-        Object result = fun.call(values);
-        nT.popStack();
-        return result;
+        f_defn fun = nameTableSingleton.getInstance().getFun(name);
+        if (fun.getParams() != null && values == null)
+            errorPrinter.throwError(name, new Syntax("Missing arguments"));
+        return fun.call(values);
     }
 
     /**

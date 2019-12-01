@@ -1,5 +1,8 @@
 package src.parseTree.nodes;
 
+import src.dataFrame;
+import src.errorHandling.errorPrinter;
+import src.errorHandling.types.Syntax;
 import src.nameTableSingleton;
 import src.parseTree.categories.Type;
 import src.parseTree.tokens.id;
@@ -36,24 +39,34 @@ public class p_lst extends node {
      *      2) Stack for function created
      *
      * @param values the function call parameters
+     * @param dF     the new dataframe
      */
-    public void execute(fc_p_lst values) {
+    public void execute(fc_p_lst values, dataFrame dF) {
         this.fixChildren();
 
         nameTableSingleton nT = nameTableSingleton.getInstance();
+        expr param = values.getFirst();
         typeIdx type = this.getType();
         switch (type) {
             case k_Integer:
-                nT.setInt(name, ((Integer) values.getFirst().execute()));
+                dF.setInt(name, ((Integer) param.execute()));
                 break;
             case k_Double:
-                nT.setDouble(name, ((Double) values.getFirst().execute()));
+                dF.setDouble(name, ((Double) param.execute()));
                 break;
             case k_String:
-                nT.setString(name, ((String) values.getFirst().execute()));
+                dF.setString(name, ((String) param.execute()));
                 break;
         }
-        if (next != null) next.execute(values.getNext());
+
+        if (next != null) {
+            if (values.getNext() == null)
+                errorPrinter.throwError(values.getLineNumber(), values.getIndex(), new Syntax("Missing arguments"));
+            next.execute(values.getNext(), dF);
+        } else {
+            if (values.getNext() != null)
+                errorPrinter.throwError(values.getNext().getLineNumber(), values.getNext().getIndex(), new Syntax("Too many arguments"));
+        }
     }
 
     /**

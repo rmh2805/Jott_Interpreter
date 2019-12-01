@@ -154,8 +154,8 @@ public class nameTableSingleton {
         else return global.getString(name);
     }
 
-    public void addStack() {
-        stackFrame.push(new dataFrame());
+    public void addStack(dataFrame dF) {
+        stackFrame.push(dF);
     }
 
     public void popStack() {

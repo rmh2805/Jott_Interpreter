@@ -1,5 +1,8 @@
 package src.parseTree.nodes;
 
+import src.dataFrame;
+import src.errorHandling.errorPrinter;
+import src.errorHandling.types.Syntax;
 import src.nameTableSingleton;
 import src.parseTree.categories.Type;
 import src.parseTree.tokens.id;
@@ -44,6 +47,11 @@ public class f_defn extends stmt<Integer> {
         }
     }
 
+    public p_lst getParams() {
+        if (children.get(3) instanceof p_lst) return (p_lst) children.get(3);
+        return null;
+    }
+
     public Integer execute() {
         this.fixChildren();
         // bind function definition to identifier in function table
@@ -52,12 +60,19 @@ public class f_defn extends stmt<Integer> {
     }
 
     Object call(fc_p_lst values) {
-        params.execute(values);
+        Object result = null;
+        nameTableSingleton nT = nameTableSingleton.getInstance();
+        dataFrame dF = new dataFrame();
+        if (params == null && values != null)
+            errorPrinter.throwError(values.getLineNumber(), values.getIndex(), new Syntax("Too many arguments"));
+        else if (params != null && values != null) params.execute(values, dF);
+        nT.addStack(dF);
         body.execute();
-        if (ret_val instanceof int_return) return ((int_return) ret_val).execute();
-        else if (ret_val instanceof double_return) return ((double_return) ret_val).execute();
-        else if (ret_val instanceof str_return) return ((str_return) ret_val).execute();
-        return null;
+        if (ret_val instanceof int_return) result = ((int_return) ret_val).execute();
+        else if (ret_val instanceof double_return) result = ((double_return) ret_val).execute();
+        else if (ret_val instanceof str_return) result = ((str_return) ret_val).execute();
+        nT.popStack();
+        return result;
     }
 
     /**

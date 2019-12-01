@@ -21,7 +21,7 @@ public class dataFrame {
         return typeMap.get(name.toString());
     }
 
-    void setInt(id name, Integer val) {
+    public void setInt(id name, Integer val) {
         if (!isAssigned(name))
             typeMap.put(name.toString(), typeIdx.k_Integer);
         else if (getType(name) != typeIdx.k_Integer)
@@ -29,7 +29,7 @@ public class dataFrame {
         intMap.put(name.toString(), val);
     }
 
-    void setDouble(id name, Double val) {
+    public void setDouble(id name, Double val) {
         if (!isAssigned(name))
             typeMap.put(name.toString(), typeIdx.k_Double);
         else if (getType(name) != typeIdx.k_Double)
@@ -37,7 +37,7 @@ public class dataFrame {
         doubleMap.put(name.toString(), val);
     }
 
-    void setString(id name, String val) {
+    public void setString(id name, String val) {
         if (!isAssigned(name))
             typeMap.put(name.toString(), typeIdx.k_String);
         else if (getType(name) != typeIdx.k_String)
