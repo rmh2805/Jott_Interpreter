@@ -93,14 +93,6 @@ public class parser {
                     else symTab.put(name, type);
                 }
                 if (child instanceof f_defn) localSymTab = null;
-                if (child instanceof p_lst || child instanceof fc_p_lst) {
-                    token token = tokenList.get(t_idx);
-                    if (token instanceof comma) {
-                        if (child instanceof p_lst) stack.push(new p_lst());
-                        else stack.push(new fc_p_lst());
-                        stack.push("comma");
-                    }
-                }
                 continue;
             }
 
@@ -119,6 +111,16 @@ public class parser {
                     !(first("fc_p_lst", token))) {
                 stack.pop();
                 continue;
+            }
+
+            // handle p_lst/fc_p_lst without next
+            if (child instanceof String && child.equals("comma") &&
+                    !(token instanceof comma)) {
+                if (parent instanceof p_lst || parent instanceof fc_p_lst) {
+                    // pop comma, p_lst/fc_p_lst
+                    for (int i = 0; i < 2; i++) stack.pop();
+                    continue;
+                }
             }
 
             // handle if statement w/out else
