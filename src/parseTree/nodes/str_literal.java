@@ -15,6 +15,11 @@ public class str_literal extends str_expr implements str_val {
         if (children.get(0) instanceof str_token) {
             data = ((str_token) children.get(0));
         }
+        else if (children.get(0) instanceof f_call) {
+            id name = ((f_call) children.get(0)).getName();
+            String val = (String) ((f_call) children.get(0)).execute();
+            data = new str_token(name.getLineNumber(), name.getIndex(), val);
+        }
         else if (children.get(0) instanceof id) {
             id tok = (id) children.get(0);
             if (nameTableSingleton.getInstance().getType(tok) != typeIdx.k_String)
