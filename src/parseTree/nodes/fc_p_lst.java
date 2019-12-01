@@ -11,10 +11,19 @@ public class fc_p_lst extends node {
     }
 
     expr getFirst() {
-        return value;
+        return (expr) children.get(0);
     }
 
     fc_p_lst getNext() {
-        return next;
+        if (children.size() == 3) return (fc_p_lst) children.get(2);
+        return null;
+    }
+
+    public int getLineNumber() {
+        return this.getFirst().getLineNumber();
+    }
+
+    public int getIndex() {
+        return this.getFirst().getIndex();
     }
 }
