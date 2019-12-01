@@ -152,12 +152,13 @@ public class parser {
             if (token instanceof id && first(child, token)) {
                 typeIdx ftype = funTab.get(token.toString());
                 typeIdx type;
-                if (localSymTab != null) type = localSymTab.get(token.toString());
+                if (localSymTab != null && localSymTab.containsKey(token.toString()))
+                    type = localSymTab.get(token.toString());
                 else type = symTab.get(token.toString());
                 if (child instanceof f_call) ;
                 else if (child instanceof String && child.equals("id")) { // id required for asmt, f_call, f_defn, p_lst
                     if (parent instanceof asmt && type != null) {
-                        if (localSymTab == null || localSymTab != null && localSymTab.containsKey(token.toString()))
+                        if (localSymTab == null || localSymTab.containsKey(token.toString()))
                             errorPrinter.throwError(token, new Syntax("Identifier already exists"));
                     }
                     else if (parent instanceof f_defn) {
