@@ -1,1 +1,2 @@
-Syntax Error: Missing ", "print("foo );" (inputs/prog16.j:1)
+
+SyntaxError: Illegal character ')' detected in string literal, 'print("foo );' (./samples/in/prog16.j:1:7).

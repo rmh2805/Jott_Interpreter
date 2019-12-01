@@ -1,1 +1,2 @@
-Syntax Error: Expected , got ), "print(concat("");" (inputs/prog21.j:1)
+
+SyntaxError: comma expected but got end_paren, 'print(concat("");' (./samples/in/prog21.j:1:16).

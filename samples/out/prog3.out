@@ -1,1 +1,2 @@
-Syntax Error: Type mismatch: Expected Integer got Double, "print( x + y );" (inputs/prog3.j:4)
+
+SyntaxError: Integer expected but got Double, 'print( x + y );' (./samples/in/prog3.j:4:12).

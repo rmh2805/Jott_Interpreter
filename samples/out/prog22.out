@@ -1,1 +1,2 @@
-Syntax Error: Expected , got ), "print(charAt("");" (inputs/prog22.j:1)
+
+SyntaxError: comma expected but got end_paren, 'print(charAt("");' (./samples/in/prog22.j:1:16).

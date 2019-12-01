@@ -1,1 +1,2 @@
-Runtime Error: Divide by zero, "print( x / 0 );" (inputs/prog4.j:3)
+
+RuntimeError: Divide by Zero, 'print( x / 0 );' (./samples/in/prog4.j:3:10).
