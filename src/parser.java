@@ -75,9 +75,11 @@ public class parser {
         Deque<node> parents = new ArrayDeque<>();
         program root = new program();
         stack.push(root);
+
         Map<String, typeIdx> symTab = new HashMap<>();
         Map<String, typeIdx> localSymTab = null;
         Map<String, typeIdx> funTab = new HashMap<>();
+
         while (!stack.isEmpty()) {
             Object child = stack.peek();
             node parent = parents.peek();

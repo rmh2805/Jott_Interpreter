@@ -87,7 +87,7 @@ public class f_defn extends stmt<Integer> {
         nT.addStack(dF);
 
 
-        //Execute code and extract the return value
+        //Execute code and evaluate the return expression
         body.execute();
         if (ret_val instanceof int_return)
             result = ((int_return) ret_val).execute();
@@ -96,7 +96,7 @@ public class f_defn extends stmt<Integer> {
         else if (ret_val instanceof str_return)
             result = ((str_return) ret_val).execute();
 
-        //Cleanup and return
+        //Cleanup stack and return
         nT.popStack();
         return result;
     }
@@ -107,10 +107,12 @@ public class f_defn extends stmt<Integer> {
      * @return the string representation of this function definition
      */
     public String toString() {
-        return String.format("%s %s(%s) {\n%s%s\n}", t.toString(), name.toString(),
-                (params == null) ? "" : params.toString(),
+        return String.format("%s %s(%s) {\n%s%s\n}",
+                t.toString(),
+                name.toString(),
+                (params == null) ? "" : params.toString(),  //List the params (If they exist)
                 body.toString(),
-                (ret_val == null) ? "" : ("\n" + ret_val.toString()));
+                (ret_val == null) ? "" : ("\n" + ret_val.toString()));  //List the return statement (Unless return type is void)
     }
 
 }
