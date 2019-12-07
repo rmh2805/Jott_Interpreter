@@ -6,14 +6,17 @@ import src.nameTableSingleton;
 import src.parseTree.categories.*;
 import src.parseTree.tokens.id;
 
+/**
+ * Does what it says on the tin, handling function calls
+ */
 public class f_call extends b_stmt<Object> implements int_val, double_val, str_val {
     private id name;
-    private fc_p_lst values;
+    private f_call_param_lst values;
 
     public void fixChildren() {
         name = (id) children.get(0);
         // start_paren(1)
-        if (children.get(2) instanceof fc_p_lst) values = (fc_p_lst) children.get(2);
+        if (children.get(2) instanceof f_call_param_lst) values = (f_call_param_lst) children.get(2);
         // end_paren, end_stmt
     }
 

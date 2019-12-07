@@ -29,7 +29,7 @@ public class errorPrinter {
      */
     public static void throwError(int lineNum, int index, abstract_error error) {
         String filePath = nameTableSingleton.getFilePath();
-        String line = "";
+        String line;
 
         try {
             Scanner sc = new Scanner(new File(filePath));

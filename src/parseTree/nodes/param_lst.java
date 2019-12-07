@@ -8,16 +8,16 @@ import src.parseTree.categories.Type;
 import src.parseTree.tokens.id;
 import src.typeIdx;
 
-public class p_lst extends node {
+public class param_lst extends node {
     private Type t;
     private id name;
-    private p_lst next;
+    private param_lst next;
 
     public void fixChildren() {
         t = (Type) children.get(0);
         name = (id) children.get(1);
         // comma(2)
-        if (children.size() == 4) next = (p_lst) children.get(3);
+        if (children.size() == 4) next = (param_lst) children.get(3);
     }
 
     public typeIdx getType() {
@@ -41,7 +41,7 @@ public class p_lst extends node {
      * @param values the function call parameters
      * @param dF     the new dataframe
      */
-    public void execute(fc_p_lst values, dataFrame dF) {
+    public void execute(f_call_param_lst values, dataFrame dF) {
         this.fixChildren();
 
         nameTableSingleton nT = nameTableSingleton.getInstance();
