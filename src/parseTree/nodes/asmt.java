@@ -23,8 +23,17 @@ public class asmt extends stmt<Integer> {
         endStmt = (end_stmt) children.get(4);
     }
 
-    public String getType() {
-        return children.get(0).toString();
+    public typeIdx getType() {
+        switch (children.get(0).toString()) {
+            case "Integer":
+                return typeIdx.k_Integer;
+            case "Double":
+                return typeIdx.k_Double;
+            case "String":
+                return typeIdx.k_String;
+            default:
+                return typeIdx.k_Void;
+        }
     }
 
     public String getId() {

@@ -27,6 +27,7 @@ public class parser {
         else
             parentName = parent.getClass().getSimpleName();
 
+        if (tok == null) return false;
         String tokenName = tok.getClass().getSimpleName();
 
         if (parentName.equals(tokenName)) return true;
@@ -75,6 +76,8 @@ public class parser {
         program root = new program();
         stack.push(root);
         Map<String, typeIdx> symTab = new HashMap<>();
+        Map<String, typeIdx> localSymTab = null;
+        Map<String, typeIdx> funTab = new HashMap<>();
         while (!stack.isEmpty()) {
             Object child = stack.peek();
             node parent = parents.peek();
@@ -84,26 +87,41 @@ public class parser {
                 parent = parents.peek();
                 if (parent != null) parent.addChild(child); // parent == null if derivations merged into start symbol
                 if (child instanceof asmt) { // add to symbol table
-                    String type = ((asmt) child).getType();
+                    typeIdx type = ((asmt) child).getType();
                     String name = ((asmt) child).getId();
-                    switch (type) {
-                        case "Double":
-                            symTab.put(name, typeIdx.k_Double);
-                            break;
-                        case "Integer":
-                            symTab.put(name, typeIdx.k_Integer);
-                            break;
-                        case "String":
-                            symTab.put(name, typeIdx.k_String);
-                            break;
-                        default: // type == "", i.e. reassignment
-                            break;
-                    }
+                    if (localSymTab != null) localSymTab.put(name, type);
+                    else symTab.put(name, type);
                 }
+                if (child instanceof f_defn) localSymTab = null;
                 continue;
             }
 
             token token = tokenList.get(t_idx);
+            token nextToken = null;
+            token nnToken = null;
+            if (t_idx + 1 < tokenList.size()) nextToken = tokenList.get(t_idx + 1);
+            if (t_idx + 2 < tokenList.size()) nnToken = tokenList.get(t_idx + 2);
+
+            // handle function defn/calls without parameters
+            if (child instanceof p_lst && parent instanceof f_defn &&
+                    !(first("p_lst", token))) {
+                stack.pop();
+                continue;
+            } else if (child instanceof fc_p_lst && parent instanceof f_call &&
+                    !(first("fc_p_lst", token))) {
+                stack.pop();
+                continue;
+            }
+
+            // handle p_lst/fc_p_lst without next
+            if (child instanceof String && child.equals("comma") &&
+                    !(token instanceof comma)) {
+                if (parent instanceof p_lst || parent instanceof fc_p_lst) {
+                    // pop comma, p_lst/fc_p_lst
+                    for (int i = 0; i < 2; i++) stack.pop();
+                    continue;
+                }
+            }
 
             // handle if statement w/out else
             // by default, else is expected to follow if
@@ -119,7 +137,6 @@ public class parser {
                 switch (token.toString()) {
                     case "+":
                     case "-":
-                        token nextToken = tokenList.get(t_idx + 1);
                         if (first(child, nextToken)) {
                             if ("-".equals(token.toString())) {
                                 if (nextToken instanceof int_token) ((int_token) nextToken).negate();
@@ -133,17 +150,38 @@ public class parser {
 
             token dummy = token;
             if (token instanceof id && first(child, token)) {
-                typeIdx type = symTab.get(token.toString());
-                if (child instanceof String && child.equals("id")) { // only time id is specifically required is for asmt
-                    if (parent instanceof asmt && type != null)
-                        errorPrinter.throwError(token, new Syntax("Identifier already exists"));
+                typeIdx ftype = funTab.get(token.toString());
+                typeIdx type;
+                if (localSymTab != null && localSymTab.containsKey(token.toString()))
+                    type = localSymTab.get(token.toString());
+                else type = symTab.get(token.toString());
+                if (child instanceof f_call) ;
+                else if (child instanceof String && child.equals("id")) { // id required for asmt, f_call, f_defn, p_lst
+                    if (parent instanceof asmt && type != null) {
+                        if (localSymTab == null || localSymTab.containsKey(token.toString()))
+                            errorPrinter.throwError(token, new Syntax("Identifier already exists"));
+                    }
+                    else if (parent instanceof f_defn) {
+                        if (ftype != null) errorPrinter.throwError(token, new Syntax("Function already exists"));
+                        else funTab.put(token.toString(), ((f_defn) parent).getType());
+                    }
+                    else if (parent instanceof f_call && ftype == null)
+                        errorPrinter.throwError(token, new Syntax("Function undefined"));
+                    else if (parent instanceof p_lst) {
+                        if (localSymTab.containsKey(token.toString()))
+                            errorPrinter.throwError(token, new Syntax("Duplicate parameter name"));
+                        localSymTab.put(token.toString(), ((p_lst) parent).getType());
+                    }
                 } else {
-                    if (type == null) errorPrinter.throwError(token, new Syntax("Unknown identifier"));
+                    if (nextToken instanceof start_paren) {
+                        type = ftype;
+                        if (ftype == null) errorPrinter.throwError(token, new Syntax("Function undefined"));
+                    }
+                    else if (type == null) errorPrinter.throwError(token, new Syntax("Unknown identifier"));
 
                     // lookahead(1) to check for asmt_op
                     // if asmt_op, id not being referenced
-                    token nextToken = tokenList.get(t_idx + 1);
-                    if (!(nextToken instanceof asmt_op)) {
+                    if (nextToken != null && !(nextToken instanceof asmt_op)) {
                         // treat id as its reference
                         switch (type) {
                             case k_Double:
@@ -155,6 +193,28 @@ public class parser {
                             case k_String:
                                 dummy = new str_token(token.getLineNumber(), token.getIndex(), "");
                                 break;
+                            case k_Void:
+                                dummy = new void_token(token.getLineNumber(), token.getIndex());
+                                break;
+                        }
+
+                        if (!first(child, dummy) && type != ftype) {
+                            if (type != symTab.get(token.toString())) {
+                                type = symTab.get(token.toString());
+                                if (type != null) {
+                                    switch (type) {
+                                        case k_Double:
+                                            dummy = new double_token(token.getLineNumber(), token.getIndex(), 0.0);
+                                            break;
+                                        case k_Integer:
+                                            dummy = new int_token(token.getLineNumber(), token.getIndex(), 0);
+                                            break;
+                                        case k_String:
+                                            dummy = new str_token(token.getLineNumber(), token.getIndex(), "");
+                                            break;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -172,14 +232,40 @@ public class parser {
                     else if (lhs instanceof str_expr) tokenName = "String";
                     else tokenName = lhs.getClass().getSimpleName();
                 }
+                if (childName.startsWith("str")) childName = "String";
+                else if (childName.startsWith("double")) childName = "Double";
+                else if (childName.startsWith("int")) childName = "Integer";
+                if (tokenName.startsWith("str")) tokenName = "String";
+                else if (tokenName.startsWith("double")) tokenName = "Double";
+                else if (tokenName.startsWith("int")) tokenName = "Integer";
                 errorPrinter.throwError(token,
                         new Syntax(String.format("%s expected but got %s", childName, tokenName)));
             }
 
-            List<String> children = predict(child, dummy);
+            List<String> children = new ArrayList<>(predict(child, dummy));
+
+            if (children.size() > 0 && children.get(0).equals("asmt")) {
+                if (nextToken instanceof id && nnToken instanceof start_paren)
+                    children.set(0, "f_defn");
+            }
+
+            if (token instanceof id) {
+                if (nextToken instanceof start_paren && !children.isEmpty()) {
+                    switch (children.get(0)) {
+                        case "int_token":
+                        case "double_token":
+                        case "str_token":
+                            children.set(0, "f_call");
+                            break;
+                    }
+                }
+            }
 
             if (child instanceof r_asmt && dummy instanceof id) {
-                typeIdx type = symTab.get(token.toString());
+                typeIdx type;
+                if (localSymTab != null && localSymTab.containsKey(token.toString()))
+                    type = localSymTab.get(token.toString());
+                else type = symTab.get(token.toString());
                 switch (type) {
                     case k_String:
                         children.set(2, "str_expr");
@@ -195,7 +281,7 @@ public class parser {
 
             if (child instanceof String) stack.pop(); // remove tokens and abstract nodes
             if (children.size() <= 0) { // if no children, it is a token
-                if (child instanceof node) stack.pop(); // handle epsilon transitions (stmt_lst, b_stmt_lst)
+                if (child instanceof node) parent.addChild(stack.pop()); // handle epsilon transitions (stmt_lst, b_stmt_lst)
                 else {
                     if (parent != null) parent.addChild(token); // add to parent
                     t_idx++;
@@ -205,7 +291,7 @@ public class parser {
                 parents.push(parent);
             }
 
-            token nextToken = tokenList.get(t_idx);
+            token nextToken_ = tokenList.get(t_idx); // nextToken_ = next if t_idx incremented, else token
             // 1) if op follows an int_expr -> int_token or double_expr -> double_token, the expr is the parent
             // modify stack and parents so the T_expr is a left child of a new T_expr
             // result stack: ..., T_expr, op, T_token, T_expr (new), ...
@@ -214,7 +300,7 @@ public class parser {
             // modify stack and parents so the int_expr (grandparent) is left child of a new int_expr
             // result stack: ..., T_expr, int_expr, op, int_token, int_expr (new), ...
             // result parents: ..., T_expr, int_expr, int_expr (new), ...
-            if (nextToken instanceof op) {
+            if (nextToken_ instanceof op) {
                 parents.pop();
                 if (token instanceof op) { // if currentToken is op, and nextToken is op,
                     ; // assume nextToken is signed number, not op
@@ -252,7 +338,7 @@ public class parser {
 
             // 1) rel_op may change current expr type (to int_expr) if expr is child of print/if stmt, which take any type
             // 2) rel_op may follow an int_expr (parent) -> int_token or a relational int_expr (grandparent)
-            if (nextToken instanceof rel_op) {
+            if (nextToken_ instanceof rel_op) {
                 parents.pop();
                 if (parents.peek() instanceof int_expr && parents.peek().isEmpty()) { // handle only chaining of rel_ops
                     ; // ignore initial LHS expr of relational statement. rel_op,token already on stack
@@ -328,6 +414,31 @@ public class parser {
                         break;
                     case "while_stmt":
                         newChild = new while_stmt();
+                        break;
+                    case "double_return":
+                        newChild = new double_return();
+                        break;
+                    case "f_call":
+                        newChild = new f_call();
+                        break;
+                    case "f_defn":
+                        localSymTab = new HashMap<>();
+                        newChild = new f_defn();
+                        break;
+                    case "f_stmt_lst":
+                        newChild = new f_stmt_lst();
+                        break;
+                    case "fc_p_lst":
+                        newChild = new fc_p_lst();
+                        break;
+                    case "int_return":
+                        newChild = new int_return();
+                        break;
+                    case "p_lst":
+                        newChild = new p_lst();
+                        break;
+                    case "str_return":
+                        newChild = new str_return();
                         break;
                     default: // token or abstract parent
                         newChild = name;

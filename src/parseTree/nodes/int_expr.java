@@ -17,10 +17,9 @@ public class int_expr extends expr<Integer> implements int_val {
 
     public void fixChildren() {
         lVal = children.get(0);
-        if (lVal instanceof id) {
-            nameTableSingleton nT = nameTableSingleton.getInstance();
-            type = nT.getType((id) lVal);
-        }
+        nameTableSingleton nT = nameTableSingleton.getInstance();
+        if (lVal instanceof id) type = nT.getType((id) lVal);
+        else if (lVal instanceof f_call) type = nT.getFunType(((f_call) lVal).getName());
         else if (lVal instanceof int_val) type = typeIdx.k_Integer;
         else if (lVal instanceof double_val) type = typeIdx.k_Double;
         else if (lVal instanceof str_val) type = typeIdx.k_String;
@@ -43,9 +42,18 @@ public class int_expr extends expr<Integer> implements int_val {
         
         double left = 0;
         String strLeft = "";
-        if (type == typeIdx.k_Integer) left = parseToken((int_val) lVal);
-        else if (type == typeIdx.k_Double) left = double_val.execute((double_val) lVal);
-        else if (type == typeIdx.k_String) strLeft = str_val.execute((str_val) lVal);
+        if (type == typeIdx.k_Integer) {
+            if (lVal instanceof f_call) left = (Integer) ((f_call) lVal).execute();
+            else left = parseToken((int_val) lVal);
+        }
+        else if (type == typeIdx.k_Double) {
+            if (lVal instanceof f_call) left = (Double) ((f_call) lVal).execute();
+            else left = double_val.execute((double_val) lVal);
+        }
+        else if (type == typeIdx.k_String) {
+            if (lVal instanceof f_call) strLeft = (String) ((f_call) lVal).execute();
+            else strLeft = str_val.execute((str_val) lVal);
+        }
 
         if (operator == null)
             return (int) left;
@@ -53,9 +61,18 @@ public class int_expr extends expr<Integer> implements int_val {
         // todo this does not work for ids
         double right = 0;
         String strRight = "";
-        if (type == typeIdx.k_Integer) right = parseToken((int_val) rVal);
-        else if (type == typeIdx.k_Double) right = double_val.execute((double_val) rVal);
-        else if (type == typeIdx.k_String) strRight = str_val.execute((str_val) rVal);
+        if (type == typeIdx.k_Integer) {
+            if (rVal instanceof f_call) right = (Integer) ((f_call) rVal).execute();
+            else right = parseToken((int_val) rVal);
+        }
+        else if (type == typeIdx.k_Double) {
+            if (rVal instanceof f_call) right = (Double) ((f_call) rVal).execute();
+            else right = double_val.execute((double_val) rVal);
+        }
+        else if (type == typeIdx.k_String) {
+            if (rVal instanceof f_call) strRight = (String) ((f_call) rVal).execute();
+            else strRight = str_val.execute((str_val) rVal);
+        }
 
         switch (operator.toString()) {
             case "+":

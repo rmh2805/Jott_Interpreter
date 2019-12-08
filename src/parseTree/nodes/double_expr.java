@@ -78,6 +78,9 @@ public class double_expr extends expr<Double> implements double_val {
         else if (token instanceof double_token) {
             return ((double_token) token).getVal();
         }
+        else if (token instanceof f_call) {
+            return (Double) ((f_call) token).execute();
+        }
         else {
             id tok = (id) token;
             if (nameTableSingleton.getInstance().getType(tok) != typeIdx.k_Double)

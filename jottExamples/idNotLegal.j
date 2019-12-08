@@ -1,1 +1,0 @@
-Integer foo_bar = 0;
