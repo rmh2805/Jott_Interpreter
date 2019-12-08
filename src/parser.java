@@ -75,9 +75,11 @@ public class parser {
         Deque<node> parents = new ArrayDeque<>();
         program root = new program();
         stack.push(root);
+
         Map<String, typeIdx> symTab = new HashMap<>();
         Map<String, typeIdx> localSymTab = null;
         Map<String, typeIdx> funTab = new HashMap<>();
+
         while (!stack.isEmpty()) {
             Object child = stack.peek();
             node parent = parents.peek();
@@ -103,11 +105,11 @@ public class parser {
             if (t_idx + 2 < tokenList.size()) nnToken = tokenList.get(t_idx + 2);
 
             // handle function defn/calls without parameters
-            if (child instanceof p_lst && parent instanceof f_defn &&
+            if (child instanceof param_lst && parent instanceof f_defn &&
                     !(first("p_lst", token))) {
                 stack.pop();
                 continue;
-            } else if (child instanceof fc_p_lst && parent instanceof f_call &&
+            } else if (child instanceof f_call_param_lst && parent instanceof f_call &&
                     !(first("fc_p_lst", token))) {
                 stack.pop();
                 continue;
@@ -116,7 +118,7 @@ public class parser {
             // handle p_lst/fc_p_lst without next
             if (child instanceof String && child.equals("comma") &&
                     !(token instanceof comma)) {
-                if (parent instanceof p_lst || parent instanceof fc_p_lst) {
+                if (parent instanceof param_lst || parent instanceof f_call_param_lst) {
                     // pop comma, p_lst/fc_p_lst
                     for (int i = 0; i < 2; i++) stack.pop();
                     continue;
@@ -167,10 +169,10 @@ public class parser {
                     }
                     else if (parent instanceof f_call && ftype == null)
                         errorPrinter.throwError(token, new Syntax("Function undefined"));
-                    else if (parent instanceof p_lst) {
+                    else if (parent instanceof param_lst) {
                         if (localSymTab.containsKey(token.toString()))
                             errorPrinter.throwError(token, new Syntax("Duplicate parameter name"));
-                        localSymTab.put(token.toString(), ((p_lst) parent).getType());
+                        localSymTab.put(token.toString(), ((param_lst) parent).getType());
                     }
                 } else {
                     if (nextToken instanceof start_paren) {
@@ -429,13 +431,13 @@ public class parser {
                         newChild = new f_stmt_lst();
                         break;
                     case "fc_p_lst":
-                        newChild = new fc_p_lst();
+                        newChild = new f_call_param_lst();
                         break;
                     case "int_return":
                         newChild = new int_return();
                         break;
                     case "p_lst":
-                        newChild = new p_lst();
+                        newChild = new param_lst();
                         break;
                     case "str_return":
                         newChild = new str_return();
